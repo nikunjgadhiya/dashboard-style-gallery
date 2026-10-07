@@ -49,6 +49,9 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,
 .memphis .m3{width:120px;height:28px;background:repeating-linear-gradient(45deg,#7b5cff 0 5px,transparent 5px 11px);left:40%;bottom:18%;transform:rotate(-10deg)}
 .memphis .m4{width:44px;height:44px;background:#ffd93b;border:3px solid #1b1b3a;right:14%;bottom:24%;transform:rotate(20deg)}
 .memphis .m5{left:8%;bottom:16%;width:110px;height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14' viewBox='0 0 28 14'%3E%3Cpath d='M0 7 Q7 0 14 7 T28 7' fill='none' stroke='%23ff7a3d' stroke-width='4'/%3E%3C/svg%3E") repeat-x}
+.pv-lg{background:radial-gradient(circle at 15% 20%,#ff9a62,transparent 50%),radial-gradient(circle at 85% 25%,#5fa8ff,transparent 50%),radial-gradient(circle at 60% 100%,#c86bff,transparent 55%),#ffd6e8}
+.pv-lg b{position:absolute;width:70px;height:70px;border-radius:50%;background:#ffd60a;left:30%;top:22%}
+.pv-lg i{position:relative;width:62%;height:84px;border-radius:999px;background:rgba(255,255,255,.2);backdrop-filter:blur(10px) saturate(180%);box-shadow:inset 0 1px 0 #fff,inset 0 -1px 0 rgba(255,255,255,.4),0 10px 30px rgba(0,0,0,.15)}
 </style>
 </head>
 <body>
@@ -64,6 +67,7 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,
     <a class="card" href="brutalism.html"><div class="pv brutal"><i>Brutal</i></div><div class="body"><h2>Neo-Brutalism (Mono)</h2><p>Thick black outlines, hard offset shadows, square corners and monospace type. Best for tools, utilities and developer products.</p><div class="tags"><span>border: 3px solid</span><span>box-shadow: 5px 5px 0</span><span>monospace</span></div></div></a>
     <a class="card" href="brutalism-color.html"><div class="pv pop"><i></i><i></i><i></i></div><div class="body"><h2>Neo-Brutalism (Colour)</h2><p>The same hard outlines and offset shadows, with loud flat fills: yellow, pink, blue, green. Best for playful SaaS, creator tools and landing pages.</p><div class="tags"><span>flat saturated fills</span><span>box-shadow: 5px 5px 0</span><span>color-mix()</span></div></div></a>
     <a class="card" href="memphis.html"><div class="pv memphis"><b class="m1"></b><b class="m2"></b><b class="m3"></b><b class="m4"></b><b class="m5"></b></div><div class="body"><h2>Memphis</h2><p>80s Memphis Group revival: clashing brights, confetti shapes, squiggles, zigzags and dot/stripe patterns. Best for playful, youthful and creative brands.</p><div class="tags"><span>clip-path</span><span>repeating-linear-gradient</span><span>inline SVG</span></div></div></a>
+    <a class="card" href="liquid-glass.html"><div class="pv pv-lg"><b></b><i></i></div><div class="body"><h2>Liquid Glass</h2><p>Apple-style thick, clear glass with bright specular rims, capsule controls and a vivid wallpaper refracted behind it. Best for premium consumer apps.</p><div class="tags"><span>backdrop-filter: saturate()</span><span>mask-composite rim</span><span>isolation</span></div></div></a>
   </div>
 </div>
 </body>

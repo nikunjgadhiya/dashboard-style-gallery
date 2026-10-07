@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('dash-theme:liquid-glass.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Liquid Glass Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  color-scheme:light;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  --bg:#dfe7f5;--text:#0d1424;--muted:rgba(13,20,36,.58);
+  --line:rgba(13,20,36,.08);--grid:rgba(13,20,36,.07);
+  --accent:#0a84ff;--ok:#16924d;--warn:#b87400;--bad:#e5383b;
+  --c1:#0a84ff;--c2:#30d158;--c3:#bf5af2;--c4:#ff9f0a;--c5:#ff375f;
+  --tip-bg:rgba(20,24,36,.85);--tip-radius:14;
+  --donut-border:rgba(255,255,255,.9);--donut-bw:2;--donut-radius:10;--donut-spacing:2;--bar-radius:8;
+  --glass:rgba(255,255,255,.34);--glass-strong:rgba(255,255,255,.55);
+  --rim:rgba(255,255,255,.95);--rim-soft:rgba(255,255,255,.3);
+  --glass-shadow:0 14px 44px rgba(16,24,48,.16);
+  --wall:radial-gradient(60vw 50vw at 0% 0%,#ff9a62 0,transparent 60%),radial-gradient(55vw 50vw at 100% 0%,#5fa8ff 0,transparent 60%),
+         radial-gradient(60vw 55vw at 100% 100%,#c86bff 0,transparent 60%),radial-gradient(50vw 50vw at 0% 100%,#3fe0c5 0,transparent 60%),
+         linear-gradient(135deg,#ffd6e8,#d8e6ff);
+  --orb-a:#ff6a3d;--orb-b:#0a84ff;--orb-c:#ffd60a;--orb-d:#30d158;--orb-e:#bf5af2;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#070914;--text:#f5f7ff;--muted:rgba(235,240,255,.6);
+  --line:rgba(255,255,255,.1);--grid:rgba(255,255,255,.07);
+  --ok:#30d158;--warn:#ffb340;--bad:#ff5a5f;
+  --tip-bg:rgba(240,244,255,.92);--tip-fg:#0d1424;
+  --donut-border:rgba(255,255,255,.35);
+  --glass:rgba(22,24,40,.42);--glass-strong:rgba(255,255,255,.16);
+  --rim:rgba(255,255,255,.5);--rim-soft:rgba(255,255,255,.08);
+  --glass-shadow:0 14px 44px rgba(0,0,0,.45);
+  --wall:radial-gradient(60vw 50vw at 0% 0%,rgba(255,90,40,.55) 0,transparent 60%),radial-gradient(55vw 50vw at 100% 0%,rgba(10,90,255,.6) 0,transparent 60%),
+         radial-gradient(60vw 55vw at 100% 100%,rgba(150,50,255,.55) 0,transparent 60%),radial-gradient(50vw 50vw at 0% 100%,rgba(0,170,150,.5) 0,transparent 60%),
+         #070914;
+}
+
+/* wallpaper + crisp shapes for the glass to refract */
+.lg-wall{position:fixed;inset:0;z-index:-1;background:var(--wall);overflow:hidden}
+.lg-wall span{position:absolute;border-radius:50%}
+.lg-wall span:nth-child(1){width:240px;height:240px;left:22%;top:16%;background:var(--orb-a)}
+.lg-wall span:nth-child(2){width:180px;height:180px;right:8%;top:30%;background:var(--orb-b);border-radius:42px;transform:rotate(18deg)}
+.lg-wall span:nth-child(3){width:130px;height:130px;left:48%;top:62%;background:var(--orb-c)}
+.lg-wall span:nth-child(4){width:300px;height:90px;left:30%;bottom:6%;background:var(--orb-d);border-radius:999px;transform:rotate(-12deg)}
+.lg-wall span:nth-child(5){width:150px;height:150px;right:24%;top:-30px;background:var(--orb-e);border-radius:38px;transform:rotate(30deg)}
+.lg-wall span{opacity:.8}
+[data-theme="dark"] .lg-wall span{opacity:.6}
+
+/* the liquid glass material */
+.sidebar,.kpi,.card,.search,.user,.segmented,.icon-btn,.date-chip{
+  background:var(--glass);
+  backdrop-filter:blur(20px) saturate(190%) brightness(1.06);-webkit-backdrop-filter:blur(20px) saturate(190%) brightness(1.06);
+  border:0;isolation:isolate;
+  box-shadow:var(--glass-shadow),inset 0 1px 0 var(--rim),inset 0 -1px 0 var(--rim-soft);
+}
+.kpi,.card{position:relative}
+/* specular rim: bright top-left and bottom-right, clear sides */
+:is(.sidebar,.kpi,.card,.search,.user,.segmented,.icon-btn,.date-chip)::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;z-index:-1;pointer-events:none;
+  background:linear-gradient(135deg,var(--rim) 0%,rgba(255,255,255,.08) 30%,rgba(255,255,255,0) 55%,var(--rim-soft) 80%,var(--rim) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+}
+/* soft top sheen */
+:is(.sidebar,.kpi,.card)::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,0) 32%);
+}
+[data-theme="dark"] :is(.sidebar,.kpi,.card)::after{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,0) 32%)}
+
+.sidebar{margin:14px 0 14px 14px;height:calc(100vh - 28px);top:14px;border-radius:32px}
+.brand .logo{border-radius:14px;color:#fff;background:linear-gradient(160deg,#5ac8fa,#0a84ff);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 6px 16px rgba(10,132,255,.35)}
+.nav-item{border-radius:16px;color:var(--text);opacity:.82}
+.nav-item:hover{opacity:1;background:rgba(255,255,255,.18)}
+.nav-item.active{opacity:1;background:var(--glass-strong);box-shadow:inset 0 1px 0 var(--rim),0 6px 18px rgba(16,24,48,.1)}
+.nav-item.active .ic{color:var(--accent)}
+.side-foot{border-radius:22px;background:rgba(255,255,255,.14)}
+.avatar{background:linear-gradient(160deg,#da8fff,#bf5af2);color:#fff}
+.search,.user,.segmented,.date-chip{border-radius:999px}
+.icon-btn{border-radius:50%}
+.segmented button{border-radius:999px;color:var(--text);opacity:.7}
+.segmented button.active{opacity:1;background:var(--glass-strong);box-shadow:inset 0 1px 0 var(--rim),0 4px 12px rgba(16,24,48,.12);font-weight:600}
+.page-head h1{font-size:36px;font-weight:800;letter-spacing:-.035em}
+.kpi{border-radius:28px}
+.card{border-radius:32px}
+.kpi-icon{border-radius:14px;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 6px 14px rgba(0,0,0,.14)}
+.kpi-1 .kpi-icon{background:linear-gradient(160deg,#5ac8fa,#0a84ff)}
+.kpi-2 .kpi-icon{background:linear-gradient(160deg,#6ee68d,#30d158)}
+.kpi-3 .kpi-icon{background:linear-gradient(160deg,#ffcc4d,#ff9f0a)}
+.kpi-4 .kpi-icon{background:linear-gradient(160deg,#ff8a95,#ff375f)}
+.kpi-value{font-weight:800;letter-spacing:-.03em}
+.link{background:var(--glass-strong);padding:6px 12px;border-radius:999px;box-shadow:inset 0 1px 0 var(--rim)}
+.legend li{border-color:var(--line)}
+tbody tr:hover td{background:rgba(255,255,255,.18)}
+.thumb{border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 3px 8px rgba(0,0,0,.15)}
+.meter{background:rgba(255,255,255,.3);height:6px;border-radius:3px}
+.alloc-bar{background:rgba(255,255,255,.28);height:12px;border-radius:999px;box-shadow:inset 0 1px 2px rgba(0,0,0,.08)}
+.alloc-bar span:first-child{border-radius:999px 0 0 999px}
+.alloc-bar span:last-child{border-radius:0 999px 999px 0}
+[data-theme="dark"] .alloc-bar,[data-theme="dark"] .meter{background:rgba(255,255,255,.08)}
+@media (max-width:900px){.sidebar{margin:0;top:0;height:100vh;border-radius:0 32px 32px 0;background:color-mix(in srgb,var(--bg) 70%,transparent)}}
+</style>
+</head>
+<body>
+<div class="lg-wall" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">T</div><div><strong>TIFFNY Inventory</strong><small>Stock &amp; Master SKU Manager</small></div></div>
+    <nav id="menu"></nav>
+    <div class="side-foot"><div class="avatar">RP</div><div><strong>Ritesh Patel</strong><small>Admin</small></div></div>
+  </aside>
+  <div class="scrim"></div>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" data-icon="menu" aria-label="Open menu"></button>
+      <label class="search"><span data-icon="search"></span><input type="search" placeholder="Search by SKU, product name, brand…"></label>
+      <div class="top-actions">
+        <button class="icon-btn theme-btn" id="themeToggle" type="button"></button>
+        <button class="icon-btn" data-icon="bell" aria-label="Notifications"><b>4</b></button>
+        <div class="user"><div class="avatar">R</div><div><strong>Ritesh Patel</strong><small>Admin · 07 Oct 2026</small></div></div>
+      </div>
+    </header>
+    <div class="page-head">
+      <div><h1>Dashboard</h1><p>Stock &amp; order overview across all platforms</p></div>
+      <div class="head-tools"><div id="periods" class="segmented"></div><div class="date-chip"><span data-icon="calendar"></span><span id="dateRange"></span></div></div>
+    </div>
+    <section id="kpis" class="kpis"></section>
+    <section class="grid">
+      <article class="card c-donut">
+        <header class="card-h"><div><h3>Platform-wise stock allocated</h3><p>Units currently allocated per channel</p></div></header>
+        <div class="donut-wrap"><div class="donut-box"><canvas id="donutChart"></canvas><div class="donut-center"><strong id="donutTotal"></strong><span>Total stock</span></div></div><ul id="donutLegend" class="legend"></ul></div>
+      </article>
+      <article class="card c-bar">
+        <header class="card-h"><div><h3>Platform-wise order overview</h3><p>Orders by channel, <span data-period-name></span></p></div></header>
+        <div class="chart-box"><canvas id="barChart"></canvas></div>
+      </article>
+      <article class="card c-table">
+        <header class="card-h"><div><h3>Top selling SKU</h3><p>Top 8 by units sold</p></div><a href="#" class="link">View all →</a></header>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>SKU / Product</th><th>Brand</th><th class="num">Sold qty</th><th class="num">Revenue</th></tr></thead><tbody id="skuBody"></tbody></table></div>
+      </article>
+      <article class="card c-alloc">
+        <header class="card-h"><div><h3>Platform-wise SKU allocation</h3><p>SKU health per channel</p></div><div class="key"><span class="ok">In stock</span><span class="warn">Low</span><span class="bad">Out</span></div></header>
+        <div id="alloc"></div>
+        <div id="allocSummary" class="alloc-summary"></div>
+      </article>
+    </section>
+  </main>
+</div>
+<script src="assets/dashboard.js"></script>
+</body>
+</html>
