@@ -152,6 +152,13 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,
 .pv-ori b{width:76px;height:76px;background:linear-gradient(135deg,#ff8f70 0 50%,#e86d4f 50%);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
 .pv-ori i{position:relative;width:120px;height:90px;background:linear-gradient(120deg,#3fb6a8 0 56%,#2a9688 56%);box-shadow:0 12px 20px -12px rgba(0,0,0,.4)}
 .pv-ori i::after{content:"";position:absolute;right:0;top:0;width:24px;height:24px;background:linear-gradient(225deg,#f3efe8 50%,rgba(255,255,255,.4) 50%)}
+.pv-iso{background:repeating-linear-gradient(30deg,rgba(79,124,255,.12) 0 1px,transparent 1px 22px),repeating-linear-gradient(150deg,rgba(79,124,255,.12) 0 1px,transparent 1px 22px),#eef1f8}
+.pv-iso b{position:absolute;width:44px;height:44px}
+.pv-iso b::before{content:"";position:absolute;left:0;bottom:100%;width:100%;height:18px;transform:skewX(-45deg);transform-origin:bottom left}
+.pv-iso b::after{content:"";position:absolute;left:100%;top:0;width:18px;height:100%;transform:skewY(-45deg);transform-origin:top left}
+.pv-iso b:nth-child(1){left:36%;top:52%;background:#4f7cff}.pv-iso b:nth-child(1)::before{background:#86a4ff}.pv-iso b:nth-child(1)::after{background:#3459d6}
+.pv-iso b:nth-child(2){left:52%;top:52%;background:#ff9f43}.pv-iso b:nth-child(2)::before{background:#ffc286}.pv-iso b:nth-child(2)::after{background:#d97d24}
+.pv-iso b:nth-child(3){left:44%;top:20%;background:#1dd1a1}.pv-iso b:nth-child(3)::before{background:#6fe8c8}.pv-iso b:nth-child(3)::after{background:#13a581}
 </style>
 </head>
 <body>
@@ -193,6 +200,7 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,
     <a class="card" href="bloomberg.html"><div class="pv pv-bb"><b>INV &lt;GO&gt; STOCK MONITOR</b><span>AMZN STK 58,420 <em>▲5.0%</em></span><span>FLPK STK 31,250 <em class="d">▼2.3%</em></span><span>LOW STK 1,705 <em class="d">▼5.2%</em></span><i>MC-14-BLK-38 2,499 ▲3.2% · MC-9-GRN-36 1,200 ▼1.1%</i></div><div class="body"><h2>Data-Dense Terminal</h2><p>Bloomberg-style amber-on-black density: F-key bar, numbered menu codes, inverse panel titles, compact zebra tables and a live price ticker. Light mode is FT salmon. Best for trading and ops centres.</p><div class="tags"><span>high density</span><span>CSS ticker</span><span>counters</span></div></div></a>
     <a class="card" href="spatial.html"><div class="pv pv-vs"><b></b><i></i></div><div class="body"><h2>Spatial / visionOS</h2><p>Floating glass windows in a softly blurred room, with an expanding tab-bar ornament, window grabbers, gentle 3D tilt and hover highlights. Best for AR/VR-style apps.</p><div class="tags"><span>backdrop-filter: blur(40px)</span><span>perspective rotateY</span><span>hover-expand nav</span></div></div></a>
     <a class="card" href="origami.html"><div class="pv pv-ori"><b></b><i></i></div><div class="body"><h2>Origami / Paper Fold</h2><p>Two-tone creased papers, folded-diamond icons, dog-ear corners, notched ribbon tags and an accordion-folded sidebar. Best for creative brands and storytelling.</p><div class="tags"><span>hard-stop gradients</span><span>clip-path folds</span><span>paper shadows</span></div></div></a>
+    <a class="card" href="isometric.html"><div class="pv pv-iso"><b></b><b></b><b></b></div><div class="body"><h2>Isometric 3D</h2><p>Warehouse-themed isometric grid with extruded slab cards, CSS cube icons, stacked crates and press-in buttons. Best for inventory and logistics apps.</p><div class="tags"><span>skew() cube faces</span><span>stacked box-shadow extrusion</span><span>isometric grid</span></div></div></a>
   </div>
 </div>
 </body>
