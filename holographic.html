@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('dash-theme:holographic.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Holographic Inventory Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  color-scheme:light;
+  --font:'Inter',system-ui,sans-serif;
+  --display:'Syne','Inter',sans-serif;
+  --mx:30%;--my:30%;
+  --holo:linear-gradient(115deg,#ff9de2 0%,#a0f0ff 18%,#fff7a8 34%,#b8a6ff 52%,#9dffd2 70%,#ffb3a0 86%,#ff9de2 100%);
+  --holo-strong:linear-gradient(115deg,#ff4fb8 0%,#2fc6ff 20%,#e8c400 38%,#8a5cff 56%,#16d39a 74%,#ff7a59 90%,#ff4fb8 100%);
+  --holo-text:linear-gradient(115deg,#c81d8f 0%,#1f7fd0 25%,#6d35d9 50%,#0b8f68 75%,#c81d8f 100%);
+  --bg:#eef0f6;--panel:#f9f9fc;--text:#1a1830;--muted:#6b6886;--on:#fff;
+  --line:rgba(26,24,48,.1);--grid:rgba(26,24,48,.07);
+  --accent:#8a5cff;--ok:#12a77a;--warn:#c48a00;--bad:#e5387a;
+  --c1:#ff6ec7;--c2:#3cc8ff;--c3:#ffcc33;--c4:#9b7bff;--c5:#2fe0a8;
+  --tip-bg:#1a1830;--tip-fg:#fff;--tip-radius:12;
+  --donut-border:#f9f9fc;--donut-bw:3;--donut-radius:10;--donut-spacing:2;--bar-radius:8;
+  --sheen:.32;--sheen-blend:multiply;--shadow:0 14px 34px rgba(80,70,140,.14);
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --holo-text:var(--holo-strong);
+  --bg:#08080d;--panel:#14141c;--text:#f4f3ff;--muted:#a3a0bf;--on:#08080d;
+  --line:rgba(255,255,255,.09);--grid:rgba(255,255,255,.06);
+  --ok:#3ff0b0;--warn:#ffd84f;--bad:#ff6e9e;
+  --tip-bg:#f4f3ff;--tip-fg:#14141c;
+  --donut-border:#14141c;
+  --sheen:.22;--sheen-blend:screen;--shadow:0 14px 34px rgba(0,0,0,.5);
+}
+.holo-bg{position:fixed;inset:0;z-index:-1;background:radial-gradient(60vw 50vw at var(--mx) var(--my),color-mix(in srgb,#b8a6ff 35%,transparent),transparent 60%),var(--bg);transition:background .1s}
+[data-theme="dark"] .holo-bg{background:radial-gradient(60vw 50vw at var(--mx) var(--my),rgba(138,92,255,.22),transparent 60%),var(--bg)}
+
+/* pearl + foil material with a shifting rainbow edge */
+.sidebar,.kpi,.card,.search,.user,.date-chip,.segmented,.icon-btn{
+  isolation:isolate;position:relative;border:1.5px solid transparent;
+  background:linear-gradient(var(--panel),var(--panel)) padding-box,var(--holo) border-box;
+  background-size:100% 100%,300% 300%;background-position:0 0,var(--mx) var(--my);box-shadow:var(--shadow)}
+.sidebar{position:sticky}
+:is(.sidebar,.kpi,.card)::after{content:"";position:absolute;inset:0;border-radius:inherit;z-index:-1;pointer-events:none;
+  background:var(--holo);background-size:300% 300%;background-position:var(--mx) var(--my);opacity:var(--sheen);mix-blend-mode:var(--sheen-blend)}
+.sidebar{margin:14px 0 14px 14px;height:calc(100vh - 28px);top:14px;border-radius:26px}
+.brand .logo{border-radius:14px;background:var(--holo-strong);background-size:300% 300%;background-position:var(--mx) var(--my);color:#fff;font-family:var(--display);font-weight:800;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.brand strong{font-family:var(--display);font-weight:800;letter-spacing:.01em}
+.nav-group{opacity:1;color:var(--muted);letter-spacing:.16em}
+.nav-item{border-radius:14px;font-weight:500}
+.nav-item:hover{background:color-mix(in srgb,var(--panel) 40%,transparent)}
+.nav-item.active{background:var(--holo-strong);background-size:300% 300%;background-position:var(--mx) var(--my);color:#fff;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,.3);box-shadow:0 8px 20px -8px rgba(138,92,255,.6)}
+.side-foot{border-radius:18px;background:color-mix(in srgb,var(--panel) 60%,transparent)}
+.avatar{background:var(--holo-strong);background-size:300% 300%;color:#fff}
+.search,.user,.segmented,.date-chip{border-radius:999px}
+.icon-btn{border-radius:50%}
+.icon-btn b{background:var(--bad)}
+.segmented button{border-radius:999px;color:var(--muted);font-weight:600}
+.segmented button.active{background:var(--holo-strong);background-size:300% 300%;background-position:var(--mx) var(--my);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+.page-head h1{font-family:var(--display);font-weight:800;font-size:52px;letter-spacing:-.02em;background:var(--holo-text);background-size:300% 300%;background-position:var(--mx) var(--my);-webkit-background-clip:text;background-clip:text;color:transparent}
+.kpis{gap:18px}
+.kpi,.card{border-radius:24px}
+.kpi-icon{border-radius:16px;background:var(--holo);background-size:300% 300%;background-position:var(--my) var(--mx);color:#1a1830}
+.kpi-value{font-family:var(--display);font-weight:800;background:var(--holo-text);background-size:300% 300%;background-position:var(--mx) var(--my);-webkit-background-clip:text;background-clip:text;color:transparent}
+.kpi-label{font-weight:600}
+.card-h h3{font-family:var(--display);font-weight:700;font-size:17px}
+.link{font-weight:700;color:var(--accent)}
+.donut-center strong{font-family:var(--display);font-weight:800;font-size:19px}
+.legend li{border-color:var(--line)}
+.legend i{border-radius:50%}
+tbody tr:hover td{background:color-mix(in srgb,#b8a6ff 14%,transparent)}
+td{border-color:var(--line)}
+.thumb{border-radius:50%;box-shadow:0 0 0 2px var(--panel),0 0 0 3.5px #b8a6ff}
+.meter{background:var(--line);height:6px}
+.meter i{background:var(--holo-strong);background-size:300% 100%;background-position:var(--mx) 0}
+.alloc-bar{background:var(--line);height:12px;border-radius:999px}
+.alloc-bar span:first-child{border-radius:999px 0 0 999px}.alloc-bar span:last-child{border-radius:0 999px 999px 0}
+.alloc-bar .ok{background:linear-gradient(90deg,#2fe0a8,#3cc8ff)}.alloc-bar .warn{background:linear-gradient(90deg,#ffcc33,#ffb3a0)}.alloc-bar .bad{background:linear-gradient(90deg,#ff6ec7,#9b7bff)}
+.alloc-summary strong{font-family:var(--display);font-weight:800}
+@media (max-width:900px){.sidebar{position:fixed;margin:0;top:0;height:100vh;border-radius:0 26px 26px 0}}
+@media (max-width:640px){.page-head h1{font-size:32px}}
+</style>
+</head>
+<body>
+<div class="holo-bg" aria-hidden="true"></div>
+<script>
+(function(){var r=document.documentElement,q=0;
+addEventListener('pointermove',function(e){if(q)return;q=requestAnimationFrame(function(){q=0;
+r.style.setProperty('--mx',(e.clientX/innerWidth*100).toFixed(1)+'%');r.style.setProperty('--my',(e.clientY/innerHeight*100).toFixed(1)+'%');});},{passive:true});})();
+</script>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">T</div><div><strong>TIFFNY Inventory</strong><small>Stock &amp; Master SKU Manager</small></div></div>
+    <nav id="menu"></nav>
+    <div class="side-foot"><div class="avatar">RP</div><div><strong>Ritesh Patel</strong><small>Admin</small></div></div>
+  </aside>
+  <div class="scrim"></div>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" data-icon="menu" aria-label="Open menu"></button>
+      <label class="search"><span data-icon="search"></span><input type="search" placeholder="Search by SKU, product name, brand…"></label>
+      <div class="top-actions">
+        <button class="icon-btn theme-btn" id="themeToggle" type="button"></button>
+        <button class="icon-btn" data-icon="bell" aria-label="Notifications"><b>4</b></button>
+        <div class="user"><div class="avatar">R</div><div><strong>Ritesh Patel</strong><small>Admin · 07 Oct 2026</small></div></div>
+      </div>
+    </header>
+    <div class="page-head">
+      <div><h1>Dashboard</h1><p>Stock &amp; order overview across all platforms</p></div>
+      <div class="head-tools"><div id="periods" class="segmented"></div><div class="date-chip"><span data-icon="calendar"></span><span id="dateRange"></span></div></div>
+    </div>
+    <section id="kpis" class="kpis"></section>
+    <section class="grid">
+      <article class="card c-donut">
+        <header class="card-h"><div><h3>Platform-wise stock allocated</h3><p>Units currently allocated per channel</p></div></header>
+        <div class="donut-wrap"><div class="donut-box"><canvas id="donutChart"></canvas><div class="donut-center"><strong id="donutTotal"></strong><span>Total stock</span></div></div><ul id="donutLegend" class="legend"></ul></div>
+      </article>
+      <article class="card c-bar">
+        <header class="card-h"><div><h3>Platform-wise order overview</h3><p>Orders by channel, <span data-period-name></span></p></div></header>
+        <div class="chart-box"><canvas id="barChart"></canvas></div>
+      </article>
+      <article class="card c-table">
+        <header class="card-h"><div><h3>Top selling SKU</h3><p>Top 8 by units sold</p></div><a href="#" class="link">View all →</a></header>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>SKU / Product</th><th>Brand</th><th class="num">Sold qty</th><th class="num">Revenue</th></tr></thead><tbody id="skuBody"></tbody></table></div>
+      </article>
+      <article class="card c-alloc">
+        <header class="card-h"><div><h3>Platform-wise SKU allocation</h3><p>SKU health per channel</p></div><div class="key"><span class="ok">In stock</span><span class="warn">Low</span><span class="bad">Out</span></div></header>
+        <div id="alloc"></div>
+        <div id="allocSummary" class="alloc-summary"></div>
+      </article>
+    </section>
+  </main>
+</div>
+<script src="assets/dashboard.js"></script>
+</body>
+</html>
