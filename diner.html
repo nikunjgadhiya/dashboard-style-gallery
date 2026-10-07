@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('dash-theme:diner.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diner Inventory Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Righteous&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  color-scheme:light;
+  --font:'Nunito',system-ui,sans-serif;
+  --script:'Pacifico',cursive;
+  --display:'Righteous',sans-serif;
+  --teal:#3fc1c9;--teal-d:#2a9ea6;--cherry:#e63946;--cream:#fff8e7;--mint:#b8f2e6;--mustard:#ffb703;--pink:#ff8fab;
+  --bg:#fdf3dc;--panel:#fffaf0;--text:#2b2d42;--muted:#6b6e85;--on:#fff8e7;
+  --chrome:linear-gradient(180deg,#ffffff 0%,#c3c8ce 35%,#f4f5f6 55%,#8d949b 100%);
+  --line:rgba(43,45,66,.12);--grid:rgba(43,45,66,.08);
+  --accent:var(--cherry);--ok:#1f9e8a;--warn:#d98e00;--bad:var(--cherry);
+  --c1:#e63946;--c2:#3fc1c9;--c3:#ffb703;--c4:#ff8fab;--c5:#5b8bd9;
+  --tip-bg:#2b2d42;--tip-fg:#fff8e7;--tip-radius:12;
+  --donut-border:#fffaf0;--donut-bw:3;--donut-radius:10;--donut-spacing:2;--donut-cutout:60%;--bar-radius:8;
+  --side-bg:var(--teal);--floor-a:#111;--floor-b:#fdfdfd;--star:rgba(230,57,70,.25);--glow:none;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --teal:#3fd6de;--teal-d:#1f8f96;--cherry:#ff4d5e;--mustard:#ffc533;--pink:#ff9fbb;
+  --bg:#1c1530;--panel:#2a2142;--text:#fff4e0;--muted:#c8bedc;--on:#1c1530;
+  --chrome:linear-gradient(180deg,#9aa3ad 0%,#4a5058 35%,#8a929b 55%,#2f3338 100%);
+  --line:rgba(255,244,224,.12);--grid:rgba(255,244,224,.08);
+  --ok:#3fd6de;--warn:#ffc533;
+  --c1:#ff4d5e;--c2:#3fd6de;--c3:#ffc533;--c4:#ff9fbb;--c5:#7da7ff;
+  --tip-bg:#fff4e0;--tip-fg:#1c1530;
+  --donut-border:#2a2142;
+  --side-bg:#0f3f44;--floor-a:#0c0a16;--floor-b:#2b2445;--star:rgba(63,214,222,.3);
+  --glow:0 0 6px #ff4d5e,0 0 18px #ff4d5e,0 0 34px rgba(255,77,94,.7);
+}
+body{background:var(--bg)}
+.dn-floor{position:fixed;left:0;right:0;bottom:0;height:120px;z-index:-1;background:repeating-conic-gradient(var(--floor-a) 0 25%,var(--floor-b) 0 50%) 0 0/44px 44px;opacity:.85;
+  -webkit-mask-image:linear-gradient(transparent,#000 70%);mask-image:linear-gradient(transparent,#000 70%)}
+.dn-stars{position:fixed;inset:0;z-index:-1;pointer-events:none}
+.dn-stars i{position:absolute;font-style:normal;color:var(--star);font-size:34px}
+.dn-stars i:nth-child(1){left:32%;top:8%}.dn-stars i:nth-child(2){left:78%;top:14%;font-size:22px}.dn-stars i:nth-child(3){left:58%;top:42%;font-size:46px}
+.dn-stars i:nth-child(4){left:92%;top:52%}.dn-stars i:nth-child(5){left:24%;top:60%;font-size:20px}.dn-stars i:nth-child(6){left:70%;top:72%;font-size:28px}
+
+/* chrome trim */
+.sidebar,.kpi,.card,.search,.user,.date-chip,.segmented,.icon-btn{border:4px solid transparent;background:linear-gradient(var(--panel),var(--panel)) padding-box,var(--chrome) border-box;box-shadow:0 10px 20px -10px rgba(0,0,0,.35)}
+.sidebar{background:linear-gradient(var(--side-bg),var(--side-bg)) padding-box,var(--chrome) border-box;margin:16px 0 16px 16px;height:calc(100vh - 32px);top:16px;border-radius:28px;color:var(--cream)}
+.brand{flex-direction:column;text-align:center;gap:2px}
+.brand .logo{display:none}
+.brand strong{font-family:var(--script);font-weight:400;font-size:26px;color:var(--cream);text-shadow:2px 2px 0 var(--cherry)}
+[data-theme="dark"] .brand strong{color:#fff;text-shadow:var(--glow)}
+.brand small{color:var(--cream);opacity:.85;letter-spacing:.12em;text-transform:uppercase;font-size:9.5px}
+.nav-group{color:var(--mustard);opacity:1;font-family:var(--display);font-weight:400;letter-spacing:.14em}
+.nav-item{border-radius:999px;font-weight:700;color:var(--cream)}
+.nav-item:hover{background:rgba(255,255,255,.14)}
+.nav-item.active{background:var(--cherry);color:#fff;box-shadow:inset 0 2px 0 rgba(255,255,255,.35),0 4px 0 #a31f2b}
+.side-foot{border-radius:999px;background:rgba(0,0,0,.15)}
+.side-foot small{color:var(--cream);opacity:.8}
+.avatar{background:var(--mustard);color:#2b2d42;font-family:var(--display)}
+.search,.user,.segmented,.date-chip{border-radius:999px}
+.icon-btn{border-radius:50%}
+.icon-btn b{background:var(--cherry)}
+.theme-btn{background:linear-gradient(var(--mustard),var(--mustard)) padding-box,var(--chrome) border-box;color:#2b2d42}
+.page-head h1{font-family:var(--script);font-weight:400;font-size:52px;color:var(--cherry);letter-spacing:0;text-shadow:3px 3px 0 var(--cream),5px 5px 0 var(--teal)}
+[data-theme="dark"] .page-head h1{color:#fff;text-shadow:var(--glow)}
+.page-head p{font-family:var(--display);letter-spacing:.1em;text-transform:uppercase;font-size:12px}
+/* jukebox buttons */
+.segmented{padding:4px;gap:4px}
+.segmented button{border-radius:999px;font-family:var(--display);font-size:12.5px;letter-spacing:.04em;color:var(--text);background:var(--chrome);box-shadow:inset 0 1px 0 #fff}
+.segmented button.active{background:var(--cherry);color:#fff;box-shadow:inset 0 2px 4px rgba(0,0,0,.25)}
+[data-theme="dark"] .segmented button:not(.active){color:#fff}
+
+/* KPI menu cards */
+.kpis{gap:20px}
+.kpi{border-radius:24px;flex-direction:column;gap:10px}
+.kpi-1{background:linear-gradient(var(--teal),var(--teal)) padding-box,var(--chrome) border-box;color:#10363a}
+.kpi-2{background:linear-gradient(var(--pink),var(--pink)) padding-box,var(--chrome) border-box;color:#4a1626}
+.kpi-3{background:linear-gradient(var(--mustard),var(--mustard)) padding-box,var(--chrome) border-box;color:#3d2a00}
+.kpi-4{background:linear-gradient(var(--mint),var(--mint)) padding-box,var(--chrome) border-box;color:#123d36}
+.kpi-icon{border-radius:50%;background:var(--cream);color:var(--cherry);box-shadow:inset 0 -3px 0 rgba(0,0,0,.12)}
+.kpi-label,.kpi-delta span{color:inherit;opacity:.8;font-weight:700}
+.kpi-delta.up,.kpi-delta.down{color:inherit}
+.kpi-value{font-family:var(--display);font-weight:400;font-size:34px}
+
+.grid{gap:22px}
+.card{border-radius:26px;padding:0;overflow:hidden}
+.card>*:not(.card-h){margin:18px 20px}
+.card-h{margin:0;padding:12px 20px;background:var(--cherry);color:#fff;align-items:center;border-bottom:4px solid var(--mustard)}
+.c-bar .card-h,.c-alloc .card-h{background:var(--teal-d)}
+.card-h h3{font-family:var(--display);font-weight:400;font-size:17px;letter-spacing:.04em}
+.card-h p{color:#fff;opacity:.85}
+.card-h .key{color:#fff}
+.link{background:var(--cream);color:var(--cherry);padding:5px 14px;border-radius:999px;font-family:var(--display);font-size:12.5px}
+.donut-center strong{font-family:var(--display);font-weight:400}
+.legend li{border-bottom:2px dotted var(--line)}
+.legend i{border-radius:50%}
+th{font-family:var(--display);font-weight:400;color:var(--cherry);letter-spacing:.08em}
+td{border-top:2px dotted var(--line)}
+tbody tr:hover td{background:color-mix(in srgb,var(--mint) 45%,transparent)}
+[data-theme="dark"] tbody tr:hover td{background:rgba(63,214,222,.12)}
+.thumb{border-radius:50%;border:3px solid transparent;background-clip:padding-box;box-shadow:0 0 0 2px #c3c8ce}
+.meter{background:var(--line);height:8px;border-radius:999px}
+.meter i{background:repeating-linear-gradient(90deg,var(--cherry) 0 6px,#fff 6px 9px)}
+.key span::before{border-radius:50%}
+.key .ok::before,.alloc-bar .ok{background:var(--teal)}
+.key .warn::before,.alloc-bar .warn{background:var(--mustard)}
+.key .bad::before,.alloc-bar .bad{background:var(--cherry)}
+.alloc-bar{height:14px;border-radius:999px;background:var(--line);gap:3px}
+.alloc-bar span{border-radius:999px}
+.alloc-summary strong{font-family:var(--display);font-weight:400}
+@media (max-width:900px){.sidebar{margin:0;top:0;height:100vh;border-radius:0 28px 28px 0}}
+@media (max-width:640px){.page-head h1{font-size:40px}}
+</style>
+</head>
+<body>
+<div class="dn-floor" aria-hidden="true"></div><div class="dn-stars" aria-hidden="true"><i>✦</i><i>✦</i><i>✦</i><i>✦</i><i>✦</i><i>✦</i></div>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">T</div><div><strong>TIFFNY Inventory</strong><small>Stock &amp; Master SKU Manager</small></div></div>
+    <nav id="menu"></nav>
+    <div class="side-foot"><div class="avatar">RP</div><div><strong>Ritesh Patel</strong><small>Admin</small></div></div>
+  </aside>
+  <div class="scrim"></div>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" data-icon="menu" aria-label="Open menu"></button>
+      <label class="search"><span data-icon="search"></span><input type="search" placeholder="Search by SKU, product name, brand…"></label>
+      <div class="top-actions">
+        <button class="icon-btn theme-btn" id="themeToggle" type="button"></button>
+        <button class="icon-btn" data-icon="bell" aria-label="Notifications"><b>4</b></button>
+        <div class="user"><div class="avatar">R</div><div><strong>Ritesh Patel</strong><small>Admin · 07 Oct 2026</small></div></div>
+      </div>
+    </header>
+    <div class="page-head">
+      <div><h1>Dashboard</h1><p>Stock &amp; order overview across all platforms</p></div>
+      <div class="head-tools"><div id="periods" class="segmented"></div><div class="date-chip"><span data-icon="calendar"></span><span id="dateRange"></span></div></div>
+    </div>
+    <section id="kpis" class="kpis"></section>
+    <section class="grid">
+      <article class="card c-donut">
+        <header class="card-h"><div><h3>Platform-wise stock allocated</h3><p>Units currently allocated per channel</p></div></header>
+        <div class="donut-wrap"><div class="donut-box"><canvas id="donutChart"></canvas><div class="donut-center"><strong id="donutTotal"></strong><span>Total stock</span></div></div><ul id="donutLegend" class="legend"></ul></div>
+      </article>
+      <article class="card c-bar">
+        <header class="card-h"><div><h3>Platform-wise order overview</h3><p>Orders by channel, <span data-period-name></span></p></div></header>
+        <div class="chart-box"><canvas id="barChart"></canvas></div>
+      </article>
+      <article class="card c-table">
+        <header class="card-h"><div><h3>Top selling SKU</h3><p>Top 8 by units sold</p></div><a href="#" class="link">View all →</a></header>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>SKU / Product</th><th>Brand</th><th class="num">Sold qty</th><th class="num">Revenue</th></tr></thead><tbody id="skuBody"></tbody></table></div>
+      </article>
+      <article class="card c-alloc">
+        <header class="card-h"><div><h3>Platform-wise SKU allocation</h3><p>SKU health per channel</p></div><div class="key"><span class="ok">In stock</span><span class="warn">Low</span><span class="bad">Out</span></div></header>
+        <div id="alloc"></div>
+        <div id="allocSummary" class="alloc-summary"></div>
+      </article>
+    </section>
+  </main>
+</div>
+<script src="assets/dashboard.js"></script>
+</body>
+</html>
