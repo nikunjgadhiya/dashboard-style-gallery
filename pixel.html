@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('dash-theme:pixel.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pixel Inventory Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  color-scheme:dark;
+  --font:'Pixelify Sans',ui-monospace,monospace;
+  --pixel:'Press Start 2P',ui-monospace,monospace;
+  --bg:#1d2b53;--panel:#0b0f2a;--b:#fff1e8;--hl:#29366f;--shade:#000000;--text:#fff1e8;--muted:#c2c3c7;--on:#000000;
+  --red:#ff004d;--blue:#29adff;--green:#00e436;--orange:#ffa300;--pink:#ff77a8;--yellow:#ffec27;
+  --line:rgba(255,241,232,.18);--grid:rgba(255,241,232,.12);--star:#fff1e8;
+  --accent:var(--yellow);--ok:var(--green);--warn:var(--orange);--bad:var(--red);
+  --c1:#ff004d;--c2:#29adff;--c3:#00e436;--c4:#ffa300;--c5:#ff77a8;
+  --tip-bg:#000;--tip-fg:#fff1e8;--tip-radius:0;
+  --donut-border:#0b0f2a;--donut-bw:4;--donut-radius:0;--donut-cutout:55%;--bar-radius:0;
+}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#9bbc0f;--panel:#8bac0f;--b:#0f380f;--hl:#9bbc0f;--shade:#306230;--text:#0f380f;--muted:#306230;--on:#9bbc0f;
+  --red:#0f380f;--blue:#306230;--green:#0f380f;--orange:#306230;--pink:#306230;--yellow:#0f380f;
+  --line:rgba(15,56,15,.3);--grid:rgba(15,56,15,.2);--star:#8bac0f;
+  --c1:#0f380f;--c2:#306230;--c3:#5a7d1a;--c4:#1f4a1f;--c5:#76951a;
+  --tip-bg:#0f380f;--tip-fg:#9bbc0f;
+  --donut-border:#8bac0f;
+}
+*{border-radius:0 !important}
+html,body{font-size:15px}
+body{background:var(--bg)}
+canvas{image-rendering:pixelated}
+.px-stars{position:fixed;left:0;top:0;width:2px;height:2px;z-index:-1;box-shadow:49vw 56vh 0 0px var(--star),24vw 44vh 0 0px var(--star),8vw 88vh 0 0px var(--star),41vw 28vh 0 0px var(--star),66vw 8vh 0 0px var(--star),24vw 67vh 0 0px var(--star),56vw 49vh 0 0px var(--star),5vw 94vh 0 1px var(--star),12vw 44vh 0 1px var(--star),19vw 42vh 0 0px var(--star),67vw 28vh 0 0px var(--star),99vw 45vh 0 0px var(--star),55vw 33vh 0 0px var(--star),77vw 35vh 0 0px var(--star),8vw 93vh 0 0px var(--star),88vw 47vh 0 0px var(--star),60vw 40vh 0 0px var(--star),65vw 14vh 0 0px var(--star),45vw 9vh 0 0px var(--star),41vw 68vh 0 0px var(--star),96vw 32vh 0 0px var(--star),50vw 44vh 0 0px var(--star),45vw 44vh 0 0px var(--star),24vw 74vh 0 0px var(--star),27vw 77vh 0 1px var(--star),97vw 93vh 0 1px var(--star),75vw 64vh 0 0px var(--star),2vw 32vh 0 0px var(--star),22vw 39vh 0 0px var(--star),74vw 27vh 0 1px var(--star),1vw 36vh 0 0px var(--star),44vw 9vh 0 1px var(--star),46vw 87vh 0 0px var(--star),47vw 13vh 0 0px var(--star),90vw 26vh 0 0px var(--star),15vw 71vh 0 0px var(--star),66vw 87vh 0 0px var(--star),83vw 17vh 0 0px var(--star),8vw 2vh 0 0px var(--star),83vw 84vh 0 0px var(--star),49vw 5vh 0 0px var(--star),49vw 6vh 0 0px var(--star),23vw 30vh 0 0px var(--star),14vw 16vh 0 0px var(--star),62vw 9vh 0 0px var(--star),11vw 48vh 0 0px var(--star),1vw 76vh 0 0px var(--star),74vw 34vh 0 1px var(--star),72vw 64vh 0 0px var(--star),36vw 8vh 0 1px var(--star),8vw 7vh 0 0px var(--star),30vw 3vh 0 0px var(--star),44vw 38vh 0 0px var(--star),91vw 53vh 0 0px var(--star),12vw 90vh 0 0px var(--star),50vw 91vh 0 0px var(--star),46vw 97vh 0 1px var(--star),42vw 50vh 0 0px var(--star),79vw 91vh 0 0px var(--star),99vw 64vh 0 0px var(--star),44vw 8vh 0 1px var(--star),55vw 65vh 0 0px var(--star),75vw 78vh 0 0px var(--star),44vw 88vh 0 0px var(--star),5vw 37vh 0 0px var(--star),99vw 66vh 0 0px var(--star),68vw 17vh 0 0px var(--star),53vw 31vh 0 0px var(--star),96vw 51vh 0 0px var(--star),39vw 18vh 0 0px var(--star)}
+[data-theme="light"] .px-stars{display:none}
+[data-theme="light"] body{background:repeating-linear-gradient(0deg,rgba(15,56,15,.05) 0 2px,transparent 2px 4px),var(--bg)}
+
+/* pixel frame: stepped corners + inner bevel */
+.sidebar,.kpi,.card,.search,.user,.date-chip,.icon-btn,.segmented{background:var(--panel);box-shadow:-4px 0 0 0 var(--b),4px 0 0 0 var(--b),0 -4px 0 0 var(--b),0 4px 0 0 var(--b),inset -4px -4px 0 0 var(--shade),inset 4px 4px 0 0 var(--hl);margin:4px}
+.sidebar{margin:18px 0 18px 18px;height:calc(100vh - 36px);top:18px;padding:18px 14px}
+.brand{border-bottom:4px dashed var(--line)}
+.brand .logo{background:var(--red);color:var(--b);font-family:var(--pixel);font-size:14px;box-shadow:-3px 0 0 0 var(--b),3px 0 0 0 var(--b),0 -3px 0 0 var(--b),0 3px 0 0 var(--b)}
+[data-theme="light"] .brand .logo{color:var(--on)}
+.brand strong{font-family:var(--pixel);font-size:11px;line-height:1.5;font-weight:400}
+.brand small{font-size:13px}
+.nav-group{font-family:var(--pixel);font-size:8px;color:var(--yellow);opacity:1;letter-spacing:0}
+.nav-item{font-size:16px;padding:6px 10px 6px 26px;position:relative;font-weight:500}
+.nav-item .ic{display:none}
+.nav-item .chev{display:block}
+.nav-item:hover{color:var(--yellow)}
+.nav-item.active{color:var(--yellow)}
+.nav-item.active::before{content:"▶";position:absolute;left:6px;font-size:12px;animation:pxblink .8s steps(1) infinite}
+@keyframes pxblink{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.nav-item.active::before{animation:none}}
+.side-foot{box-shadow:inset 0 4px 0 0 var(--line)}
+.avatar{background:var(--blue);color:var(--b);font-family:var(--pixel);font-size:10px;box-shadow:-2px 0 0 0 var(--b),2px 0 0 0 var(--b),0 -2px 0 0 var(--b),0 2px 0 0 var(--b)}
+[data-theme="light"] .avatar{color:var(--on)}
+
+/* HUD top bar */
+.topbar{gap:18px}
+.search input{font-family:var(--font);font-size:16px}
+.icon-btn{color:var(--text)}
+.icon-btn b{background:var(--red);font-family:var(--pixel);font-size:7px;color:#fff}
+.theme-btn{background:var(--yellow);color:var(--on)}
+[data-theme="dark"] .theme-btn{color:#000}
+.page-head h1{font-family:var(--pixel);font-weight:400;font-size:30px;letter-spacing:0;text-shadow:4px 4px 0 var(--red)}
+[data-theme="light"] .page-head h1{text-shadow:4px 4px 0 var(--shade)}
+.page-head p{font-size:16px}
+.page-head p::before{content:"> "}
+.segmented{padding:6px;gap:4px}
+.segmented button{font-family:var(--pixel);font-size:8px;color:var(--muted);padding:8px 10px}
+.segmented button:hover{color:var(--text)}
+.segmented button.active{background:var(--yellow);color:var(--on)}
+[data-theme="dark"] .segmented button.active{color:#000}
+.date-chip{font-size:15px}
+
+/* KPI HUD */
+.kpis{gap:26px}
+.kpi{flex-direction:column;gap:8px;padding:18px}
+.kpi-icon{width:44px;height:44px;color:var(--b);box-shadow:-3px 0 0 0 var(--b),3px 0 0 0 var(--b),0 -3px 0 0 var(--b),0 3px 0 0 var(--b)}
+.kpi-1 .kpi-icon{background:var(--blue)}.kpi-2 .kpi-icon{background:var(--orange)}.kpi-3 .kpi-icon{background:var(--green)}.kpi-4 .kpi-icon{background:var(--red)}
+[data-theme="light"] .kpi-icon{color:var(--on)}
+.kpi-label{font-family:var(--pixel);font-size:8px;color:var(--muted);line-height:1.6}
+.kpi-1 .kpi-label::before{content:"◆ "}
+.kpi-2 .kpi-label::before{content:"$ "}
+.kpi-3 .kpi-label::before{content:"★ "}
+.kpi-4 .kpi-label::before{content:"♥ ";color:var(--red)}
+.kpi-value{font-family:var(--pixel);font-weight:400;font-size:22px;letter-spacing:0;margin:8px 0;color:var(--yellow)}
+[data-theme="light"] .kpi-value{color:var(--text)}
+.kpi-delta{font-size:14px}
+
+/* cards = RPG dialog windows */
+.grid{gap:26px}
+.card{padding:22px}
+.card-h{border-bottom:4px dashed var(--line);padding-bottom:12px}
+.card-h h3{font-family:var(--pixel);font-weight:400;font-size:11px;line-height:1.5;color:var(--yellow)}
+[data-theme="light"] .card-h h3{color:var(--text)}
+.card-h p{font-size:14px}
+.link{font-family:var(--pixel);font-size:8px;background:var(--red);color:#fff;padding:8px;box-shadow:-2px 0 0 0 var(--b),2px 0 0 0 var(--b),0 -2px 0 0 var(--b),0 2px 0 0 var(--b)}
+[data-theme="light"] .link{color:var(--on)}
+.donut-center strong{font-family:var(--pixel);font-weight:400;font-size:13px}
+.legend li{border-bottom:2px dashed var(--line);font-size:16px}
+.legend i{width:12px;height:12px}
+.legend li{grid-template-columns:12px 1fr auto 52px}
+th{font-family:var(--pixel);font-size:7px;font-weight:400;color:var(--yellow);letter-spacing:0}
+[data-theme="light"] th{color:var(--text)}
+td{border-top:2px dashed var(--line);font-size:15px}
+tbody tr:hover td{background:var(--yellow);color:var(--on)}
+[data-theme="dark"] tbody tr:hover td{color:#000}
+tbody tr:hover :is(.prod,.brand-c,.rank){color:inherit}
+.thumb{width:20px;height:20px;box-shadow:-2px 0 0 0 var(--b),2px 0 0 0 var(--b),0 -2px 0 0 var(--b),0 2px 0 0 var(--b)}
+.sku{font-weight:600}
+/* HP-style segmented bars */
+.meter{height:10px;width:80px;background:var(--shade);box-shadow:-2px 0 0 0 var(--b),2px 0 0 0 var(--b),0 -2px 0 0 var(--b),0 2px 0 0 var(--b)}
+.meter i{background:repeating-linear-gradient(90deg,var(--green) 0 6px,transparent 6px 8px)}
+.alloc-bar{height:14px;background:var(--shade);gap:0;box-shadow:-2px 0 0 0 var(--b),2px 0 0 0 var(--b),0 -2px 0 0 var(--b),0 2px 0 0 var(--b)}
+.alloc-bar .ok{background:repeating-linear-gradient(90deg,var(--green) 0 8px,transparent 8px 10px)}
+.alloc-bar .warn{background:repeating-linear-gradient(90deg,var(--orange) 0 8px,transparent 8px 10px)}
+.alloc-bar .bad{background:repeating-linear-gradient(90deg,var(--red) 0 8px,transparent 8px 10px)}
+[data-theme="light"] .alloc-bar .bad{background:repeating-linear-gradient(90deg,var(--muted) 0 3px,transparent 3px 5px)}
+.alloc-name{font-size:15px}
+.alloc-nums{font-size:15px}
+.alloc-summary{border-top:4px dashed var(--line)}
+.alloc-summary div+div{border-left:4px dashed var(--line)}
+.alloc-summary strong{font-family:var(--pixel);font-weight:400;font-size:16px}
+@media (max-width:900px){.sidebar{margin:0;top:0;height:100vh}}
+@media (max-width:640px){.page-head h1{font-size:22px}.kpi-value{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="px-stars" aria-hidden="true"></div>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">T</div><div><strong>TIFFNY Inventory</strong><small>Stock &amp; Master SKU Manager</small></div></div>
+    <nav id="menu"></nav>
+    <div class="side-foot"><div class="avatar">RP</div><div><strong>Ritesh Patel</strong><small>Admin</small></div></div>
+  </aside>
+  <div class="scrim"></div>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" data-icon="menu" aria-label="Open menu"></button>
+      <label class="search"><span data-icon="search"></span><input type="search" placeholder="Search by SKU, product name, brand…"></label>
+      <div class="top-actions">
+        <button class="icon-btn theme-btn" id="themeToggle" type="button"></button>
+        <button class="icon-btn" data-icon="bell" aria-label="Notifications"><b>4</b></button>
+        <div class="user"><div class="avatar">R</div><div><strong>Ritesh Patel</strong><small>Admin · 07 Oct 2026</small></div></div>
+      </div>
+    </header>
+    <div class="page-head">
+      <div><h1>Dashboard</h1><p>Stock &amp; order overview across all platforms</p></div>
+      <div class="head-tools"><div id="periods" class="segmented"></div><div class="date-chip"><span data-icon="calendar"></span><span id="dateRange"></span></div></div>
+    </div>
+    <section id="kpis" class="kpis"></section>
+    <section class="grid">
+      <article class="card c-donut">
+        <header class="card-h"><div><h3>Platform-wise stock allocated</h3><p>Units currently allocated per channel</p></div></header>
+        <div class="donut-wrap"><div class="donut-box"><canvas id="donutChart"></canvas><div class="donut-center"><strong id="donutTotal"></strong><span>Total stock</span></div></div><ul id="donutLegend" class="legend"></ul></div>
+      </article>
+      <article class="card c-bar">
+        <header class="card-h"><div><h3>Platform-wise order overview</h3><p>Orders by channel, <span data-period-name></span></p></div></header>
+        <div class="chart-box"><canvas id="barChart"></canvas></div>
+      </article>
+      <article class="card c-table">
+        <header class="card-h"><div><h3>Top selling SKU</h3><p>Top 8 by units sold</p></div><a href="#" class="link">View all →</a></header>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>SKU / Product</th><th>Brand</th><th class="num">Sold qty</th><th class="num">Revenue</th></tr></thead><tbody id="skuBody"></tbody></table></div>
+      </article>
+      <article class="card c-alloc">
+        <header class="card-h"><div><h3>Platform-wise SKU allocation</h3><p>SKU health per channel</p></div><div class="key"><span class="ok">In stock</span><span class="warn">Low</span><span class="bad">Out</span></div></header>
+        <div id="alloc"></div>
+        <div id="allocSummary" class="alloc-summary"></div>
+      </article>
+    </section>
+  </main>
+</div>
+<script src="assets/dashboard.js"></script>
+</body>
+</html>
