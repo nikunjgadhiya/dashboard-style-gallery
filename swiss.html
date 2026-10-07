@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('dash-theme:swiss.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Swiss Inventory Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  color-scheme:light;
+  --font:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --bg:#ffffff;--ink:#0d0d0d;--text:var(--ink);--muted:#6b6b6b;--red:#e3000f;
+  --line:rgba(13,13,13,.14);--grid:rgba(13,13,13,.1);
+  --accent:var(--red);--ok:var(--ink);--warn:#6b6b6b;--bad:var(--red);
+  --c1:#0d0d0d;--c2:#e3000f;--c3:#8a8a8a;--c4:#c8c8c8;--c5:#454545;
+  --tip-bg:#0d0d0d;--tip-fg:#fff;--tip-radius:0;
+  --donut-border:#ffffff;--donut-bw:2;--donut-radius:0;--donut-cutout:66%;--bar-radius:0;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0d0d0d;--ink:#f2f2f2;--muted:#9a9a9a;--red:#ff3b30;
+  --line:rgba(242,242,242,.16);--grid:rgba(242,242,242,.1);
+  --warn:#9a9a9a;
+  --c1:#f2f2f2;--c2:#ff3b30;--c3:#8a8a8a;--c4:#4d4d4d;--c5:#bdbdbd;
+  --tip-bg:#f2f2f2;--tip-fg:#0d0d0d;
+  --donut-border:#0d0d0d;
+}
+body{font-size:14px;letter-spacing:-.005em}
+*{border-radius:0 !important}
+
+/* sidebar: text-only index */
+.sidebar{background:var(--bg);border-right:1px solid var(--ink);padding:28px 24px;width:250px}
+.brand{padding:0 0 28px;border-bottom:1px solid var(--ink);margin-bottom:8px;display:block}
+.brand .logo{display:none}
+.brand strong{font-size:30px;font-weight:900;letter-spacing:-.05em;line-height:.9}
+.brand small{opacity:1;color:var(--muted);font-size:11px;margin-top:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+#menu{gap:0}
+.nav-group{opacity:1;color:var(--muted);font-size:10px;letter-spacing:.16em;padding:22px 0 8px;font-weight:700;border-bottom:1px solid var(--line);margin-bottom:4px}
+.nav-item{padding:7px 0 7px 18px;font-size:14px;font-weight:500;position:relative;letter-spacing:-.01em}
+.nav-item .ic{display:none}
+.nav-item .chev{display:none}
+.nav-item:hover{color:var(--red)}
+.nav-item.active{font-weight:800}
+.nav-item.active::before{content:"";position:absolute;left:0;top:50%;width:8px;height:8px;margin-top:-4px;background:var(--red)}
+.side-foot{padding:16px 0 0;border-top:1px solid var(--ink)}
+.avatar{background:var(--ink);color:var(--bg);font-weight:800}
+
+/* header */
+.main{padding:28px 40px 60px}
+.topbar{border-bottom:1px solid var(--ink);padding-bottom:16px;margin-bottom:36px}
+.search{height:36px;padding:0;border-bottom:1px solid var(--line);max-width:380px}
+.search:focus-within{border-bottom-color:var(--ink)}
+.icon-btn{width:36px;height:36px}
+.icon-btn:hover{color:var(--red)}
+.icon-btn b{background:var(--red);top:0;right:0}
+.user{padding:0}
+.page-head{align-items:flex-end;margin-bottom:40px}
+.page-head h1{font-size:clamp(56px,8vw,104px);font-weight:900;letter-spacing:-.06em;line-height:.82}
+.page-head h1::after{content:".";color:var(--red)}
+.page-head p{text-transform:uppercase;font-size:11px;letter-spacing:.14em;font-weight:700;color:var(--muted);margin-top:16px}
+.segmented{padding:0;gap:0;border:1px solid var(--ink)}
+.segmented button{padding:8px 12px;font-size:12px;font-weight:600;color:var(--ink);border-radius:0}
+.segmented button+button{border-left:1px solid var(--ink)}
+.segmented button:hover{color:var(--red)}
+.segmented button.active{background:var(--ink);color:var(--bg)}
+.date-chip{padding:0;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.date-chip .ic{display:none}
+
+/* KPIs: rule on top, giant numerals */
+.kpis{gap:32px;margin-bottom:56px}
+.kpi{padding:14px 0 0;border-top:6px solid var(--ink);flex-direction:column;gap:0}
+.kpi-1{border-top-color:var(--red)}
+.kpi-icon{display:none}
+.kpi-label{text-transform:uppercase;font-size:11px;letter-spacing:.14em;font-weight:700;color:var(--ink)}
+.kpi-value{font-size:clamp(40px,4.4vw,64px);font-weight:800;letter-spacing:-.055em;line-height:1;margin:14px 0 10px}
+.kpi-delta{font-size:12px;font-weight:700}
+.kpi-delta.up{color:var(--ink)}
+.kpi-delta.down{color:var(--red)}
+
+/* numbered sections */
+.grid{gap:56px 40px;counter-reset:sec}
+.card{padding:0;border-top:2px solid var(--ink)}
+.card-h{padding:14px 0 0;margin-bottom:24px;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:start}
+.card-h>div:first-child{display:contents}
+.card-h h3{grid-column:2;font-size:20px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.card-h p{grid-column:2;margin-top:-12px;text-transform:uppercase;font-size:10.5px;letter-spacing:.12em;font-weight:600}
+.card::before{counter-increment:sec;content:counter(sec,decimal-leading-zero);float:left;font-size:44px;font-weight:900;letter-spacing:-.05em;line-height:1;color:var(--red);margin:12px 16px 0 0}
+.card-h{margin-left:0}
+.link{text-transform:uppercase;font-size:11px;letter-spacing:.12em;font-weight:800;color:var(--ink);border-bottom:2px solid var(--red);padding-bottom:2px}
+.donut-wrap,.chart-box,.table-wrap,#alloc,.alloc-summary{clear:both}
+.donut-center strong{font-weight:900;letter-spacing:-.04em}
+.legend li{border-bottom:1px solid var(--line);font-weight:500}
+.legend i{width:10px;height:10px}
+th{color:var(--ink);font-size:10.5px;letter-spacing:.14em;font-weight:800;border-bottom:1px solid var(--ink)}
+td{border-top:1px solid var(--line)}
+tbody tr:first-child td{border-top:0}
+tbody tr:hover td{background:var(--ink);color:var(--bg)}
+tbody tr:hover :is(.prod,.brand-c,.rank){color:var(--bg);opacity:.7}
+.rank{font-weight:800}
+.thumb{width:12px;height:12px}
+.sku{font-weight:700}
+.meter{height:2px;background:var(--line)}
+.meter i{background:var(--red)}
+.key span::before{width:10px;height:10px}
+.key .ok::before,.alloc-bar .ok{background:var(--ink)}
+.key .warn::before,.alloc-bar .warn{background:var(--c3)}
+.key .bad::before,.alloc-bar .bad{background:var(--red)}
+.alloc-bar{height:8px;background:transparent;gap:2px}
+.alloc-summary{border-top:1px solid var(--ink);text-align:left}
+.alloc-summary div{padding-left:12px}
+.alloc-summary div+div{border-left:1px solid var(--line)}
+.alloc-summary span{text-transform:uppercase;letter-spacing:.12em;font-size:10px;font-weight:700}
+.alloc-summary strong{font-size:30px;font-weight:900;letter-spacing:-.05em}
+.alloc-summary .ok-t{color:var(--ink)}
+@media (max-width:900px){.sidebar{border-right:1px solid var(--ink)}.main{padding:16px}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">T</div><div><strong>TIFFNY Inventory</strong><small>Stock &amp; Master SKU Manager</small></div></div>
+    <nav id="menu"></nav>
+    <div class="side-foot"><div class="avatar">RP</div><div><strong>Ritesh Patel</strong><small>Admin</small></div></div>
+  </aside>
+  <div class="scrim"></div>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" data-icon="menu" aria-label="Open menu"></button>
+      <label class="search"><span data-icon="search"></span><input type="search" placeholder="Search by SKU, product name, brand…"></label>
+      <div class="top-actions">
+        <button class="icon-btn theme-btn" id="themeToggle" type="button"></button>
+        <button class="icon-btn" data-icon="bell" aria-label="Notifications"><b>4</b></button>
+        <div class="user"><div class="avatar">R</div><div><strong>Ritesh Patel</strong><small>Admin · 07 Oct 2026</small></div></div>
+      </div>
+    </header>
+    <div class="page-head">
+      <div><h1>Dashboard</h1><p>Stock &amp; order overview across all platforms</p></div>
+      <div class="head-tools"><div id="periods" class="segmented"></div><div class="date-chip"><span data-icon="calendar"></span><span id="dateRange"></span></div></div>
+    </div>
+    <section id="kpis" class="kpis"></section>
+    <section class="grid">
+      <article class="card c-donut">
+        <header class="card-h"><div><h3>Platform-wise stock allocated</h3><p>Units currently allocated per channel</p></div></header>
+        <div class="donut-wrap"><div class="donut-box"><canvas id="donutChart"></canvas><div class="donut-center"><strong id="donutTotal"></strong><span>Total stock</span></div></div><ul id="donutLegend" class="legend"></ul></div>
+      </article>
+      <article class="card c-bar">
+        <header class="card-h"><div><h3>Platform-wise order overview</h3><p>Orders by channel, <span data-period-name></span></p></div></header>
+        <div class="chart-box"><canvas id="barChart"></canvas></div>
+      </article>
+      <article class="card c-table">
+        <header class="card-h"><div><h3>Top selling SKU</h3><p>Top 8 by units sold</p></div><a href="#" class="link">View all →</a></header>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>SKU / Product</th><th>Brand</th><th class="num">Sold qty</th><th class="num">Revenue</th></tr></thead><tbody id="skuBody"></tbody></table></div>
+      </article>
+      <article class="card c-alloc">
+        <header class="card-h"><div><h3>Platform-wise SKU allocation</h3><p>SKU health per channel</p></div><div class="key"><span class="ok">In stock</span><span class="warn">Low</span><span class="bad">Out</span></div></header>
+        <div id="alloc"></div>
+        <div id="allocSummary" class="alloc-summary"></div>
+      </article>
+    </section>
+  </main>
+</div>
+<script src="assets/dashboard.js"></script>
+</body>
+</html>
