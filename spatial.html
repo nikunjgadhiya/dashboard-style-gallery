@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('dash-theme:spatial.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spatial Inventory Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  color-scheme:dark;
+  --font:'Inter',-apple-system,system-ui,sans-serif;
+  --text:#ffffff;--muted:rgba(255,255,255,.62);--bg:#3a2e25;
+  --glass:rgba(48,48,52,.38);--glass-hover:rgba(80,80,86,.5);--glass-hi:rgba(255,255,255,.18);--edge:rgba(255,255,255,.16);
+  --line:rgba(255,255,255,.12);--grid:rgba(255,255,255,.08);
+  --accent:#ffffff;--ok:#30d158;--warn:#ffd60a;--bad:#ff453a;
+  --c1:#64d2ff;--c2:#30d158;--c3:#ff9f0a;--c4:#bf5af2;--c5:#ff6482;
+  --tip-bg:rgba(40,40,44,.9);--tip-fg:#fff;--tip-radius:14;
+  --donut-border:rgba(60,60,64,.9);--donut-bw:2;--donut-radius:8;--donut-spacing:2;--bar-radius:6;
+  --room:linear-gradient(180deg,#6f5c4c 0%,#5b4a3c 55%,#2f251e 100%);--win:linear-gradient(180deg,#f4e1c1,#d9b98f);--sofa:#6b4b3a;--lamp:#ffd9a0;
+  --room-blur:28px;
+}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --text:#1c1c1e;--muted:rgba(28,28,30,.6);--bg:#d9d2c6;
+  --glass:rgba(255,255,255,.4);--glass-hover:rgba(255,255,255,.6);--glass-hi:rgba(255,255,255,.75);--edge:rgba(255,255,255,.65);
+  --line:rgba(28,28,30,.1);--grid:rgba(28,28,30,.07);
+  --accent:#1c1c1e;
+  --c1:#0a84ff;--c2:#28a745;--c3:#ff9500;--c4:#af52de;--c5:#ff2d55;
+  --tip-bg:rgba(255,255,255,.92);--tip-fg:#1c1c1e;
+  --donut-border:rgba(255,255,255,.9);
+  --room:linear-gradient(180deg,#e9e2d6 0%,#d4c8b6 55%,#a99a84 100%);--win:linear-gradient(180deg,#ffffff,#dbeafe);--sofa:#b59a82;--lamp:#fff4d6;
+}
+.vs-room{position:fixed;inset:-40px;z-index:-1;background:var(--room);filter:blur(var(--room-blur));pointer-events:none}
+.vs-room .win{position:absolute;left:52%;top:6%;width:34vw;height:46vh;background:var(--win);border-radius:6px;box-shadow:0 0 120px 40px color-mix(in srgb,var(--lamp) 40%,transparent)}
+.vs-room .sofa{position:absolute;left:8%;bottom:6%;width:46vw;height:22vh;background:var(--sofa);border-radius:40px}
+.vs-room .lamp{position:absolute;left:16%;top:18%;width:120px;height:120px;border-radius:50%;background:var(--lamp);box-shadow:0 0 160px 60px color-mix(in srgb,var(--lamp) 60%,transparent)}
+
+/* glass windows */
+.sidebar,.kpi,.card,.search,.user,.date-chip,.segmented,.icon-btn{
+  background:var(--glass);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);
+  border:1px solid var(--edge);box-shadow:0 30px 60px -20px rgba(0,0,0,.45),inset 0 1px 0 var(--glass-hi);transition:background .2s,transform .3s,box-shadow .3s}
+[data-theme="light"] :is(.sidebar,.kpi,.card,.search,.user,.date-chip,.segmented,.icon-btn){box-shadow:0 30px 60px -24px rgba(60,45,30,.35),inset 0 1px 0 var(--glass-hi)}
+
+/* visionOS tab bar: icons only, expands on hover */
+.sidebar{width:78px;margin:20px 0 20px 20px;top:20px;height:auto;max-height:calc(100vh - 40px);align-self:flex-start;border-radius:40px;padding:14px 10px;transition:width .3s ease}
+.sidebar:hover,.sidebar:focus-within{width:250px}
+.brand{padding:4px 6px 12px;gap:12px;white-space:nowrap}
+.brand .logo{width:40px;height:40px;border-radius:50%;background:var(--glass-hi);color:var(--text)}
+.brand>div:last-child,.nav-group,.nav-item span,.nav-item .chev,.side-foot>div:last-child{opacity:0;transition:opacity .2s;white-space:nowrap}
+.sidebar:hover :is(.brand>div:last-child,.nav-group,.nav-item span,.nav-item .chev,.side-foot>div:last-child),
+.sidebar:focus-within :is(.brand>div:last-child,.nav-group,.nav-item span,.nav-item .chev,.side-foot>div:last-child){opacity:1}
+.nav-group{height:0;padding:0 14px;overflow:hidden;color:var(--muted);transition:opacity .2s,height .3s,padding .3s}
+.sidebar:hover .nav-group{height:26px;padding:10px 14px 4px}
+.nav-item{border-radius:999px;padding:12px 18px;gap:16px;color:var(--text);white-space:nowrap}
+.nav-item .ic{width:20px;height:20px}
+.nav-item:hover{background:var(--glass-hi)}
+.nav-item.active{background:var(--glass-hi);box-shadow:inset 0 1px 0 var(--glass-hi);font-weight:600}
+[data-theme="light"] .nav-item.active{background:rgba(255,255,255,.85)}
+.side-foot{padding:8px 4px;white-space:nowrap}
+.avatar{background:linear-gradient(135deg,#64d2ff,#bf5af2);color:#fff}
+.main{padding:20px 28px 50px}
+
+.search,.user,.segmented,.date-chip{border-radius:999px}
+.icon-btn{border-radius:50%}
+.icon-btn:hover,.search:hover,.date-chip:hover{background:var(--glass-hover)}
+.icon-btn b{background:var(--bad)}
+.segmented button{border-radius:999px;color:var(--muted);font-weight:500}
+.segmented button:hover{color:var(--text)}
+.segmented button.active{background:var(--glass-hi);color:var(--text);font-weight:600}
+[data-theme="light"] .segmented button.active{background:rgba(255,255,255,.9)}
+.page-head h1{font-weight:700;font-size:38px;letter-spacing:-.02em}
+
+/* windows tilt toward the viewer */
+.kpis{gap:18px;perspective:1600px}
+.kpi,.card{border-radius:30px}
+.kpi:hover,.card:hover{background:var(--glass-hover);transform:translateY(-3px) scale(1.005)}
+.kpi-icon{border-radius:50%;background:var(--glass-hi);color:var(--text)}
+.kpi-value{font-weight:700}
+.grid{gap:40px 22px;perspective:1800px}
+.card{position:relative;margin-bottom:6px}
+.c-donut,.c-table{transform:rotateY(3deg)}
+.c-bar,.c-alloc{transform:rotateY(-3deg)}
+.c-donut:hover,.c-table:hover,.c-bar:hover,.c-alloc:hover{transform:rotateY(0) translateY(-3px)}
+.card::after{content:"";position:absolute;left:50%;bottom:-18px;width:70px;height:6px;margin-left:-35px;border-radius:999px;background:var(--glass-hi);backdrop-filter:blur(20px)}
+[data-theme="light"] .card::after{background:rgba(255,255,255,.8);box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.card-h h3{font-weight:600;font-size:16px}
+.link{background:var(--glass-hi);color:var(--text);padding:6px 14px;border-radius:999px;font-weight:600}
+.legend li{border-color:var(--line)}
+.legend i{border-radius:50%}
+tbody tr:hover td{background:var(--glass-hi)}
+td{border-color:var(--line)}
+.thumb{border-radius:50%}
+.meter{background:var(--line)}
+.meter i{background:var(--text)}
+.alloc-bar{background:var(--line);height:10px;border-radius:999px}
+.alloc-bar span:first-child{border-radius:999px 0 0 999px}.alloc-bar span:last-child{border-radius:0 999px 999px 0}
+@media (prefers-reduced-motion:reduce){.sidebar,.kpi,.card{transition:none}}
+@media (max-width:1140px){.c-donut,.c-table,.c-bar,.c-alloc{transform:none}}
+@media (max-width:900px){
+  .sidebar,.sidebar:hover{width:264px;margin:0;top:0;max-height:none;height:100vh;border-radius:0 32px 32px 0;background:color-mix(in srgb,var(--bg) 70%,transparent)}
+  .sidebar :is(.brand>div:last-child,.nav-group,.nav-item span,.nav-item .chev,.side-foot>div:last-child){opacity:1}
+  .nav-group{height:26px;padding:10px 14px 4px}
+}
+</style>
+</head>
+<body>
+<div class="vs-room" aria-hidden="true"><i class="win"></i><i class="sofa"></i><i class="lamp"></i></div>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">T</div><div><strong>TIFFNY Inventory</strong><small>Stock &amp; Master SKU Manager</small></div></div>
+    <nav id="menu"></nav>
+    <div class="side-foot"><div class="avatar">RP</div><div><strong>Ritesh Patel</strong><small>Admin</small></div></div>
+  </aside>
+  <div class="scrim"></div>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" data-icon="menu" aria-label="Open menu"></button>
+      <label class="search"><span data-icon="search"></span><input type="search" placeholder="Search by SKU, product name, brand…"></label>
+      <div class="top-actions">
+        <button class="icon-btn theme-btn" id="themeToggle" type="button"></button>
+        <button class="icon-btn" data-icon="bell" aria-label="Notifications"><b>4</b></button>
+        <div class="user"><div class="avatar">R</div><div><strong>Ritesh Patel</strong><small>Admin · 07 Oct 2026</small></div></div>
+      </div>
+    </header>
+    <div class="page-head">
+      <div><h1>Dashboard</h1><p>Stock &amp; order overview across all platforms</p></div>
+      <div class="head-tools"><div id="periods" class="segmented"></div><div class="date-chip"><span data-icon="calendar"></span><span id="dateRange"></span></div></div>
+    </div>
+    <section id="kpis" class="kpis"></section>
+    <section class="grid">
+      <article class="card c-donut">
+        <header class="card-h"><div><h3>Platform-wise stock allocated</h3><p>Units currently allocated per channel</p></div></header>
+        <div class="donut-wrap"><div class="donut-box"><canvas id="donutChart"></canvas><div class="donut-center"><strong id="donutTotal"></strong><span>Total stock</span></div></div><ul id="donutLegend" class="legend"></ul></div>
+      </article>
+      <article class="card c-bar">
+        <header class="card-h"><div><h3>Platform-wise order overview</h3><p>Orders by channel, <span data-period-name></span></p></div></header>
+        <div class="chart-box"><canvas id="barChart"></canvas></div>
+      </article>
+      <article class="card c-table">
+        <header class="card-h"><div><h3>Top selling SKU</h3><p>Top 8 by units sold</p></div><a href="#" class="link">View all →</a></header>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>SKU / Product</th><th>Brand</th><th class="num">Sold qty</th><th class="num">Revenue</th></tr></thead><tbody id="skuBody"></tbody></table></div>
+      </article>
+      <article class="card c-alloc">
+        <header class="card-h"><div><h3>Platform-wise SKU allocation</h3><p>SKU health per channel</p></div><div class="key"><span class="ok">In stock</span><span class="warn">Low</span><span class="bad">Out</span></div></header>
+        <div id="alloc"></div>
+        <div id="allocSummary" class="alloc-summary"></div>
+      </article>
+    </section>
+  </main>
+</div>
+<script src="assets/dashboard.js"></script>
+</body>
+</html>
