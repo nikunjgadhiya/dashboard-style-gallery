@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('dash-theme:bloomberg.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Terminal Pro Inventory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  color-scheme:dark;
+  --font:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+  --bg:#000000;--panel:#0a0a0a;--panel-2:#111111;--text:#ffb000;--num:#ffffff;--muted:#b07a00;--on:#000000;
+  --title-bg:#ffb000;--title-fg:#000;--border:#2b2b2b;
+  --line:#1f1f1f;--grid:#1c1c1c;
+  --accent:#ffb000;--ok:#00e676;--warn:#ffd54f;--bad:#ff3d3d;
+  --c1:#ffb000;--c2:#00d0ff;--c3:#00e676;--c4:#ff3d3d;--c5:#e0e0e0;
+  --tip-bg:#1a1a1a;--tip-fg:#ffb000;--tip-radius:0;
+  --donut-border:#0a0a0a;--donut-bw:2;--donut-radius:0;--donut-cutout:60%;--bar-radius:0;
+  --go:#ffd400;
+}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --font:'IBM Plex Sans',system-ui,sans-serif;
+  --bg:#fff1e5;--panel:#fff7ef;--panel-2:#f2dfce;--text:#33302e;--num:#1a1817;--muted:#66605c;--on:#fff1e5;
+  --title-bg:#33302e;--title-fg:#fff1e5;--border:#ccc1b7;
+  --line:#e6d9ce;--grid:#eadbcf;
+  --accent:#990f3d;--ok:#0d7680;--warn:#c57b00;--bad:#cc0000;
+  --c1:#0f5499;--c2:#990f3d;--c3:#0d7680;--c4:#ff8833;--c5:#593380;
+  --tip-bg:#33302e;--tip-fg:#fff1e5;
+  --donut-border:#fff7ef;
+  --go:#990f3d;
+}
+*{border-radius:0 !important}
+html,body{font-size:12px}
+body{background:var(--bg);color:var(--text)}
+.ic{width:14px;height:14px}
+
+/* compact sidebar with menu codes */
+.sidebar{width:210px;background:var(--panel);border-right:1px solid var(--border);padding:8px 6px 34px}
+.brand{padding:4px 6px 8px;gap:8px;border-bottom:1px solid var(--border)}
+.brand .logo{width:26px;height:26px;background:var(--title-bg);color:var(--title-fg);font-size:13px;font-weight:700}
+.brand strong{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.brand small{font-size:10px}
+#menu{counter-reset:fn;gap:0}
+.nav-group{font-size:9.5px;letter-spacing:.12em;opacity:1;color:var(--muted);padding:8px 6px 2px}
+.nav-item{counter-increment:fn;padding:3px 6px;font-size:11.5px;font-weight:500;gap:6px;text-transform:uppercase;color:var(--text)}
+.nav-item::before{content:counter(fn,decimal-leading-zero);color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:10.5px}
+.nav-item .ic{display:none}
+.nav-item .chev{width:10px;height:10px}
+.nav-item:hover{background:var(--panel-2)}
+.nav-item.active{background:var(--title-bg);color:var(--title-fg)}
+.nav-item.active::before{color:var(--title-fg)}
+.side-foot{border-top:1px solid var(--border);padding:6px;margin-top:6px}
+.avatar{width:26px;height:26px;background:var(--panel-2);color:var(--text);border:1px solid var(--border);font-size:10px}
+
+/* F-key bar */
+.main{padding:6px 8px 34px}
+.bb-fkeys{display:flex;gap:2px;margin-bottom:6px;font:600 11px 'IBM Plex Mono',monospace;flex-wrap:wrap}
+.bb-fkeys span{background:var(--panel-2);color:var(--text);padding:3px 8px;border:1px solid var(--border)}
+.bb-fkeys .go{background:var(--go);color:#000;border-color:var(--go)}
+[data-theme="light"] .bb-fkeys .go{color:#fff}
+.bb-fkeys .clock{margin-left:auto;color:var(--num)}
+.topbar{margin-bottom:6px;gap:6px}
+.search{height:26px;background:var(--panel);border:1px solid var(--border);padding:0 8px;max-width:420px;color:var(--muted)}
+.search input{font:12px var(--font);color:var(--num);text-transform:uppercase}
+.icon-btn{width:26px;height:26px;border:1px solid var(--border);background:var(--panel);color:var(--text)}
+.icon-btn b{top:-5px;right:-5px;min-width:13px;height:13px;font-size:8px;background:var(--bad)}
+.user{padding:1px 8px 1px 1px;border:1px solid var(--border);background:var(--panel)}
+.user .avatar{width:22px;height:22px}
+.page-head{margin-bottom:6px;align-items:center;background:var(--panel);border:1px solid var(--border);padding:4px 8px}
+.page-head h1{font-size:15px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--num)}
+.page-head h1::before{content:"INV ";color:var(--go)}
+.page-head p{margin:0;font-size:11px;color:var(--muted);text-transform:uppercase}
+.segmented{padding:0;gap:2px}
+.segmented button{font:600 10.5px 'IBM Plex Mono',monospace;color:var(--text);padding:3px 8px;border:1px solid var(--border);background:var(--panel-2);text-transform:uppercase}
+.segmented button.active{background:var(--title-bg);color:var(--title-fg);border-color:var(--title-bg)}
+.date-chip{height:22px;font:11px 'IBM Plex Mono',monospace;border:1px solid var(--border);padding:0 6px;color:var(--num)}
+
+/* dense panels */
+.kpis{gap:6px;margin-bottom:6px}
+.kpi{background:var(--panel);border:1px solid var(--border);padding:6px 10px;flex-direction:column;gap:0}
+.kpi-icon{display:none}
+.kpi-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--text);font-weight:600}
+.kpi-value{font:600 24px 'IBM Plex Mono',monospace;color:var(--num);letter-spacing:0;margin:2px 0}
+.kpi-delta{font:600 11px 'IBM Plex Mono',monospace}
+.kpi-delta span{color:var(--muted);font-weight:400}
+.grid{gap:6px}
+.card{background:var(--panel);border:1px solid var(--border);padding:0}
+.card>*:not(.card-h){margin:8px 10px}
+.card-h{margin:0;padding:3px 8px;background:var(--title-bg);color:var(--title-fg);align-items:center;flex-wrap:nowrap}
+.card-h h3{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.card-h p{display:none}
+.card-h .key{color:var(--title-fg);font-size:10px;gap:8px}
+.link{color:var(--title-fg);font-size:10.5px;text-transform:uppercase;text-decoration:underline}
+.chart-box{height:220px}
+.donut-wrap{grid-template-columns:180px minmax(0,1fr);gap:14px}
+.donut-box{height:180px}
+.donut-center strong{font:600 17px 'IBM Plex Mono',monospace;color:var(--num)}
+.donut-center span{font-size:9.5px;text-transform:uppercase}
+.legend li{padding:4px 0;font-size:11.5px;border-bottom:1px solid var(--line);text-transform:uppercase}
+.legend b{color:var(--num);font-family:'IBM Plex Mono',monospace}
+.legend i{width:8px;height:8px}
+th{font-size:10px;padding:3px 6px;color:var(--text);border-bottom:1px solid var(--border);background:var(--panel-2)}
+td{padding:3px 6px;font-size:11.5px;border-top:0;font-family:'IBM Plex Mono',monospace;color:var(--num)}
+tbody tr:nth-child(even) td{background:var(--panel-2)}
+tbody tr:hover td{background:var(--title-bg);color:var(--title-fg)}
+tbody tr:hover :is(.prod,.brand-c,.rank){color:var(--title-fg)}
+.rank,.prod,.brand-c{color:var(--muted)}
+.sku{font-size:11px;color:var(--text)}
+.prod{font-size:10.5px}
+.thumb{width:10px;height:10px}
+.meter{height:3px;width:50px;background:var(--line)}
+.meter i{background:var(--text)}
+.alloc-row{padding:4px 0;grid-template-columns:90px minmax(0,1fr) 150px}
+.alloc-head span{font-size:9.5px}
+.alloc-name{font-size:11px;text-transform:uppercase}
+.alloc-nums{font:11.5px 'IBM Plex Mono',monospace}
+.alloc-bar{height:7px;background:var(--line);gap:1px}
+.alloc-summary{margin-top:8px;padding-top:6px;border-top:1px solid var(--border)}
+.alloc-summary div+div{border-left:1px solid var(--border)}
+.alloc-summary span{font-size:10px;text-transform:uppercase}
+.alloc-summary strong{font:600 18px 'IBM Plex Mono',monospace}
+
+/* ticker */
+.bb-ticker{position:fixed;left:0;right:0;bottom:0;height:22px;z-index:60;background:var(--panel);border-top:1px solid var(--title-bg);overflow:hidden;font:11.5px 'IBM Plex Mono',monospace}
+.bb-ticker div{display:inline-flex;white-space:nowrap;animation:bbtick 60s linear infinite;line-height:22px}
+.bb-ticker span{padding:0 18px;color:var(--text)}
+.bb-ticker b{color:var(--num);font-weight:600}
+.bb-ticker .up{color:var(--ok);font-style:normal}.bb-ticker .dn{color:var(--bad);font-style:normal}
+@keyframes bbtick{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.bb-ticker div{animation:none}}
+@media (max-width:900px){.sidebar{height:calc(100vh - 22px)}}
+@media (max-width:640px){.donut-wrap{grid-template-columns:minmax(0,1fr)}.bb-fkeys span:not(.go):not(.clock){display:none}}
+</style>
+</head>
+<body>
+<div class="bb-ticker" aria-hidden="true"><div><span><b>MC-14-BLK-38</b> 2,499 <em class="up">▲3.2%</em></span><span><b>MC-14-BLK-30</b> 2,499 <em class="up">▲1.8%</em></span><span><b>MC-14-KHK-36</b> 2,499 <em class="dn">▼0.6%</em></span><span><b>MC-14-GRN-32</b> 2,499 <em class="up">▲2.4%</em></span><span><b>MC-9-GRN-36</b> 1,200 <em class="dn">▼1.1%</em></span><span><b>MDT-37-LBR-L</b> 2,400 <em class="up">▲4.7%</em></span><span><b>AMZN STK</b> 58,420 <em class="up">▲5.0%</em></span><span><b>FLPK STK</b> 31,250 <em class="dn">▼2.3%</em></span><span><b>MYNT STK</b> 27,880 <em class="up">▲1.2%</em></span><span><b>AJIO STK</b> 16,140 <em class="dn">▼0.4%</em></span><span><b>FCRY STK</b> 11,598 <em class="up">▲0.9%</em></span><span><b>LOW STK</b> 1,705 <em class="dn">▼5.2%</em></span><span><b>MC-14-BLK-38</b> 2,499 <em class="up">▲3.2%</em></span><span><b>MC-14-BLK-30</b> 2,499 <em class="up">▲1.8%</em></span><span><b>MC-14-KHK-36</b> 2,499 <em class="dn">▼0.6%</em></span><span><b>MC-14-GRN-32</b> 2,499 <em class="up">▲2.4%</em></span><span><b>MC-9-GRN-36</b> 1,200 <em class="dn">▼1.1%</em></span><span><b>MDT-37-LBR-L</b> 2,400 <em class="up">▲4.7%</em></span><span><b>AMZN STK</b> 58,420 <em class="up">▲5.0%</em></span><span><b>FLPK STK</b> 31,250 <em class="dn">▼2.3%</em></span><span><b>MYNT STK</b> 27,880 <em class="up">▲1.2%</em></span><span><b>AJIO STK</b> 16,140 <em class="dn">▼0.4%</em></span><span><b>FCRY STK</b> 11,598 <em class="up">▲0.9%</em></span><span><b>LOW STK</b> 1,705 <em class="dn">▼5.2%</em></span></div></div>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">T</div><div><strong>TIFFNY Inventory</strong><small>Stock &amp; Master SKU Manager</small></div></div>
+    <nav id="menu"></nav>
+    <div class="side-foot"><div class="avatar">RP</div><div><strong>Ritesh Patel</strong><small>Admin</small></div></div>
+  </aside>
+  <div class="scrim"></div>
+  <main class="main">
+    <div class="bb-fkeys" aria-hidden="true"><span class="go">INV &lt;GO&gt;</span><span>F1 HELP</span><span>F2 STOCK</span><span>F3 ORDERS</span><span>F4 SKU</span><span>F5 PO</span><span>F8 EXPORT</span><span class="clock">11:16:42 IST</span></div>
+    <header class="topbar">
+      <button class="icon-btn menu-btn" data-icon="menu" aria-label="Open menu"></button>
+      <label class="search"><span data-icon="search"></span><input type="search" placeholder="Search by SKU, product name, brand…"></label>
+      <div class="top-actions">
+        <button class="icon-btn theme-btn" id="themeToggle" type="button"></button>
+        <button class="icon-btn" data-icon="bell" aria-label="Notifications"><b>4</b></button>
+        <div class="user"><div class="avatar">R</div><div><strong>Ritesh Patel</strong><small>Admin · 07 Oct 2026</small></div></div>
+      </div>
+    </header>
+    <div class="page-head">
+      <div><h1>Dashboard</h1><p>Stock &amp; order overview across all platforms</p></div>
+      <div class="head-tools"><div id="periods" class="segmented"></div><div class="date-chip"><span data-icon="calendar"></span><span id="dateRange"></span></div></div>
+    </div>
+    <section id="kpis" class="kpis"></section>
+    <section class="grid">
+      <article class="card c-donut">
+        <header class="card-h"><div><h3>Platform-wise stock allocated</h3><p>Units currently allocated per channel</p></div></header>
+        <div class="donut-wrap"><div class="donut-box"><canvas id="donutChart"></canvas><div class="donut-center"><strong id="donutTotal"></strong><span>Total stock</span></div></div><ul id="donutLegend" class="legend"></ul></div>
+      </article>
+      <article class="card c-bar">
+        <header class="card-h"><div><h3>Platform-wise order overview</h3><p>Orders by channel, <span data-period-name></span></p></div></header>
+        <div class="chart-box"><canvas id="barChart"></canvas></div>
+      </article>
+      <article class="card c-table">
+        <header class="card-h"><div><h3>Top selling SKU</h3><p>Top 8 by units sold</p></div><a href="#" class="link">View all →</a></header>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>SKU / Product</th><th>Brand</th><th class="num">Sold qty</th><th class="num">Revenue</th></tr></thead><tbody id="skuBody"></tbody></table></div>
+      </article>
+      <article class="card c-alloc">
+        <header class="card-h"><div><h3>Platform-wise SKU allocation</h3><p>SKU health per channel</p></div><div class="key"><span class="ok">In stock</span><span class="warn">Low</span><span class="bad">Out</span></div></header>
+        <div id="alloc"></div>
+        <div id="allocSummary" class="alloc-summary"></div>
+      </article>
+    </section>
+  </main>
+</div>
+<script src="assets/dashboard.js"></script>
+</body>
+</html>
