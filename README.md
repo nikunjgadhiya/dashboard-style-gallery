@@ -19,37 +19,45 @@ Each page includes:
 
 ## Style status
 
-### ✅ Done
+### ✅ Done (20)
 
-| # | Style | File | Default theme | Key CSS | Best for |
-|---|-------|------|---------------|---------|----------|
-| 1 | Glassmorphism | `glassmorphism.html` | Dark | `backdrop-filter: blur()`, `rgba()` panels | Creative, multimedia, dark UIs |
-| 2 | Neumorphism | `neumorphism.html` | Light | Dual `box-shadow` (light + dark), `inset` | Smart-home panels, minimal tools |
-| 3 | Claymorphism | `claymorphism.html` | Light | Large `border-radius`, multi `inset` shadows | Fintech, friendly AI, gamified apps |
-| 4 | Aurora UI | `aurora.html` | Dark | Animated blurred gradients, glow | Futuristic tech, premium hero widgets |
-| 5 | Bento Box UI | `bento.html` | Light | `grid-template-areas`, `gap` | Analytics screens, SaaS hubs |
-| 6 | Neo-Brutalism (Mono) | `brutalism.html` | Light | Thick borders, `box-shadow: 5px 5px 0`, monospace | Tools, utilities, developer products |
-| 7 | Neo-Brutalism (Colour) | `brutalism-color.html` | Light | Same with flat saturated fills | Playful SaaS, creator tools |
-| 8 | Memphis | `memphis.html` | Light | Inline SVG shapes, `clip-path`, patterns | Youthful, creative, playful brands |
+| # | Style | File | Default theme | Other theme | Key CSS | Best for |
+|---|-------|------|---------------|-------------|---------|----------|
+| 1 | Glassmorphism | `glassmorphism.html` | Dark | Light frosted | `backdrop-filter: blur()`, `rgba()` panels | Creative, multimedia, dark UIs |
+| 2 | Neumorphism | `neumorphism.html` | Light | Dark charcoal | Dual `box-shadow` (light + dark), `inset` | Smart-home panels, minimal tools |
+| 3 | Claymorphism | `claymorphism.html` | Light | Dark purple | Large `border-radius`, multi `inset` shadows | Fintech, friendly AI, gamified apps |
+| 4 | Aurora UI | `aurora.html` | Dark | Light pastel aurora | Animated blurred gradients, glow | Futuristic tech, premium hero widgets |
+| 5 | Bento Box UI | `bento.html` | Light | Dark + lime | `grid-template-areas`, `gap` | Analytics screens, SaaS hubs |
+| 6 | Neo-Brutalism (Mono) | `brutalism.html` | Light | Inverted | Thick borders, `box-shadow: 5px 5px 0`, monospace | Tools, utilities, developer products |
+| 7 | Neo-Brutalism (Colour) | `brutalism-color.html` | Light | Charcoal + cream lines | Same with flat saturated fills | Playful SaaS, creator tools |
+| 8 | Memphis | `memphis.html` | Light | Deep indigo | Inline SVG shapes, `clip-path`, patterns | Youthful, creative, playful brands |
+| 9 | Liquid Glass | `liquid-glass.html` | Light | Night wallpaper | `backdrop-filter: saturate()`, `mask-composite` specular rim | Premium consumer apps |
+| 10 | Material Design 3 | `material3.html` | Light | M3 dark tokens | Tonal tokens, state layers, elevation, FAB | Android and Google-style apps |
+| 11 | Fluent (Windows 11) | `fluent.html` | Light | Dark Mica | Mica / Acrylic, `feTurbulence` noise, elevation strokes | Enterprise and Microsoft-style tools |
+| 12 | Swiss / Minimal | `swiss.html` | Light | Black + red | CSS counters, `clamp()` type, no radius or shadow | Reports, finance, editorial |
+| 13 | Cyberpunk / Neon | `cyberpunk.html` | Dark | "Daylight" yellow/black | `clip-path` cut corners, glitch keyframes, scanlines | Gaming, crypto, tech |
+| 14 | Retro Windows 95 | `win95.html` | Light | High Contrast | Inset bevel shadows, `writing-mode`, taskbar | Fun internal tools, nostalgia |
+| 15 | Terminal / Hacker | `terminal.html` | Dark | Green-bar printer paper | Monospace, scanlines, `steps()` cursor blink | Dev ops, monitoring |
+| 16 | Vaporwave / Y2K | `vaporwave.html` | Dark | Pastel Y2K | 3D perspective grid, `mask-image` sun, chrome text | Music, fashion, creative |
+| 17 | Skeuomorphism | `skeuomorphism.html` | Light | Night leather + LCD glow | Leather/aluminium textures, gloss, LCD readouts | Calculators, audio, hardware-style apps |
+| 18 | Paper / Notebook | `notebook.html` | Light | Chalkboard | Ruled-paper gradients, sticky notes, sketchy borders | Education, planners |
+| 19 | Dark Luxury | `luxury.html` | Dark | Ivory + gold | Serif display, gold gradient text, hairlines | Premium brands, jewellery, fashion |
+| 20 | Kawaii / Pastel | `kawaii.html` | Light | Midnight kawaii | Pastel tokens, `clip-path` cat ears, bouncy shadows | Kids, lifestyle apps |
 
-Every done style has a working **light and dark mode**.
+Every style has a working **light and dark mode**.
 
-### ⏳ Pending (ideas for the next styles)
+### ⏳ Pending (next ideas)
 
-| # | Style | Look | Key CSS | Best for |
-|---|-------|------|---------|----------|
-| 9 | Liquid Glass | Apple-style refractive glass with specular highlights | `backdrop-filter`, SVG `feDisplacementMap`, layered highlights | Premium consumer apps |
-| 10 | Material Design 3 | Tonal surfaces, dynamic colour, rounded containers | Tonal palette tokens, elevation | Android and Google-style apps |
-| 11 | Fluent (Mica / Acrylic) | Windows 11 translucent layers, subtle depth | `backdrop-filter`, noise texture | Enterprise and Microsoft-style tools |
-| 12 | Swiss / Minimal | Strict grid, big type, almost no decoration | Typographic scale, hairlines | Reports, finance, editorial |
-| 13 | Cyberpunk / Neon | Dark chrome, neon outlines, glitch accents | `text-shadow` glow, `clip-path` angles | Gaming, crypto, tech |
-| 14 | Retro Windows 95 | Bevelled grey windows, title bars, pixel icons | `border-style: outset/inset` | Fun internal tools, nostalgia |
-| 15 | Terminal / Hacker | Green-on-black CRT, ASCII charts, scanlines | Monospace, `repeating-linear-gradient` scanlines | Dev ops, monitoring |
-| 16 | Vaporwave / Y2K | Pastel gradients, chrome text, grids | Gradient text, perspective grid | Music, fashion, creative |
-| 17 | Skeuomorphism | Real-world textures: leather, metal, paper | Textures, gradients, realistic shadows | Calculators, audio apps |
-| 18 | Paper / Notebook | Lined paper, sticky notes, hand-drawn charts | Background lines, handwritten fonts | Education, planners |
-| 19 | Dark Luxury | Black and gold, serif type, thin rules | Serif fonts, gold gradients | Premium brands, jewellery, fashion |
-| 20 | Kawaii / Pastel | Soft pastels, cute icons, bubbly shapes | Pastel tokens, rounded everything | Kids, lifestyle apps |
+| # | Style | Look | Best for |
+|---|-------|------|----------|
+| 21 | Bauhaus | Primary colours, circles, squares and triangles, geometric type | Design studios, education |
+| 22 | Art Deco | Gold geometric fans, symmetry, stepped borders | Hospitality, luxury events |
+| 23 | Pixel Art / 8-bit | Pixel fonts, chunky pixel borders, sprite icons | Gaming, playful tools |
+| 24 | Blueprint | Cyan grid paper, white technical lines, dimension marks | Engineering, manufacturing |
+| 25 | Newspaper / Editorial | Columns, serif headlines, rules, halftone images | Media, reports |
+| 26 | Comic Book | Halftone dots, speech bubbles, bold outlines | Entertainment, kids |
+| 27 | Solarpunk / Organic | Soft greens, leaf shapes, natural textures | Sustainability, agri-tech |
+| 28 | Glass + Bento hybrid | Bento grid built from frosted glass tiles | Modern SaaS hubs |
 
 ---
 
@@ -77,6 +85,9 @@ bento.html
 brutalism.html
 brutalism-color.html    Reuses brutalism.html styles, adds a colour layer at the end
 memphis.html
+liquid-glass.html, material3.html, fluent.html, swiss.html, cyberpunk.html,
+win95.html, terminal.html, vaporwave.html, skeuomorphism.html, notebook.html,
+luxury.html, kawaii.html
 assets/
   base.css              Shared structural layout and responsive rules
   dashboard.js          Shared demo data, menu, KPIs, table, charts, period tabs, theme toggle
