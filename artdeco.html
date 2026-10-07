@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('dash-theme:artdeco.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Art Deco Inventory Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poiret+One&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  color-scheme:dark;
+  --font:'Josefin Sans',system-ui,sans-serif;
+  --deco:'Poiret One','Josefin Sans',sans-serif;
+  --gold:#d4af37;--gold-hi:#f3dd8b;--gold-grad:linear-gradient(180deg,#f7e7a6,#d4af37 45%,#9c7a1f);
+  --bg:#08201d;--panel:#0d2b27;--panel-2:#0a2420;--text:#f1e9d2;--muted:#b4a984;--on:#08201d;
+  --line:rgba(212,175,55,.22);--grid:rgba(212,175,55,.12);
+  --accent:var(--gold);--ok:#7fc8a9;--warn:#e6c35c;--bad:#d9705b;
+  --c1:#d4af37;--c2:#2e8b74;--c3:#efe6cf;--c4:#9c6b30;--c5:#3a6f8f;
+  --tip-bg:#08201d;--tip-fg:#f3dd8b;--tip-radius:0;
+  --donut-border:#0d2b27;--donut-bw:3;--donut-radius:0;--donut-cutout:66%;--bar-radius:0;--bar-border:#d4af37;--bar-bw:1;
+  --rays:rgba(212,175,55,.07);
+}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --gold:#8a6a1c;--gold-hi:#6e5214;--gold-grad:linear-gradient(180deg,#9c7a22,#6e5214 55%,#4a3608);
+  --bg:#f3ead6;--panel:#fbf6ea;--panel-2:#f6efdd;--text:#141414;--muted:#6b5f45;--on:#f3ead6;
+  --line:rgba(168,130,42,.28);--grid:rgba(168,130,42,.16);
+  --ok:#2e7d64;--warn:#a8822a;--bad:#a5402c;
+  --c1:#a8822a;--c2:#1f5f50;--c3:#141414;--c4:#c48b4a;--c5:#3a6f8f;
+  --tip-bg:#141414;--tip-fg:#f3dd8b;
+  --donut-border:#fbf6ea;--bar-border:#141414;
+  --rays:rgba(168,130,42,.09);
+}
+*{border-radius:0}
+body{background:repeating-conic-gradient(from 270deg at 50% 110%,var(--rays) 0 3deg,transparent 3deg 7deg),var(--bg);background-attachment:fixed;font-size:14.5px;letter-spacing:.02em}
+
+/* sidebar with stepped top */
+.sidebar{background:var(--panel-2);border-right:1px solid var(--gold);box-shadow:inset -5px 0 0 var(--bg),inset -6px 0 0 var(--line);padding:22px 18px}
+.brand{flex-direction:column;text-align:center;gap:10px;padding-bottom:20px;border-bottom:1px solid var(--line);position:relative}
+.brand::after{content:"◆";position:absolute;bottom:-9px;left:50%;transform:translateX(-50%);color:var(--gold);background:var(--panel-2);padding:0 8px;font-size:12px}
+.brand .logo{width:60px;height:60px;background:none;border:1px solid var(--gold);color:var(--gold);font-family:var(--deco);font-size:30px;
+  clip-path:polygon(20% 0,80% 0,80% 10%,90% 10%,90% 20%,100% 20%,100% 80%,90% 80%,90% 90%,80% 90%,80% 100%,20% 100%,20% 90%,10% 90%,10% 80%,0 80%,0 20%,10% 20%,10% 10%,20% 10%);box-shadow:inset 0 0 0 4px var(--panel-2),inset 0 0 0 5px var(--gold)}
+.brand strong{font-family:var(--deco);font-weight:400;font-size:22px;letter-spacing:.18em;text-transform:uppercase;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand small{letter-spacing:.24em;text-transform:uppercase;font-size:9.5px;color:var(--muted);opacity:1}
+.nav-group{text-align:center;color:var(--gold);opacity:1;letter-spacing:.3em;font-weight:600;font-size:9.5px}
+.nav-group::before{content:"⟡  "}.nav-group::after{content:"  ⟡"}
+.nav-item{text-transform:uppercase;letter-spacing:.14em;font-size:11.5px;font-weight:400;padding:9px 12px;position:relative}
+.nav-item:hover{color:var(--gold-hi)}
+.nav-item.active{color:var(--on);background:var(--gold-grad);font-weight:600}
+.nav-item.active::after{content:"";position:absolute;right:-8px;top:0;bottom:0;width:8px;background:var(--gold);clip-path:polygon(0 0,100% 50%,0 100%)}
+.side-foot{border:1px solid var(--line);box-shadow:inset 0 0 0 3px var(--panel-2),inset 0 0 0 4px var(--line)}
+.avatar{border-radius:50%;background:var(--gold-grad);color:var(--on);font-family:var(--deco);font-weight:400;font-size:16px}
+
+/* header */
+.search,.icon-btn,.user,.date-chip{background:var(--panel);border:1px solid var(--gold)}
+.search input{letter-spacing:.06em}
+.icon-btn{color:var(--gold)}
+.icon-btn b{background:var(--bad);border-radius:50%}
+.page-head{flex-direction:column;align-items:center;text-align:center}
+.page-head h1{font-family:var(--deco);font-weight:400;font-size:58px;letter-spacing:.22em;text-transform:uppercase;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.page-head p{letter-spacing:.3em;text-transform:uppercase;font-size:11px;display:flex;align-items:center;gap:14px;justify-content:center}
+.page-head p::before,.page-head p::after{content:"";width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+.page-head p::after{transform:scaleX(-1)}
+.segmented{padding:0;gap:6px}
+.segmented button{text-transform:uppercase;letter-spacing:.16em;font-size:10.5px;color:var(--muted);border:1px solid transparent;padding:9px 14px}
+.segmented button:hover{color:var(--gold-hi);border-color:var(--line)}
+.segmented button.active{color:var(--gold-hi);border-color:var(--gold);box-shadow:inset 0 0 0 3px var(--bg),inset 0 0 0 4px var(--line)}
+.date-chip{letter-spacing:.12em;text-transform:uppercase;font-size:11px;color:var(--gold-hi)}
+[data-theme="light"] .date-chip{color:var(--gold)}
+
+/* arch-topped KPI cards */
+.kpis{gap:22px}
+.kpi{flex-direction:column;align-items:center;text-align:center;gap:10px;padding:34px 18px 22px;background:var(--panel);border:1px solid var(--gold);
+  border-radius:200px 200px 0 0 / 120px 120px 0 0;box-shadow:inset 0 0 0 5px var(--panel),inset 0 0 0 6px var(--line)}
+.kpi-icon{width:48px;height:48px;border:1px solid var(--gold);color:var(--gold);transform:rotate(45deg);background:var(--panel-2)}
+.kpi-icon .ic{transform:rotate(-45deg)}
+.kpi-label{letter-spacing:.24em;text-transform:uppercase;font-size:10px;color:var(--muted);margin-top:8px}
+.kpi-value{font-family:var(--deco);font-weight:400;font-size:40px;letter-spacing:.06em;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.kpi-delta{letter-spacing:.06em}
+
+/* double-framed cards with a fan ornament */
+.grid{gap:30px 22px;margin-top:6px}
+.card{position:relative;background:var(--panel);border:1px solid var(--gold);box-shadow:inset 0 0 0 6px var(--panel),inset 0 0 0 7px var(--line);padding:30px 26px 24px;margin-top:12px}
+.card::before{content:"";position:absolute;top:-14px;left:50%;width:56px;height:28px;margin-left:-28px;border:1px solid var(--gold);border-bottom:0;
+  border-radius:56px 56px 0 0;background:repeating-conic-gradient(from -90deg at 50% 100%,var(--gold) 0 5deg,var(--panel) 5deg 15deg)}
+.card-h{flex-direction:column;align-items:center;text-align:center;border-bottom:1px solid var(--line);padding-bottom:14px}
+.card-h h3{font-family:var(--deco);font-weight:400;font-size:21px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-hi)}
+[data-theme="light"] .card-h h3{color:var(--text)}
+.card-h p{letter-spacing:.2em;text-transform:uppercase;font-size:9.5px}
+.card-h .key{letter-spacing:.1em;text-transform:uppercase;font-size:10px}
+.link{text-transform:uppercase;letter-spacing:.2em;font-size:10px;color:var(--gold);border:1px solid var(--gold);padding:5px 12px}
+.donut-center strong{font-family:var(--deco);font-weight:400;font-size:26px;color:var(--gold-hi)}
+[data-theme="light"] .donut-center strong{color:var(--text)}
+.legend li{border-bottom:1px solid var(--line);text-transform:uppercase;letter-spacing:.1em;font-size:12px}
+.legend i{transform:rotate(45deg);width:9px;height:9px}
+th{color:var(--gold);letter-spacing:.2em;border-bottom:1px solid var(--gold)}
+td{border-top:1px solid var(--line)}
+tbody tr:hover td{background:color-mix(in srgb,var(--gold) 9%,transparent)}
+.rank{font-family:var(--deco);color:var(--gold);font-size:17px}
+.thumb{transform:rotate(45deg) scale(.75);border:1px solid var(--gold)}
+.meter{height:3px;background:var(--line)}
+.meter i{background:var(--gold-grad)}
+.key span::before{transform:rotate(45deg)}
+.alloc-bar{height:8px;background:var(--line);gap:2px}
+.alloc-name{text-transform:uppercase;letter-spacing:.1em;font-size:12px}
+.alloc-name i{transform:rotate(45deg)}
+.alloc-summary{border-top:1px solid var(--gold)}
+.alloc-summary div+div{border-left:1px solid var(--line)}
+.alloc-summary span{letter-spacing:.2em;text-transform:uppercase;font-size:9.5px}
+.alloc-summary strong{font-family:var(--deco);font-weight:400;font-size:28px}
+@media (max-width:640px){.page-head h1{font-size:38px;letter-spacing:.12em}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">T</div><div><strong>TIFFNY Inventory</strong><small>Stock &amp; Master SKU Manager</small></div></div>
+    <nav id="menu"></nav>
+    <div class="side-foot"><div class="avatar">RP</div><div><strong>Ritesh Patel</strong><small>Admin</small></div></div>
+  </aside>
+  <div class="scrim"></div>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" data-icon="menu" aria-label="Open menu"></button>
+      <label class="search"><span data-icon="search"></span><input type="search" placeholder="Search by SKU, product name, brand…"></label>
+      <div class="top-actions">
+        <button class="icon-btn theme-btn" id="themeToggle" type="button"></button>
+        <button class="icon-btn" data-icon="bell" aria-label="Notifications"><b>4</b></button>
+        <div class="user"><div class="avatar">R</div><div><strong>Ritesh Patel</strong><small>Admin · 07 Oct 2026</small></div></div>
+      </div>
+    </header>
+    <div class="page-head">
+      <div><h1>Dashboard</h1><p>Stock &amp; order overview across all platforms</p></div>
+      <div class="head-tools"><div id="periods" class="segmented"></div><div class="date-chip"><span data-icon="calendar"></span><span id="dateRange"></span></div></div>
+    </div>
+    <section id="kpis" class="kpis"></section>
+    <section class="grid">
+      <article class="card c-donut">
+        <header class="card-h"><div><h3>Platform-wise stock allocated</h3><p>Units currently allocated per channel</p></div></header>
+        <div class="donut-wrap"><div class="donut-box"><canvas id="donutChart"></canvas><div class="donut-center"><strong id="donutTotal"></strong><span>Total stock</span></div></div><ul id="donutLegend" class="legend"></ul></div>
+      </article>
+      <article class="card c-bar">
+        <header class="card-h"><div><h3>Platform-wise order overview</h3><p>Orders by channel, <span data-period-name></span></p></div></header>
+        <div class="chart-box"><canvas id="barChart"></canvas></div>
+      </article>
+      <article class="card c-table">
+        <header class="card-h"><div><h3>Top selling SKU</h3><p>Top 8 by units sold</p></div><a href="#" class="link">View all →</a></header>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>SKU / Product</th><th>Brand</th><th class="num">Sold qty</th><th class="num">Revenue</th></tr></thead><tbody id="skuBody"></tbody></table></div>
+      </article>
+      <article class="card c-alloc">
+        <header class="card-h"><div><h3>Platform-wise SKU allocation</h3><p>SKU health per channel</p></div><div class="key"><span class="ok">In stock</span><span class="warn">Low</span><span class="bad">Out</span></div></header>
+        <div id="alloc"></div>
+        <div id="allocSummary" class="alloc-summary"></div>
+      </article>
+    </section>
+  </main>
+</div>
+<script src="assets/dashboard.js"></script>
+</body>
+</html>
