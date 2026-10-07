@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('dash-theme:neumorphism.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Soft Inventory Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --font:'Manrope',system-ui,sans-serif;
+  --bg:#e6ebf3;--text:#3b4660;--muted:#8691a8;
+  --line:rgba(134,145,168,.2);--grid:rgba(134,145,168,.18);
+  --accent:#5b6cff;--ok:#1fb89a;--warn:#f0a43a;--bad:#ef5d7a;
+  --c1:#5b6cff;--c2:#22c3a6;--c3:#a66bff;--c4:#ff8a5b;--c5:#ff6b9a;
+  --tip-bg:#3b4660;--tip-radius:12;
+  --donut-border:#e6ebf3;--donut-bw:5;--donut-radius:10;--bar-radius:8;--donut-cutout:70%;
+  --hi:#ffffff;--lo:#c3cad8;
+  --raise:9px 9px 18px var(--lo),-9px -9px 18px var(--hi);
+  --raise-sm:4px 4px 10px var(--lo),-4px -4px 10px var(--hi);
+  --press:inset 5px 5px 10px var(--lo),inset -5px -5px 10px var(--hi);
+  --press-sm:inset 2px 2px 5px var(--lo),inset -2px -2px 5px var(--hi);
+}
+.sidebar,.kpi,.card,.user,.icon-btn,.date-chip{background:var(--bg);box-shadow:var(--raise)}
+.sidebar{margin:18px 0 18px 18px;height:calc(100vh - 36px);top:18px;border-radius:28px}
+.brand .logo{border-radius:14px;box-shadow:var(--raise-sm);color:var(--accent)}
+.nav-item{border-radius:14px;color:var(--muted)}
+.nav-item:hover{color:var(--text)}
+.nav-item.active{box-shadow:var(--press);color:var(--accent);font-weight:700}
+.side-foot{border-radius:18px;box-shadow:var(--press)}
+.avatar{box-shadow:var(--raise-sm);color:var(--accent);background:var(--bg)}
+.search,.segmented{box-shadow:var(--press);border-radius:16px}
+.icon-btn,.date-chip{border-radius:16px}
+.icon-btn{color:var(--muted)}
+.user{border-radius:999px}
+.segmented button{border-radius:12px}
+.segmented button.active{background:var(--bg);box-shadow:var(--raise-sm);color:var(--accent);font-weight:700}
+.page-head h1{font-weight:800}
+.kpi,.card{border-radius:26px}
+.kpi{padding:22px}
+.kpi-icon{border-radius:50%;box-shadow:var(--raise-sm);width:52px;height:52px;position:relative}
+.kpi-icon::after{content:"";position:absolute;inset:6px;border-radius:50%;box-shadow:var(--press-sm)}
+.kpi-1 .kpi-icon{color:var(--c1)}.kpi-2 .kpi-icon{color:var(--c2)}.kpi-3 .kpi-icon{color:var(--c4)}.kpi-4 .kpi-icon{color:var(--bad)}
+.donut-box::before{content:"";position:absolute;left:50%;top:50%;width:132px;height:132px;transform:translate(-50%,-50%);border-radius:50%;box-shadow:var(--press)}
+.legend li,td,.alloc-summary{border-color:transparent}
+.legend li{padding:9px 12px;margin-bottom:6px;border-radius:12px;box-shadow:var(--press-sm)}
+tbody tr td{border-top:0}
+tbody tr:nth-child(odd) td{background:rgba(255,255,255,.28)}
+tbody tr:nth-child(odd) td:first-child{border-radius:12px 0 0 12px}
+tbody tr:nth-child(odd) td:last-child{border-radius:0 12px 12px 0}
+.thumb{border:5px solid var(--bg);box-shadow:var(--raise-sm);border-radius:50%;width:36px;height:36px}
+.meter{background:var(--bg);box-shadow:var(--press-sm);height:6px;border-radius:3px}
+.alloc-bar{background:var(--bg);box-shadow:var(--press);height:14px;padding:3px;border-radius:8px}
+.alloc-bar span{border-radius:5px}
+.alloc-summary{box-shadow:var(--press);border-radius:18px;padding:16px 0;margin-top:20px}
+.alloc-summary div+div{border-left:1px solid rgba(255,255,255,.7)}
+@media (max-width:900px){.sidebar{margin:0;top:0;height:100vh;border-radius:0 28px 28px 0}}
+
+/* ---------- dark theme ---------- */
+:root{color-scheme:light}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#282d37;--text:#dfe4ef;--muted:#8d96ab;
+  --line:rgba(255,255,255,.06);--grid:rgba(255,255,255,.06);
+  --accent:#8492ff;--ok:#2fd1b0;--warn:#f4b155;--bad:#f2738c;
+  --c1:#8492ff;--c2:#2fd1b0;--c3:#b88aff;--c4:#ff9d74;--c5:#ff85ad;
+  --tip-bg:#14171d;--donut-border:#282d37;
+  --hi:#323844;--lo:#1c2027;
+}
+[data-theme="dark"] tbody tr:nth-child(odd) td{background:rgba(255,255,255,.025)}
+[data-theme="dark"] .alloc-summary div+div{border-left-color:rgba(255,255,255,.05)}
+[data-theme="dark"] .thumb{border-color:var(--bg)}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">T</div><div><strong>TIFFNY Inventory</strong><small>Stock &amp; Master SKU Manager</small></div></div>
+    <nav id="menu"></nav>
+    <div class="side-foot"><div class="avatar">RP</div><div><strong>Ritesh Patel</strong><small>Admin</small></div></div>
+  </aside>
+  <div class="scrim"></div>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" data-icon="menu" aria-label="Open menu"></button>
+      <label class="search"><span data-icon="search"></span><input type="search" placeholder="Search by SKU, product name, brand…"></label>
+      <div class="top-actions">
+        <button class="icon-btn theme-btn" id="themeToggle" type="button"></button>
+        <button class="icon-btn" data-icon="bell" aria-label="Notifications"><b>4</b></button>
+        <div class="user"><div class="avatar">R</div><div><strong>Ritesh Patel</strong><small>Admin · 07 Oct 2026</small></div></div>
+      </div>
+    </header>
+    <div class="page-head">
+      <div><h1>Dashboard</h1><p>Stock &amp; order overview across all platforms</p></div>
+      <div class="head-tools"><div id="periods" class="segmented"></div><div class="date-chip"><span data-icon="calendar"></span><span id="dateRange"></span></div></div>
+    </div>
+    <section id="kpis" class="kpis"></section>
+    <section class="grid">
+      <article class="card c-donut">
+        <header class="card-h"><div><h3>Platform-wise stock allocated</h3><p>Units currently allocated per channel</p></div></header>
+        <div class="donut-wrap"><div class="donut-box"><canvas id="donutChart"></canvas><div class="donut-center"><strong id="donutTotal"></strong><span>Total stock</span></div></div><ul id="donutLegend" class="legend"></ul></div>
+      </article>
+      <article class="card c-bar">
+        <header class="card-h"><div><h3>Platform-wise order overview</h3><p>Orders by channel, <span data-period-name></span></p></div></header>
+        <div class="chart-box"><canvas id="barChart"></canvas></div>
+      </article>
+      <article class="card c-table">
+        <header class="card-h"><div><h3>Top selling SKU</h3><p>Top 8 by units sold</p></div><a href="#" class="link">View all →</a></header>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>SKU / Product</th><th>Brand</th><th class="num">Sold qty</th><th class="num">Revenue</th></tr></thead><tbody id="skuBody"></tbody></table></div>
+      </article>
+      <article class="card c-alloc">
+        <header class="card-h"><div><h3>Platform-wise SKU allocation</h3><p>SKU health per channel</p></div><div class="key"><span class="ok">In stock</span><span class="warn">Low</span><span class="bad">Out</span></div></header>
+        <div id="alloc"></div>
+        <div id="allocSummary" class="alloc-summary"></div>
+      </article>
+    </section>
+  </main>
+</div>
+<script src="assets/dashboard.js"></script>
+</body>
+</html>

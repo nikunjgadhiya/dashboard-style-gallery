@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard Style Gallery</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:#f6f6f4;color:#18181b;padding:48px 24px}
+.wrap{max-width:1180px;margin:auto}
+h1{font-size:34px;font-weight:800;letter-spacing:-.03em}
+.sub{color:#71717a;margin:8px 0 32px;max-width:640px;line-height:1.5}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+a.card{display:flex;flex-direction:column;text-decoration:none;color:inherit;background:#fff;border:1px solid #e7e5e4;border-radius:22px;overflow:hidden;transition:transform .2s,box-shadow .2s}
+a.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,.25)}
+.pv{height:170px;position:relative;display:grid;place-items:center;overflow:hidden}
+.pv i{display:block}
+.body{padding:18px 20px 22px}
+.body h2{font-size:17px;font-weight:700}
+.body p{font-size:13px;color:#71717a;margin-top:6px;line-height:1.5}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.tags span{font:500 11px/1 ui-monospace,Consolas,monospace;background:#f4f4f1;padding:6px 8px;border-radius:8px;color:#3f3f46}
+/* previews */
+.glass{background:radial-gradient(circle at 15% 20%,#7c3aed,transparent 55%),radial-gradient(circle at 85% 30%,#2563eb,transparent 55%),radial-gradient(circle at 60% 100%,#db2777,transparent 55%),#0b1026}
+.glass i{width:62%;height:96px;border-radius:18px;background:rgba(255,255,255,.1);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.25);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.neu{background:#e6ebf3}
+.neu i{width:110px;height:110px;border-radius:28px;background:#e6ebf3;box-shadow:12px 12px 24px #c3cad8,-12px -12px 24px #fff}
+.clay{background:#efeafd}
+.clay i{width:150px;height:96px;border-radius:32px;background:#e9e5ff;box-shadow:0 22px 40px -14px rgba(92,72,170,.4),inset -8px -8px 16px rgba(92,72,170,.12),inset 8px 8px 16px rgba(255,255,255,.95)}
+.aurora{background:#04050d}
+.aurora::before,.aurora::after{content:"";position:absolute;width:70%;height:70%;border-radius:50%;filter:blur(40px);opacity:.7}
+.aurora::before{left:-10%;top:-20%;background:linear-gradient(120deg,#06b6d4,#3b82f6)}
+.aurora::after{right:-15%;bottom:-25%;background:linear-gradient(120deg,#8b5cf6,#ec4899)}
+.aurora i{position:relative;z-index:1;font:700 26px 'Inter';font-style:normal;background:linear-gradient(90deg,#fff,#a5f3fc,#f9a8d4);-webkit-background-clip:text;background-clip:text;color:transparent}
+.bento{background:#f4f4f1;padding:18px;display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;place-items:stretch}
+.bento i{border-radius:12px;background:#fff;border:1px solid #e7e5e4}
+.bento i:first-child{grid-row:span 2;background:#18181b;border-color:#18181b}
+.bento i:nth-child(2){background:#d9f99d}
+.brutal{background:repeating-linear-gradient(90deg,rgba(0,0,0,.08) 0 6px,transparent 6px 10px,rgba(0,0,0,.08) 10px 12px,transparent 12px 22px),#ececec}
+.brutal i{background:#fff;border:3px solid #0a0a0a;box-shadow:6px 6px 0 #0a0a0a;padding:14px 22px;font:700 13px/1 ui-monospace,Consolas,monospace;font-style:normal;letter-spacing:.08em;text-transform:uppercase}
+.pop{background-color:#fff4e0;background-image:radial-gradient(rgba(0,0,0,.14) 1.2px,transparent 1.4px);background-size:16px 16px;gap:14px;display:flex;align-items:center;justify-content:center}
+.pop i{width:64px;height:64px;border:3px solid #0a0a0a;box-shadow:5px 5px 0 #0a0a0a}
+.pop i:nth-child(1){background:#ffd23f}.pop i:nth-child(2){background:#ff6b9d;transform:rotate(-6deg)}.pop i:nth-child(3){background:#4d96ff}
+.memphis{background:#fdf6ec;position:relative}
+.memphis b{position:absolute;display:block}
+.memphis .m1{width:64px;height:64px;border-radius:50%;background:#00c2c7;border:3px solid #1b1b3a;left:22%;top:26%}
+.memphis .m2{width:0;height:0;border-left:38px solid transparent;border-right:38px solid transparent;border-bottom:64px solid #ff5fa2;left:52%;top:20%;transform:rotate(12deg)}
+.memphis .m3{width:120px;height:28px;background:repeating-linear-gradient(45deg,#7b5cff 0 5px,transparent 5px 11px);left:40%;bottom:18%;transform:rotate(-10deg)}
+.memphis .m4{width:44px;height:44px;background:#ffd93b;border:3px solid #1b1b3a;right:14%;bottom:24%;transform:rotate(20deg)}
+.memphis .m5{left:8%;bottom:16%;width:110px;height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14' viewBox='0 0 28 14'%3E%3Cpath d='M0 7 Q7 0 14 7 T28 7' fill='none' stroke='%23ff7a3d' stroke-width='4'/%3E%3C/svg%3E") repeat-x}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Dashboard style gallery</h1>
+  <p class="sub">The same inventory dashboard (menu, KPIs, stock donut, order bars, top SKUs, SKU allocation) built in five visual styles.</p>
+  <div class="cards">
+    <a class="card" href="glassmorphism.html"><div class="pv glass"><i></i></div><div class="body"><h2>Glassmorphism</h2><p>Frosted translucent panels floating over a rich gradient. Best for dark-mode, creative environments.</p><div class="tags"><span>backdrop-filter</span><span>rgba()</span><span>border</span></div></div></a>
+    <a class="card" href="neumorphism.html"><div class="pv neu"><i></i></div><div class="body"><h2>Neumorphism</h2><p>Soft extruded surfaces molded from one continuous background. Best for calm, minimal panels.</p><div class="tags"><span>dual box-shadow</span><span>inset</span></div></div></a>
+    <a class="card" href="claymorphism.html"><div class="pv clay"><i></i></div><div class="body"><h2>Claymorphism</h2><p>Puffy, inflated 3D clay shapes with pastel tints. Best for friendly fintech and gamified tools.</p><div class="tags"><span>border-radius</span><span>multi inset shadow</span></div></div></a>
+    <a class="card" href="aurora.html"><div class="pv aurora"><i>Aurora</i></div><div class="body"><h2>Aurora UI</h2><p>Flowing, blurred neon gradients behind glowing data. Best for futuristic, premium hero widgets.</p><div class="tags"><span>radial-gradient</span><span>filter: blur()</span></div></div></a>
+    <a class="card" href="bento.html"><div class="pv bento"><i></i><i></i><i></i><i></i><i></i></div><div class="body"><h2>Bento Box UI</h2><p>Strict modular tiles of varying size in one grid. Best for dense analytics and SaaS hubs.</p><div class="tags"><span>grid-template-areas</span><span>gap</span></div></div></a>
+    <a class="card" href="brutalism.html"><div class="pv brutal"><i>Brutal</i></div><div class="body"><h2>Neo-Brutalism (Mono)</h2><p>Thick black outlines, hard offset shadows, square corners and monospace type. Best for tools, utilities and developer products.</p><div class="tags"><span>border: 3px solid</span><span>box-shadow: 5px 5px 0</span><span>monospace</span></div></div></a>
+    <a class="card" href="brutalism-color.html"><div class="pv pop"><i></i><i></i><i></i></div><div class="body"><h2>Neo-Brutalism (Colour)</h2><p>The same hard outlines and offset shadows, with loud flat fills: yellow, pink, blue, green. Best for playful SaaS, creator tools and landing pages.</p><div class="tags"><span>flat saturated fills</span><span>box-shadow: 5px 5px 0</span><span>color-mix()</span></div></div></a>
+    <a class="card" href="memphis.html"><div class="pv memphis"><b class="m1"></b><b class="m2"></b><b class="m3"></b><b class="m4"></b><b class="m5"></b></div><div class="body"><h2>Memphis</h2><p>80s Memphis Group revival: clashing brights, confetti shapes, squiggles, zigzags and dot/stripe patterns. Best for playful, youthful and creative brands.</p><div class="tags"><span>clip-path</span><span>repeating-linear-gradient</span><span>inline SVG</span></div></div></a>
+  </div>
+</div>
+</body>
+</html>

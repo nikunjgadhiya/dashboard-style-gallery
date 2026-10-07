@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('dash-theme:claymorphism.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clay Inventory Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --font:'Nunito',system-ui,sans-serif;
+  --bg:#efeafd;--text:#2e2a4f;--muted:#7a7499;
+  --line:rgba(122,116,153,.15);--grid:rgba(122,116,153,.13);
+  --accent:#7c6cf2;--ok:#34c79a;--warn:#ffad33;--bad:#ff6b8b;
+  --c1:#7c6cf2;--c2:#4fd1a5;--c3:#ffb547;--c4:#ff7eb6;--c5:#5ec8f2;
+  --tip-bg:#2e2a4f;--tip-radius:14;
+  --donut-border:#fbfaff;--donut-bw:0;--donut-radius:16;--donut-spacing:6;--donut-cutout:62%;
+  --bar-radius:10;--bar-stacked:1;
+  --surface:#fbfaff;
+  --clay:0 22px 40px -14px rgba(92,72,170,.32),inset -8px -8px 16px rgba(92,72,170,.10),inset 8px 8px 16px rgba(255,255,255,.95);
+  --pill:0 12px 20px -8px rgba(124,108,242,.7),inset -4px -4px 8px rgba(0,0,0,.14),inset 4px 4px 8px rgba(255,255,255,.4);
+}
+body{background:radial-gradient(circle at 12% 8%,#fde4f1 0,transparent 32%),radial-gradient(circle at 92% 92%,#dbf1ff 0,transparent 40%),radial-gradient(circle at 70% 20%,#fff3d9 0,transparent 30%),var(--bg);background-attachment:fixed;font-size:14.5px}
+.sidebar,.kpi,.card,.search,.user,.icon-btn,.segmented,.date-chip{background:var(--surface);box-shadow:var(--clay)}
+.sidebar{margin:18px 0 18px 18px;height:calc(100vh - 36px);top:18px;border-radius:36px;padding:22px 16px}
+.brand .logo{border-radius:16px;background:var(--accent);color:#fff;box-shadow:var(--pill)}
+.nav-item{border-radius:18px;font-weight:700;color:#5d5880}
+.nav-item:hover:not(.active){background:#f0edff}
+.nav-item.active{background:var(--accent);color:#fff;box-shadow:var(--pill)}
+.side-foot{border-radius:24px;background:#fff1d6;box-shadow:inset -4px -4px 10px rgba(180,120,20,.12),inset 4px 4px 10px rgba(255,255,255,.8)}
+.avatar{background:var(--c4);color:#fff;box-shadow:inset -3px -3px 6px rgba(0,0,0,.15),inset 3px 3px 6px rgba(255,255,255,.4)}
+.search,.date-chip,.icon-btn{border-radius:22px}
+.user,.segmented{border-radius:26px}
+.segmented{padding:6px}
+.segmented button{border-radius:20px;font-weight:800}
+.segmented button.active{background:var(--accent);color:#fff;box-shadow:var(--pill)}
+.page-head h1{font-weight:900;font-size:34px}
+.kpi{border-radius:32px;padding:22px}
+.kpi-1{background:#e9e5ff}.kpi-2{background:#dbf7ed}.kpi-3{background:#fff1d6}.kpi-4{background:#ffe3ef}
+.kpi-value{font-weight:900}
+.kpi-icon{border-radius:20px;color:#fff;width:54px;height:54px}
+.kpi-1 .kpi-icon{background:var(--c1);box-shadow:0 12px 18px -8px var(--c1),inset -4px -4px 8px rgba(0,0,0,.14),inset 4px 4px 8px rgba(255,255,255,.45)}
+.kpi-2 .kpi-icon{background:var(--c2);box-shadow:0 12px 18px -8px var(--c2),inset -4px -4px 8px rgba(0,0,0,.14),inset 4px 4px 8px rgba(255,255,255,.45)}
+.kpi-3 .kpi-icon{background:var(--c3);box-shadow:0 12px 18px -8px var(--c3),inset -4px -4px 8px rgba(0,0,0,.14),inset 4px 4px 8px rgba(255,255,255,.45)}
+.kpi-4 .kpi-icon{background:var(--c4);box-shadow:0 12px 18px -8px var(--c4),inset -4px -4px 8px rgba(0,0,0,.14),inset 4px 4px 8px rgba(255,255,255,.45)}
+.card{border-radius:36px;padding:26px}
+.card-h h3{font-weight:800;font-size:16px}
+.link{background:#efeaff;padding:7px 14px;border-radius:14px}
+.legend i{width:12px;height:12px;border-radius:50%;box-shadow:inset -2px -2px 3px rgba(0,0,0,.18)}
+.thumb{border-radius:14px;width:36px;height:36px;box-shadow:inset -3px -3px 6px rgba(0,0,0,.25),inset 3px 3px 6px rgba(255,255,255,.35)}
+.meter{height:8px;border-radius:6px;box-shadow:inset 2px 2px 3px rgba(92,72,170,.15)}
+.meter i{border-radius:6px;background:linear-gradient(90deg,#9d90ff,var(--accent))}
+.alloc-bar{height:16px;border-radius:10px;background:#f1eef9;box-shadow:inset 2px 2px 4px rgba(92,72,170,.15);gap:3px;padding:2px}
+.alloc-bar span{border-radius:8px;box-shadow:inset -2px -2px 3px rgba(0,0,0,.12),inset 2px 2px 3px rgba(255,255,255,.35)}
+.alloc-summary{border:0;background:#f5f2ff;border-radius:26px;padding:16px 0;box-shadow:inset 4px 4px 10px rgba(92,72,170,.1),inset -4px -4px 10px rgba(255,255,255,.9)}
+.alloc-summary strong{font-weight:900}
+@media (max-width:900px){.sidebar{margin:0;top:0;height:100vh;border-radius:0 36px 36px 0}}
+
+/* ---------- dark theme ---------- */
+:root{color-scheme:light}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#17152a;--text:#ece9ff;--muted:#a49ec6;
+  --line:rgba(255,255,255,.08);--grid:rgba(255,255,255,.07);
+  --accent:#8f80ff;--ok:#4fd1a5;--warn:#ffb547;--bad:#ff7e9a;
+  --c1:#8f80ff;
+  --tip-bg:#0d0b1a;--donut-border:#24213d;
+  --surface:#24213d;
+  --clay:0 22px 40px -14px rgba(0,0,0,.65),inset -8px -8px 16px rgba(0,0,0,.28),inset 8px 8px 16px rgba(255,255,255,.07);
+  --pill:0 12px 22px -8px rgba(143,128,255,.55),inset -4px -4px 8px rgba(0,0,0,.2),inset 4px 4px 8px rgba(255,255,255,.25);
+}
+[data-theme="dark"] body{background:radial-gradient(circle at 12% 8%,#3a2350 0,transparent 32%),radial-gradient(circle at 92% 92%,#16304a 0,transparent 40%),radial-gradient(circle at 70% 20%,#352a1a 0,transparent 30%),var(--bg);background-attachment:fixed}
+[data-theme="dark"] .nav-item{color:#bab4de}
+[data-theme="dark"] .nav-item:hover:not(.active){background:rgba(255,255,255,.06)}
+[data-theme="dark"] .nav-item.active{color:#fff}
+[data-theme="dark"] .side-foot{background:#3a3020;box-shadow:inset -4px -4px 10px rgba(0,0,0,.3),inset 4px 4px 10px rgba(255,255,255,.06)}
+[data-theme="dark"] .kpi-1{background:#2f2956}
+[data-theme="dark"] .kpi-2{background:#1c3b34}
+[data-theme="dark"] .kpi-3{background:#3d3220}
+[data-theme="dark"] .kpi-4{background:#3e2236}
+[data-theme="dark"] .link{background:rgba(143,128,255,.18)}
+[data-theme="dark"] .meter{box-shadow:inset 2px 2px 3px rgba(0,0,0,.35)}
+[data-theme="dark"] .alloc-bar{background:#1b1930;box-shadow:inset 2px 2px 4px rgba(0,0,0,.4)}
+[data-theme="dark"] .alloc-summary{background:#1d1a33;box-shadow:inset 4px 4px 10px rgba(0,0,0,.35),inset -4px -4px 10px rgba(255,255,255,.04)}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">T</div><div><strong>TIFFNY Inventory</strong><small>Stock &amp; Master SKU Manager</small></div></div>
+    <nav id="menu"></nav>
+    <div class="side-foot"><div class="avatar">RP</div><div><strong>Ritesh Patel</strong><small>Admin</small></div></div>
+  </aside>
+  <div class="scrim"></div>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" data-icon="menu" aria-label="Open menu"></button>
+      <label class="search"><span data-icon="search"></span><input type="search" placeholder="Search by SKU, product name, brand…"></label>
+      <div class="top-actions">
+        <button class="icon-btn theme-btn" id="themeToggle" type="button"></button>
+        <button class="icon-btn" data-icon="bell" aria-label="Notifications"><b>4</b></button>
+        <div class="user"><div class="avatar">R</div><div><strong>Ritesh Patel</strong><small>Admin · 07 Oct 2026</small></div></div>
+      </div>
+    </header>
+    <div class="page-head">
+      <div><h1>Dashboard</h1><p>Stock &amp; order overview across all platforms</p></div>
+      <div class="head-tools"><div id="periods" class="segmented"></div><div class="date-chip"><span data-icon="calendar"></span><span id="dateRange"></span></div></div>
+    </div>
+    <section id="kpis" class="kpis"></section>
+    <section class="grid">
+      <article class="card c-donut">
+        <header class="card-h"><div><h3>Platform-wise stock allocated</h3><p>Units currently allocated per channel</p></div></header>
+        <div class="donut-wrap"><div class="donut-box"><canvas id="donutChart"></canvas><div class="donut-center"><strong id="donutTotal"></strong><span>Total stock</span></div></div><ul id="donutLegend" class="legend"></ul></div>
+      </article>
+      <article class="card c-bar">
+        <header class="card-h"><div><h3>Platform-wise order overview</h3><p>Orders by channel, <span data-period-name></span></p></div></header>
+        <div class="chart-box"><canvas id="barChart"></canvas></div>
+      </article>
+      <article class="card c-table">
+        <header class="card-h"><div><h3>Top selling SKU</h3><p>Top 8 by units sold</p></div><a href="#" class="link">View all →</a></header>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>SKU / Product</th><th>Brand</th><th class="num">Sold qty</th><th class="num">Revenue</th></tr></thead><tbody id="skuBody"></tbody></table></div>
+      </article>
+      <article class="card c-alloc">
+        <header class="card-h"><div><h3>Platform-wise SKU allocation</h3><p>SKU health per channel</p></div><div class="key"><span class="ok">In stock</span><span class="warn">Low</span><span class="bad">Out</span></div></header>
+        <div id="alloc"></div>
+        <div id="allocSummary" class="alloc-summary"></div>
+      </article>
+    </section>
+  </main>
+</div>
+<script src="assets/dashboard.js"></script>
+</body>
+</html>

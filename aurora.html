@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('dash-theme:aurora.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aurora Inventory Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --font:'Space Grotesk',system-ui,sans-serif;
+  --bg:#04050d;--text:#e8ecff;--muted:#8b93b8;
+  --line:rgba(148,163,255,.12);--grid:rgba(148,163,255,.08);
+  --accent:#22d3ee;--ok:#34d399;--warn:#fbbf24;--bad:#fb7185;
+  --c1:#22d3ee;--c2:#a78bfa;--c3:#f472b6;--c4:#34d399;--c5:#fbbf24;
+  --tip-bg:rgba(10,12,28,.95);--tip-radius:10;
+  --donut-border:#0b0d1f;--donut-bw:3;--donut-radius:4;--bar-radius:6;--trend:#22d3ee;
+  --panel:rgba(11,13,31,.8);
+  --edge:linear-gradient(140deg,rgba(34,211,238,.5),rgba(167,139,250,.12) 40%,rgba(244,114,182,.4));
+}
+.aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;background:var(--bg)}
+.aurora span{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;animation:drift 24s ease-in-out infinite alternate}
+.aurora span:nth-child(1){width:60vw;height:38vw;left:-12vw;top:-14vw;background:linear-gradient(120deg,#06b6d4,#3b82f6)}
+.aurora span:nth-child(2){width:50vw;height:36vw;right:-14vw;top:4vw;background:linear-gradient(120deg,#8b5cf6,#ec4899);animation-duration:30s;animation-delay:-8s}
+.aurora span:nth-child(3){width:62vw;height:32vw;left:18vw;bottom:-18vw;background:linear-gradient(120deg,#10b981,#22d3ee);animation-duration:36s;animation-delay:-14s}
+.aurora::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 0,rgba(4,5,13,.65) 85%)}
+@keyframes drift{0%{transform:translate(0,0) rotate(0) scale(1)}50%{transform:translate(8vw,6vh) rotate(20deg) scale(1.15)}100%{transform:translate(-6vw,10vh) rotate(-12deg) scale(.95)}}
+@media (prefers-reduced-motion:reduce){.aurora span{animation:none}}
+
+.sidebar,.kpi,.card,.search,.user,.icon-btn,.segmented,.date-chip{
+  background:linear-gradient(var(--panel),var(--panel)) padding-box,var(--edge) border-box;
+  border:1px solid transparent;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+}
+.sidebar{margin:16px 0 16px 16px;height:calc(100vh - 32px);top:16px;border-radius:20px}
+.brand .logo{border-radius:12px;background:linear-gradient(135deg,#22d3ee,#a78bfa 55%,#f472b6);color:#04050d;box-shadow:0 0 24px rgba(34,211,238,.45)}
+.nav-item{border-radius:10px;color:#a8afd3}
+.nav-item:hover{color:#fff;background:rgba(148,163,255,.07)}
+.nav-item.active{background:linear-gradient(90deg,rgba(34,211,238,.22),rgba(167,139,250,.06));color:#fff;box-shadow:inset 2px 0 0 #22d3ee}
+.nav-item.active .ic{color:#22d3ee;filter:drop-shadow(0 0 6px #22d3ee)}
+.side-foot{border-radius:14px;background:rgba(148,163,255,.06)}
+.avatar{background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#04050d}
+.search,.date-chip,.icon-btn,.segmented{border-radius:12px}
+.user{border-radius:999px}
+.segmented button{border-radius:9px}
+.segmented button:hover{color:#fff}
+.segmented button.active{background:linear-gradient(90deg,#22d3ee,#a78bfa);color:#04050d;font-weight:700;box-shadow:0 0 18px rgba(34,211,238,.45)}
+.page-head h1{font-size:34px;background:linear-gradient(90deg,#fff,#a5f3fc 40%,#c4b5fd 70%,#f9a8d4);-webkit-background-clip:text;background-clip:text;color:transparent}
+.kpi,.card{border-radius:18px}
+.kpi-value{text-shadow:0 0 24px rgba(34,211,238,.35)}
+.kpi-icon{border-radius:12px;color:#04050d}
+.kpi-1 .kpi-icon{background:linear-gradient(135deg,#22d3ee,#3b82f6);box-shadow:0 0 22px rgba(34,211,238,.5)}
+.kpi-2 .kpi-icon{background:linear-gradient(135deg,#a78bfa,#ec4899);box-shadow:0 0 22px rgba(167,139,250,.5)}
+.kpi-3 .kpi-icon{background:linear-gradient(135deg,#34d399,#22d3ee);box-shadow:0 0 22px rgba(52,211,153,.5)}
+.kpi-4 .kpi-icon{background:linear-gradient(135deg,#fb7185,#fbbf24);box-shadow:0 0 22px rgba(251,113,133,.5)}
+.c-hero{grid-column:1/-1;position:relative;overflow:hidden}
+.c-hero::before{content:"";position:absolute;width:420px;height:420px;left:-140px;top:-220px;background:radial-gradient(circle,rgba(34,211,238,.25),transparent 65%);pointer-events:none}
+.hero-num{font-size:48px;background:linear-gradient(90deg,#a5f3fc,#c4b5fd);-webkit-background-clip:text;background-clip:text;color:transparent}
+.c-hero .chart-box{height:240px}
+#trendChart{filter:drop-shadow(0 0 10px rgba(34,211,238,.55))}
+#barChart{filter:drop-shadow(0 0 6px rgba(167,139,250,.3))}
+#donutChart{filter:drop-shadow(0 0 12px rgba(34,211,238,.25))}
+.thumb{box-shadow:0 0 0 2px rgba(255,255,255,.12)}
+.meter i{background:linear-gradient(90deg,#22d3ee,#a78bfa);box-shadow:0 0 8px #22d3ee}
+.alloc-bar{background:rgba(148,163,255,.08)}
+.alloc-bar .ok{box-shadow:0 0 12px var(--ok)}.alloc-bar .warn{box-shadow:0 0 12px var(--warn)}.alloc-bar .bad{box-shadow:0 0 12px var(--bad)}
+.alloc-summary strong{text-shadow:0 0 18px currentColor}
+@media (max-width:900px){.sidebar{margin:0;top:0;height:100vh;border-radius:0 20px 20px 0}}
+
+/* ---------- light theme ---------- */
+:root{color-scheme:dark}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#f3f5ff;--text:#151833;--muted:#5f6690;
+  --line:rgba(60,70,140,.12);--grid:rgba(60,70,140,.08);
+  --accent:#0891b2;--ok:#059669;--warn:#d97706;--bad:#e11d48;
+  --c1:#06b6d4;--c2:#8b5cf6;--c3:#ec4899;--c4:#10b981;--c5:#f59e0b;
+  --tip-bg:rgba(21,24,51,.92);--donut-border:#fff;--trend:#0891b2;
+  --panel:rgba(255,255,255,.8);
+  --edge:linear-gradient(140deg,rgba(6,182,212,.55),rgba(139,92,246,.15) 40%,rgba(236,72,153,.45));
+}
+[data-theme="light"] .aurora span{opacity:.38}
+[data-theme="light"] .aurora::after{background:radial-gradient(ellipse at center,transparent 0,rgba(243,245,255,.6) 85%)}
+[data-theme="light"] .nav-item{color:#4b5280}
+[data-theme="light"] .nav-item:hover{color:var(--text);background:rgba(60,70,140,.06)}
+[data-theme="light"] .nav-item.active{color:var(--text);background:linear-gradient(90deg,rgba(6,182,212,.16),rgba(139,92,246,.04));box-shadow:inset 2px 0 0 #0891b2}
+[data-theme="light"] .nav-item.active .ic{color:#0891b2;filter:none}
+[data-theme="light"] .side-foot{background:rgba(60,70,140,.05)}
+[data-theme="light"] .segmented button:hover{color:var(--text)}
+[data-theme="light"] .segmented button.active{box-shadow:0 6px 16px rgba(8,145,178,.3)}
+[data-theme="light"] .page-head h1{background:linear-gradient(90deg,#151833,#0891b2 50%,#8b5cf6 80%,#db2777);-webkit-background-clip:text;background-clip:text}
+[data-theme="light"] .hero-num{background:linear-gradient(90deg,#0891b2,#8b5cf6);-webkit-background-clip:text;background-clip:text}
+[data-theme="light"] .kpi-value,[data-theme="light"] .alloc-summary strong{text-shadow:none}
+[data-theme="light"] .kpi-icon{color:#fff}
+[data-theme="light"] :is(.kpi-1,.kpi-2,.kpi-3,.kpi-4) .kpi-icon{box-shadow:0 8px 18px -6px rgba(60,70,140,.35)}
+[data-theme="light"] #trendChart{filter:drop-shadow(0 6px 10px rgba(8,145,178,.3))}
+[data-theme="light"] :is(#barChart,#donutChart){filter:none}
+[data-theme="light"] .meter i{box-shadow:none}
+[data-theme="light"] .alloc-bar{background:rgba(60,70,140,.08)}
+[data-theme="light"] .alloc-bar span{box-shadow:none !important}
+[data-theme="light"] .c-hero::before{background:radial-gradient(circle,rgba(6,182,212,.18),transparent 65%)}
+</style>
+</head>
+<body>
+<div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">T</div><div><strong>TIFFNY Inventory</strong><small>Stock &amp; Master SKU Manager</small></div></div>
+    <nav id="menu"></nav>
+    <div class="side-foot"><div class="avatar">RP</div><div><strong>Ritesh Patel</strong><small>Admin</small></div></div>
+  </aside>
+  <div class="scrim"></div>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" data-icon="menu" aria-label="Open menu"></button>
+      <label class="search"><span data-icon="search"></span><input type="search" placeholder="Search by SKU, product name, brand…"></label>
+      <div class="top-actions">
+        <button class="icon-btn theme-btn" id="themeToggle" type="button"></button>
+        <button class="icon-btn" data-icon="bell" aria-label="Notifications"><b>4</b></button>
+        <div class="user"><div class="avatar">R</div><div><strong>Ritesh Patel</strong><small>Admin · 07 Oct 2026</small></div></div>
+      </div>
+    </header>
+    <div class="page-head">
+      <div><h1>Dashboard</h1><p>Stock &amp; order overview across all platforms</p></div>
+      <div class="head-tools"><div id="periods" class="segmented"></div><div class="date-chip"><span data-icon="calendar"></span><span id="dateRange"></span></div></div>
+    </div>
+    <section id="kpis" class="kpis"></section>
+    <section class="grid">
+      <article class="card c-hero">
+        <div class="hero">
+          <div class="hero-copy">
+            <span class="eyebrow">Revenue · <span data-period-name></span></span>
+            <strong id="trendTotal" class="hero-num"></strong>
+            <div class="kpi-delta up">▲ 21.4% <span>vs. previous period</span></div>
+            <div class="hero-stats">
+              <div><span>Avg. order</span><b>₹2,380</b></div>
+              <div><span>Return rate</span><b>3.8%</b></div>
+              <div><span>Fulfilment</span><b>96.4%</b></div>
+            </div>
+          </div>
+          <div class="chart-box"><canvas id="trendChart"></canvas></div>
+        </div>
+      </article>
+      <article class="card c-donut">
+        <header class="card-h"><div><h3>Platform-wise stock allocated</h3><p>Units currently allocated per channel</p></div></header>
+        <div class="donut-wrap"><div class="donut-box"><canvas id="donutChart"></canvas><div class="donut-center"><strong id="donutTotal"></strong><span>Total stock</span></div></div><ul id="donutLegend" class="legend"></ul></div>
+      </article>
+      <article class="card c-bar">
+        <header class="card-h"><div><h3>Platform-wise order overview</h3><p>Orders by channel, <span data-period-name></span></p></div></header>
+        <div class="chart-box"><canvas id="barChart"></canvas></div>
+      </article>
+      <article class="card c-table">
+        <header class="card-h"><div><h3>Top selling SKU</h3><p>Top 8 by units sold</p></div><a href="#" class="link">View all →</a></header>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>SKU / Product</th><th>Brand</th><th class="num">Sold qty</th><th class="num">Revenue</th></tr></thead><tbody id="skuBody"></tbody></table></div>
+      </article>
+      <article class="card c-alloc">
+        <header class="card-h"><div><h3>Platform-wise SKU allocation</h3><p>SKU health per channel</p></div><div class="key"><span class="ok">In stock</span><span class="warn">Low</span><span class="bad">Out</span></div></header>
+        <div id="alloc"></div>
+        <div id="allocSummary" class="alloc-summary"></div>
+      </article>
+    </section>
+  </main>
+</div>
+<script src="assets/dashboard.js"></script>
+</body>
+</html>
