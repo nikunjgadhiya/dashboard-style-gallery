@@ -125,6 +125,9 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,
 .pv-sp i{width:130px;height:88px;border-radius:44% 56% 52% 48%/46% 44% 56% 54%;background:rgba(255,252,243,.9);border:1.5px solid rgba(79,122,51,.3);position:relative;display:grid;place-items:center;font:700 22px 'Fraunces',serif;font-style:normal;color:#4f7a33}
 .pv-sp i::after{content:"";position:absolute;right:12px;top:-12px;width:40px;height:20px;background:#8fbf4d;border-radius:0 100% 0 100%;transform:rotate(-24deg)}
 .pv-sp b{position:absolute;left:22px;bottom:20px;width:60px;height:30px;background:rgba(79,122,51,.3);border-radius:0 100% 0 100%;transform:rotate(-30deg)}
+.pv-gb{background:radial-gradient(circle at 10% 10%,#7c3aed,transparent 55%),radial-gradient(circle at 90% 20%,#0ea5e9,transparent 55%),radial-gradient(circle at 60% 100%,#ec4899,transparent 55%),#0a0b1e;padding:16px;display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;place-items:stretch}
+.pv-gb i{border-radius:12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
+.pv-gb i:first-child{grid-row:span 2}
 </style>
 </head>
 <body>
@@ -159,6 +162,7 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,
     <a class="card" href="newspaper.html"><div class="pv pv-np"><i>Dashboard</i><span><em>Vol. XXVI</em><em>₹5</em></span><b>Stock rises 12.5% across platforms</b></div><div class="body"><h2>Newspaper / Editorial</h2><p>Broadsheet front page: blackletter masthead, dateline, section index, headline KPIs, column rules, halftone thumbs and a red spot colour. Best for media and reports.</p><div class="tags"><span>blackletter + Playfair</span><span>double rules</span><span>halftone dots</span></div></div></a>
     <a class="card" href="comic.html"><div class="pv pv-cm"><i>POW!</i><b></b></div><div class="body"><h2>Comic Book</h2><p>Pop-art comic page: halftone dots, inked tilted panels, caption boxes, starburst icons, speech-bubble deltas and a POW! heading. Best for entertainment and kids.</p><div class="tags"><span>halftone radial-gradient</span><span>clip-path starburst</span><span>-webkit-text-stroke</span></div></div></a>
     <a class="card" href="solarpunk.html"><div class="pv pv-sp"><i>grow</i><b></b></div><div class="body"><h2>Solarpunk / Organic</h2><p>Hopeful-ecology palette of moss, leaf, sun and clay, soft serif type, blob shapes, vines and leaves. Dark mode is a night forest with fireflies. Best for sustainability and agri-tech.</p><div class="tags"><span>organic border-radius</span><span>inline SVG leaves</span><span>Fraunces SOFT axis</span></div></div></a>
+    <a class="card" href="glass-bento.html"><div class="pv pv-gb"><i></i><i></i><i></i><i></i><i></i></div><div class="body"><h2>Glass + Bento</h2><p>The Bento tile grid built from frosted glass over a vivid gradient, with a glowing revenue hero and lifting tiles. Best for modern SaaS hubs.</p><div class="tags"><span>grid-template-areas</span><span>backdrop-filter</span><span>display: contents</span></div></div></a>
   </div>
 </div>
 </body>
