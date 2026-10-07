@@ -56,6 +56,10 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,
 .pv-m3 i{width:70px;height:70px;border-radius:16px}
 .pv-m3 i:nth-child(1){background:#eaddff}.pv-m3 i:nth-child(2){background:#e8def8;border-radius:50%}.pv-m3 i:nth-child(3){background:#ffd8e4;border-radius:28px 8px}
 .pv-m3 b{position:absolute;right:16px;bottom:16px;width:44px;height:44px;border-radius:14px;background:#6750a4;box-shadow:0 4px 8px rgba(0,0,0,.2)}
+.pv-fl{background:radial-gradient(circle at 85% 0%,#d7e4f7,transparent 60%),#eef0f5;display:flex;align-items:center;justify-content:center;gap:10px}
+.pv-fl i{width:150px;height:96px;border-radius:8px;background:rgba(255,255,255,.75);border:1px solid rgba(0,0,0,.06);box-shadow:0 2px 4px rgba(0,0,0,.05);position:relative}
+.pv-fl i::before{content:"";position:absolute;left:12px;top:16px;width:3px;height:16px;border-radius:2px;background:#005fb8}
+.pv-fl i::after{content:"";position:absolute;left:24px;right:16px;top:20px;height:8px;border-radius:4px;background:rgba(0,0,0,.08);box-shadow:0 18px 0 rgba(0,0,0,.05),0 36px 0 rgba(0,0,0,.05)}
 </style>
 </head>
 <body>
@@ -73,6 +77,7 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,
     <a class="card" href="memphis.html"><div class="pv memphis"><b class="m1"></b><b class="m2"></b><b class="m3"></b><b class="m4"></b><b class="m5"></b></div><div class="body"><h2>Memphis</h2><p>80s Memphis Group revival: clashing brights, confetti shapes, squiggles, zigzags and dot/stripe patterns. Best for playful, youthful and creative brands.</p><div class="tags"><span>clip-path</span><span>repeating-linear-gradient</span><span>inline SVG</span></div></div></a>
     <a class="card" href="liquid-glass.html"><div class="pv pv-lg"><b></b><i></i></div><div class="body"><h2>Liquid Glass</h2><p>Apple-style thick, clear glass with bright specular rims, capsule controls and a vivid wallpaper refracted behind it. Best for premium consumer apps.</p><div class="tags"><span>backdrop-filter: saturate()</span><span>mask-composite rim</span><span>isolation</span></div></div></a>
     <a class="card" href="material3.html"><div class="pv pv-m3"><i></i><i></i><i></i><b></b></div><div class="body"><h2>Material Design 3</h2><p>Google's tonal palette from one seed colour, pill nav drawer, state layers, segmented buttons and a FAB. Best for Android and Google-style apps.</p><div class="tags"><span>tonal tokens</span><span>state layers</span><span>elevation</span></div></div></a>
+    <a class="card" href="fluent.html"><div class="pv pv-fl"><i></i></div><div class="body"><h2>Fluent (Windows 11)</h2><p>Mica-tinted backdrop, acrylic layers, frameless navigation with an accent pill, 4px controls and Segoe UI. Best for enterprise and Microsoft-style tools.</p><div class="tags"><span>Mica / Acrylic</span><span>feTurbulence noise</span><span>elevation strokes</span></div></div></a>
   </div>
 </div>
 </body>
