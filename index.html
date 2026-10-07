@@ -111,6 +111,9 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,
 .pv-px{background:#1d2b53;flex-direction:column;gap:12px;display:flex;align-items:center;justify-content:center}
 .pv-px i{font:400 18px 'Press Start 2P',monospace;font-style:normal;color:#ffec27;text-shadow:3px 3px 0 #ff004d}
 .pv-px b{width:150px;height:14px;background:repeating-linear-gradient(90deg,#00e436 0 10px,transparent 10px 13px) 0 0/70% 100% no-repeat,#000;box-shadow:-3px 0 0 #fff1e8,3px 0 0 #fff1e8,0 -3px 0 #fff1e8,0 3px 0 #fff1e8}
+.pv-bp{background:linear-gradient(rgba(255,255,255,.17) 1px,transparent 1px) 0 0/50px 50px,linear-gradient(90deg,rgba(255,255,255,.17) 1px,transparent 1px) 0 0/50px 50px,linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px) 0 0/10px 10px,linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px) 0 0/10px 10px,#0b4f8a}
+.pv-bp i{width:130px;height:84px;border:1.5px solid #fff;display:grid;place-items:center;font:400 20px 'Architects Daughter',cursive;font-style:normal;color:#fff;position:relative}
+.pv-bp i::after{content:"← 640 →";position:absolute;top:-22px;left:0;right:0;text-align:center;font:11px 'IBM Plex Mono',monospace;color:#a9cdf0}
 </style>
 </head>
 <body>
@@ -141,6 +144,7 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,
     <a class="card" href="bauhaus.html"><div class="pv pv-bh"><b></b><b></b><b></b></div><div class="body"><h2>Bauhaus</h2><p>Primary red, blue and yellow, lowercase geometric type and bold colour blocks with circles, squares and triangles. Best for design studios and education.</p><div class="tags"><span>geometric shapes</span><span>colour blocks</span><span>lowercase Jost</span></div></div></a>
     <a class="card" href="artdeco.html"><div class="pv pv-deco"><i>DECO</i></div><div class="body"><h2>Art Deco</h2><p>1920s glamour: emerald and gold, sunburst rays, Poiret One type, arch-topped cards, fan ornaments and strict symmetry. Best for hospitality and luxury events.</p><div class="tags"><span>repeating-conic-gradient</span><span>arch border-radius</span><span>stepped clip-path</span></div></div></a>
     <a class="card" href="pixel.html"><div class="pv pv-px"><i>STOCK</i><b></b></div><div class="body"><h2>Pixel Art / 8-bit</h2><p>RPG-style game interface on the PICO-8 palette: stepped pixel borders, Press Start 2P, a blinking ▶ cursor and HP bars. Light mode is Game Boy green. Best for gaming and playful tools.</p><div class="tags"><span>box-shadow pixel borders</span><span>steps() blink</span><span>PICO-8 / Game Boy</span></div></div></a>
+    <a class="card" href="blueprint.html"><div class="pv pv-bp"><i>A-01</i></div><div class="body"><h2>Blueprint</h2><p>Technical drawing on Prussian blue: grid paper, crosshair corners, title blocks, revision stamp and section hatching. Light mode is a whiteprint. Best for engineering and manufacturing.</p><div class="tags"><span>layered grid gradients</span><span>CSS counters</span><span>hatching patterns</span></div></div></a>
   </div>
 </div>
 </body>

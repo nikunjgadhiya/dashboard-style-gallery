@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('dash-theme:blueprint.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blueprint Inventory Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  color-scheme:dark;
+  --font:'IBM Plex Mono',ui-monospace,monospace;
+  --hand:'Architects Daughter','Comic Sans MS',cursive;
+  --bg:#0b4f8a;--ink:#ffffff;--text:#eaf4ff;--muted:#a9cdf0;--fill:rgba(255,255,255,.04);--on:#0b4f8a;
+  --minor:rgba(255,255,255,.07);--major:rgba(255,255,255,.17);
+  --line:rgba(255,255,255,.28);--grid:rgba(255,255,255,.14);
+  --accent:#ffe066;--ok:#a5f2c1;--warn:#ffe066;--bad:#ff9e80;
+  --c1:#ffffff;--c2:#7fd4ff;--c3:#ffe066;--c4:#ff9e80;--c5:#a5f2c1;
+  --tip-bg:#ffffff;--tip-fg:#0b4f8a;--tip-radius:0;
+  --donut-border:#0b4f8a;--donut-bw:2;--donut-radius:0;--donut-cutout:68%;--bar-radius:0;--bar-border:#ffffff;--bar-bw:1.5;
+}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#f6f9fd;--ink:#1d4f91;--text:#163d70;--muted:#5b7fae;--fill:rgba(29,79,145,.03);--on:#f6f9fd;
+  --minor:rgba(29,79,145,.07);--major:rgba(29,79,145,.16);
+  --line:rgba(29,79,145,.32);--grid:rgba(29,79,145,.14);
+  --accent:#d0543a;--ok:#2e9e6b;--warn:#c48a00;--bad:#d0543a;
+  --c1:#1d4f91;--c2:#2b8fd6;--c3:#e0a100;--c4:#d0543a;--c5:#2e9e6b;
+  --tip-bg:#1d4f91;--tip-fg:#fff;
+  --donut-border:#f6f9fd;--bar-border:#1d4f91;
+}
+*{border-radius:0 !important}
+body{background:
+  linear-gradient(var(--major) 1px,transparent 1px) 0 0/100px 100px,linear-gradient(90deg,var(--major) 1px,transparent 1px) 0 0/100px 100px,
+  linear-gradient(var(--minor) 1px,transparent 1px) 0 0/20px 20px,linear-gradient(90deg,var(--minor) 1px,transparent 1px) 0 0/20px 20px,var(--bg);
+  background-attachment:fixed;font-size:13px}
+
+/* drawing frame */
+.sidebar,.kpi,.card,.search,.user,.date-chip,.icon-btn{background:linear-gradient(var(--ink),var(--ink)) 0 0/14px 1.5px no-repeat,linear-gradient(var(--ink),var(--ink)) 0 0/1.5px 14px no-repeat,linear-gradient(var(--ink),var(--ink)) 100% 100%/14px 1.5px no-repeat,linear-gradient(var(--ink),var(--ink)) 100% 100%/1.5px 14px no-repeat,var(--fill);border:1px solid var(--line);backdrop-filter:blur(1px)}
+.sidebar{border-right:3px double var(--ink);border-top:0;border-bottom:0;border-left:0;padding:20px 16px;background:var(--fill)}
+.brand{border:1.5px solid var(--ink);padding:10px;gap:10px}
+.brand .logo{border:1.5px solid var(--ink);background:none;color:var(--ink);font-family:var(--hand);font-size:22px;border-radius:50% !important}
+.brand strong{font-family:var(--hand);font-weight:400;font-size:17px}
+.brand small{font-size:10px;opacity:.8}
+.nav-group{font-family:var(--hand);font-size:13px;opacity:1;color:var(--accent);letter-spacing:.06em}
+.nav-item{font-size:12.5px;font-weight:400;padding:6px 8px;display:flex}
+.nav-item span{display:flex;gap:6px;align-items:baseline}
+.nav-item span::after{content:"";flex:1;border-bottom:1.5px dotted var(--line)}
+.nav-item:hover{color:var(--accent)}
+.nav-item.active{background:var(--ink);color:var(--on)}
+.nav-item.active span::after{border-color:transparent}
+.side-foot{border:1.5px dashed var(--line)}
+.avatar{border-radius:50% !important;border:1.5px solid var(--ink);background:none;color:var(--ink);font-family:var(--hand)}
+
+/* header + approval stamp */
+.search input{font-family:var(--font)}
+.icon-btn{color:var(--ink)}
+.icon-btn b{background:var(--bad);color:#000;border-radius:50% !important}
+.page-head h1{font-family:var(--hand);font-weight:400;font-size:46px;letter-spacing:.02em;border-bottom:2px solid var(--ink);padding-bottom:4px;display:inline-block}
+.page-head p{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.page-head p::after{content:"REV. B · APPROVED";font-family:var(--hand);font-size:13px;color:var(--bad);border:2px solid var(--bad);padding:2px 10px;transform:rotate(-5deg);letter-spacing:.08em}
+.segmented{padding:0;gap:0;border:1.5px solid var(--ink)}
+.segmented button{font-size:11.5px;color:var(--text);padding:7px 11px}
+.segmented button+button{border-left:1.5px solid var(--line)}
+.segmented button.active{background:var(--ink);color:var(--on)}
+.date-chip{font-size:11.5px}
+
+/* KPI spec boxes */
+.kpis{counter-reset:spec;gap:20px}
+.kpi{flex-direction:column;gap:10px;padding:20px}
+.kpi-icon{border:1.5px dashed var(--ink);border-radius:50% !important;background:none;color:var(--ink)}
+.kpi-label{counter-increment:spec;text-transform:uppercase;letter-spacing:.1em;font-size:11px;color:var(--muted)}
+.kpi-label::before{content:"SPEC-0" counter(spec) " · "}
+.kpi-value{font-family:var(--hand);font-weight:400;font-size:38px;letter-spacing:.02em}
+.kpi-delta.up{color:var(--ok)}.kpi-delta.down{color:var(--bad)}
+
+/* drawing sheets with title blocks */
+.grid{counter-reset:dwg;gap:20px}
+.card{padding:0}
+.card>*:not(.card-h){margin:18px}
+.card-h{counter-increment:dwg;margin:0;padding:10px 14px;border-bottom:1.5px solid var(--ink);display:grid;grid-template-columns:1fr auto;align-items:center;gap:6px 12px}
+.card-h::after{content:"DWG A-0" counter(dwg);grid-column:2;grid-row:1;border:1.5px solid var(--ink);padding:3px 8px;font-size:10.5px;letter-spacing:.1em}
+.card-h>div:first-child{grid-column:1}
+.card-h>:not(:first-child){grid-column:1/-1;justify-self:start}
+.card-h h3{font-family:var(--hand);font-weight:400;font-size:19px;text-transform:uppercase;letter-spacing:.04em}
+.card-h p{font-size:11px}
+.card-h p::before{content:"Ø · "}
+.link{border:1.5px solid var(--ink);padding:3px 10px;color:var(--ink);font-size:11px}
+.donut-box{background:radial-gradient(circle,transparent 69%,var(--line) 69.3% 69.8%,transparent 70%)}
+.donut-center strong{font-family:var(--hand);font-weight:400;font-size:26px}
+.legend li{border-bottom:1.5px dotted var(--line)}
+.legend i{border:1.5px solid var(--ink)}
+th{color:var(--accent);border-bottom:1.5px solid var(--ink);font-weight:500}
+td{border-top:1px dashed var(--line)}
+tbody tr:hover td{background:color-mix(in srgb,var(--ink) 10%,transparent)}
+.thumb{border:1.5px solid var(--ink);width:22px;height:22px}
+.meter{height:8px;border:1.5px solid var(--ink);background:none}
+.meter i{background:repeating-linear-gradient(45deg,var(--ink) 0 1.5px,transparent 1.5px 4px)}
+/* section hatching */
+.key span::before{border:1.5px solid var(--ink)}
+.key .ok::before,.alloc-bar .ok{background:repeating-linear-gradient(45deg,var(--ok) 0 2px,transparent 2px 5px)}
+.key .warn::before,.alloc-bar .warn{background:repeating-linear-gradient(-45deg,var(--warn) 0 2px,transparent 2px 5px)}
+.key .bad::before,.alloc-bar .bad{background:repeating-linear-gradient(45deg,var(--bad) 0 2px,transparent 2px 5px),repeating-linear-gradient(-45deg,var(--bad) 0 2px,transparent 2px 5px)}
+.alloc-bar{height:14px;border:1.5px solid var(--ink);background:none;gap:0}
+.alloc-bar span+span{border-left:1.5px solid var(--ink)}
+.alloc-summary{border-top:1.5px solid var(--ink)}
+.alloc-summary div+div{border-left:1.5px dashed var(--line)}
+.alloc-summary strong{font-family:var(--hand);font-weight:400;font-size:24px}
+@media (max-width:900px){.sidebar{background:var(--bg)}}
+@media (max-width:640px){.page-head h1{font-size:36px}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">T</div><div><strong>TIFFNY Inventory</strong><small>Stock &amp; Master SKU Manager</small></div></div>
+    <nav id="menu"></nav>
+    <div class="side-foot"><div class="avatar">RP</div><div><strong>Ritesh Patel</strong><small>Admin</small></div></div>
+  </aside>
+  <div class="scrim"></div>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" data-icon="menu" aria-label="Open menu"></button>
+      <label class="search"><span data-icon="search"></span><input type="search" placeholder="Search by SKU, product name, brand…"></label>
+      <div class="top-actions">
+        <button class="icon-btn theme-btn" id="themeToggle" type="button"></button>
+        <button class="icon-btn" data-icon="bell" aria-label="Notifications"><b>4</b></button>
+        <div class="user"><div class="avatar">R</div><div><strong>Ritesh Patel</strong><small>Admin · 07 Oct 2026</small></div></div>
+      </div>
+    </header>
+    <div class="page-head">
+      <div><h1>Dashboard</h1><p>Stock &amp; order overview across all platforms</p></div>
+      <div class="head-tools"><div id="periods" class="segmented"></div><div class="date-chip"><span data-icon="calendar"></span><span id="dateRange"></span></div></div>
+    </div>
+    <section id="kpis" class="kpis"></section>
+    <section class="grid">
+      <article class="card c-donut">
+        <header class="card-h"><div><h3>Platform-wise stock allocated</h3><p>Units currently allocated per channel</p></div></header>
+        <div class="donut-wrap"><div class="donut-box"><canvas id="donutChart"></canvas><div class="donut-center"><strong id="donutTotal"></strong><span>Total stock</span></div></div><ul id="donutLegend" class="legend"></ul></div>
+      </article>
+      <article class="card c-bar">
+        <header class="card-h"><div><h3>Platform-wise order overview</h3><p>Orders by channel, <span data-period-name></span></p></div></header>
+        <div class="chart-box"><canvas id="barChart"></canvas></div>
+      </article>
+      <article class="card c-table">
+        <header class="card-h"><div><h3>Top selling SKU</h3><p>Top 8 by units sold</p></div><a href="#" class="link">View all →</a></header>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>SKU / Product</th><th>Brand</th><th class="num">Sold qty</th><th class="num">Revenue</th></tr></thead><tbody id="skuBody"></tbody></table></div>
+      </article>
+      <article class="card c-alloc">
+        <header class="card-h"><div><h3>Platform-wise SKU allocation</h3><p>SKU health per channel</p></div><div class="key"><span class="ok">In stock</span><span class="warn">Low</span><span class="bad">Out</span></div></header>
+        <div id="alloc"></div>
+        <div id="allocSummary" class="alloc-summary"></div>
+      </article>
+    </section>
+  </main>
+</div>
+<script src="assets/dashboard.js"></script>
+</body>
+</html>
