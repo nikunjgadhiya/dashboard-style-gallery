@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('dash-theme:rawhtml.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TIFFNY Inventory Home Page</title>
+<link rel="stylesheet" href="assets/base.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  color-scheme:light;
+  --font:'Times New Roman',Times,serif;
+  --bg:#ffffff;--text:#000000;--muted:#333333;--link:#0000ee;--visited:#551a8b;--head:#000000;
+  --face:#dddddd;--hi:#ffffff;--lo:#808080;--frame:#000000;
+  --line:#808080;--grid:rgba(0,0,0,.15);
+  --accent:var(--link);--ok:#008000;--warn:#cc6600;--bad:#ff0000;
+  --c1:#0000ee;--c2:#ff0000;--c3:#008000;--c4:#800080;--c5:#ff8c00;
+  --tip-bg:#ffffe1;--tip-fg:#000;--tip-radius:0;
+  --donut-border:#fff;--donut-bw:1;--donut-radius:0;--donut-cutout:50%;--bar-radius:0;--bar-border:#000;--bar-bw:1;
+  --marquee:#000080;--marquee-text:#ffff00;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#000000;--text:#ffffff;--muted:#cccccc;--link:#00ffff;--visited:#ff00ff;--head:#ffff00;
+  --face:#404040;--hi:#a0a0a0;--lo:#202020;--frame:#c0c0c0;
+  --line:#c0c0c0;--grid:rgba(255,255,255,.2);
+  --ok:#00ff00;--warn:#ffcc00;--bad:#ff4040;
+  --c1:#00ffff;--c2:#ff00ff;--c3:#00ff00;--c4:#ffff00;--c5:#ff4040;
+  --tip-bg:#000;--tip-fg:#0f0;
+  --donut-border:#000;--bar-border:#fff;
+  --marquee:#000000;--marquee-text:#00ff00;
+}
+*{border-radius:0 !important;box-shadow:none !important}
+html,body{font-size:16px}
+body{background:var(--bg);color:var(--text);-webkit-font-smoothing:auto}
+[data-theme="dark"] body{background:radial-gradient(#fff 1px,transparent 1.5px) 0 0/90px 90px,radial-gradient(#fff 1px,transparent 1.5px) 45px 60px/120px 120px,#000}
+a,.link{color:var(--link);text-decoration:underline}
+.ic{width:16px;height:16px}
+
+/* sidebar = plain nav list */
+.sidebar{background:var(--bg);border-right:3px ridge var(--frame);padding:12px;width:240px}
+.brand{display:block;border-bottom:2px solid var(--line);padding:0 0 10px}
+.brand .logo{display:none}
+.brand strong{font-size:24px;font-weight:700;color:var(--head)}
+.brand small{font-style:italic;opacity:1;font-size:14px}
+.nav-group{text-transform:none;letter-spacing:0;font-size:16px;font-weight:700;opacity:1;color:var(--head);padding:12px 0 2px}
+.nav-item{padding:1px 0 1px 18px;font-size:16px;font-weight:400;color:var(--link);text-decoration:underline;position:relative;gap:0}
+.nav-item::before{content:"•";position:absolute;left:4px;color:var(--text);text-decoration:none}
+.nav-item .ic,.nav-item .chev{display:none}
+.nav-item:visited{color:var(--visited)}
+.nav-item.active{color:var(--visited);font-weight:700}
+.nav-item.active::after{content:" ← you are here";color:var(--bad);font-size:13px;font-style:italic;text-decoration:none;margin-left:6px;white-space:nowrap}
+.side-foot{border-top:2px solid var(--line);padding:8px 0}
+.avatar{background:none;border:1px solid var(--frame);color:var(--text);width:32px;height:32px}
+
+/* banner + marquee */
+.main{padding:10px 18px 30px}
+.rw-banner{background:#ffff00;color:#000;border:2px dashed #000;text-align:center;padding:4px;font-family:Arial,sans-serif;font-size:13px;margin-bottom:6px}
+.rw-marquee{overflow:hidden;white-space:nowrap;background:var(--marquee);color:var(--marquee-text);font:bold 14px 'Courier New',monospace;padding:3px 0;margin-bottom:12px}
+.rw-marquee span{display:inline-block;padding-left:100%;animation:marquee 26s linear infinite}
+@keyframes marquee{to{transform:translateX(-100%)}}
+@media (prefers-reduced-motion:reduce){.rw-marquee span{animation:none;padding-left:8px}}
+.rw-foot{text-align:center;font-size:13px;margin-top:10px}
+.rw-counter{font:bold 14px 'Courier New',monospace;background:#000;color:#0f0;padding:1px 4px;letter-spacing:2px}
+hr{border:0;border-top:2px groove var(--frame);margin-top:22px}
+
+/* native-looking controls */
+.topbar{gap:8px;margin-bottom:8px}
+.search{height:26px;border:2px inset var(--face);background:#fff;color:#000;max-width:360px;padding:0 4px}
+.search input{font:14px Arial,sans-serif;color:#000}
+.icon-btn,.segmented button,.date-chip,.user{font:13px Arial,sans-serif;background:var(--face);color:var(--text);border:2px outset var(--face)}
+.icon-btn{width:30px;height:26px}
+.icon-btn:active,.segmented button.active{border-style:inset}
+.icon-btn b{background:var(--bad);color:#fff;font:bold 9px Arial;top:-6px;right:-6px}
+.user{padding:2px 8px 2px 2px}
+.page-head{display:block;margin-bottom:10px}
+.page-head h1{font-size:2em;font-weight:700;color:var(--head);letter-spacing:0}
+.page-head p{font-style:italic;margin:2px 0 8px}
+.head-tools{gap:6px}
+.segmented{padding:0;gap:4px}
+.segmented button{padding:2px 8px;color:var(--text)}
+.segmented button.active{font-weight:700}
+.date-chip{height:26px;padding:0 8px}
+
+/* KPIs = a bordered table */
+.kpis{gap:0;border:2px outset var(--face);margin-bottom:14px}
+.kpi{border:1px inset var(--face);padding:8px 10px;flex-direction:column;gap:2px;margin:2px}
+.kpi-icon{display:none}
+.kpi-label{color:var(--text);font-weight:700;font-size:15px}
+.kpi-value{font-size:28px;font-weight:700;letter-spacing:0;margin:0}
+.kpi-delta{font-size:14px;font-weight:400}
+.kpi-delta span{color:var(--muted)}
+
+/* cards = fieldsets */
+.grid{gap:14px}
+.card{border:2px groove var(--frame);padding:10px 12px}
+.card-h{margin-bottom:8px;display:block}
+.card-h>div:first-child{display:block}
+.card-h h3{font-size:1.5em;font-weight:700;color:var(--head)}
+.card-h p{font-style:italic;margin-top:0;font-size:14px}
+.card-h .key{display:inline-flex;margin-top:4px;color:var(--text);font-size:14px}
+.card-h .link{display:inline-block;margin-top:4px;font-size:15px}
+.donut-wrap{grid-template-columns:200px minmax(0,1fr)}
+.donut-box{height:200px}
+.donut-center strong{font-size:20px}
+.legend{border:1px solid var(--line)}
+.legend li{border-bottom:1px solid var(--line);padding:3px 6px;font-size:15px}
+.legend li:last-child{border-bottom:0}
+.legend i{border:1px solid var(--text)}
+.legend em{color:var(--text)}
+table{border:2px outset var(--face);border-collapse:separate;border-spacing:2px}
+th,td{border:1px inset var(--face);padding:3px 6px}
+th{color:var(--text);text-transform:none;letter-spacing:0;font-size:14px;font-weight:700;background:var(--face)}
+td{font-size:14px}
+.rank,.prod,.brand-c{color:var(--text)}
+.thumb{width:14px;height:14px;border:1px solid var(--text)}
+.sku{font-weight:700;font-size:14px}
+.meter{height:8px;border:1px solid var(--text);background:var(--bg)}
+.meter i{background:var(--link)}
+.key span::before{border:1px solid var(--text)}
+.alloc-row{padding:4px 0}
+.alloc-head span{color:var(--text);text-transform:none;letter-spacing:0;font-size:13px}
+.alloc-bar{height:12px;border:1px solid var(--text);background:var(--bg);gap:0}
+.alloc-summary{border:2px outset var(--face);margin-top:10px;padding:6px 0}
+.alloc-summary div+div{border-left:1px inset var(--face)}
+.alloc-summary span{color:var(--text);font-size:13px}
+.alloc-summary strong{font-size:20px}
+@media (max-width:640px){.donut-wrap{grid-template-columns:minmax(0,1fr)}.nav-item.active::after{display:none}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">T</div><div><strong>TIFFNY Inventory</strong><small>Stock &amp; Master SKU Manager</small></div></div>
+    <nav id="menu"></nav>
+    <div class="side-foot"><div class="avatar">RP</div><div><strong>Ritesh Patel</strong><small>Admin</small></div></div>
+  </aside>
+  <div class="scrim"></div>
+  <main class="main">
+    <div class="rw-banner">🚧 <b>UNDER CONSTRUCTION</b> 🚧 &nbsp; This page was last updated on 07 Oct 2026</div>
+    <div class="rw-marquee" aria-hidden="true"><span>*** Welcome to the TIFFNY Inventory Home Page!!! *** Stock is UP 12.5% this month *** 1,705 items are LOW on stock - please reorder *** Thank you for visiting *** Sign our guestbook! ***</span></div>
+    <header class="topbar">
+      <button class="icon-btn menu-btn" data-icon="menu" aria-label="Open menu"></button>
+      <label class="search"><span data-icon="search"></span><input type="search" placeholder="Search by SKU, product name, brand…"></label>
+      <div class="top-actions">
+        <button class="icon-btn theme-btn" id="themeToggle" type="button"></button>
+        <button class="icon-btn" data-icon="bell" aria-label="Notifications"><b>4</b></button>
+        <div class="user"><div class="avatar">R</div><div><strong>Ritesh Patel</strong><small>Admin · 07 Oct 2026</small></div></div>
+      </div>
+    </header>
+    <div class="page-head">
+      <div><h1>Dashboard</h1><p>Stock &amp; order overview across all platforms</p></div>
+      <div class="head-tools"><div id="periods" class="segmented"></div><div class="date-chip"><span data-icon="calendar"></span><span id="dateRange"></span></div></div>
+    </div>
+    <section id="kpis" class="kpis"></section>
+    <section class="grid">
+      <article class="card c-donut">
+        <header class="card-h"><div><h3>Platform-wise stock allocated</h3><p>Units currently allocated per channel</p></div></header>
+        <div class="donut-wrap"><div class="donut-box"><canvas id="donutChart"></canvas><div class="donut-center"><strong id="donutTotal"></strong><span>Total stock</span></div></div><ul id="donutLegend" class="legend"></ul></div>
+      </article>
+      <article class="card c-bar">
+        <header class="card-h"><div><h3>Platform-wise order overview</h3><p>Orders by channel, <span data-period-name></span></p></div></header>
+        <div class="chart-box"><canvas id="barChart"></canvas></div>
+      </article>
+      <article class="card c-table">
+        <header class="card-h"><div><h3>Top selling SKU</h3><p>Top 8 by units sold</p></div><a href="#" class="link">View all →</a></header>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>SKU / Product</th><th>Brand</th><th class="num">Sold qty</th><th class="num">Revenue</th></tr></thead><tbody id="skuBody"></tbody></table></div>
+      </article>
+      <article class="card c-alloc">
+        <header class="card-h"><div><h3>Platform-wise SKU allocation</h3><p>SKU health per channel</p></div><div class="key"><span class="ok">In stock</span><span class="warn">Low</span><span class="bad">Out</span></div></header>
+        <div id="alloc"></div>
+        <div id="allocSummary" class="alloc-summary"></div>
+      </article>
+    </section>
+    <hr>
+    <p class="rw-foot">You are visitor number <span class="rw-counter">0145288</span> &nbsp;|&nbsp; Best viewed in Netscape Navigator 3.0 at 800x600 &nbsp;|&nbsp; <a href="#">Sign my guestbook</a> &nbsp;|&nbsp; <a href="#">E-mail the webmaster</a></p>
+  </main>
+</div>
+<script src="assets/dashboard.js"></script>
+</body>
+</html>
