@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('dash-theme:solarpunk.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Solarpunk Inventory Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..800,100&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  color-scheme:light;
+  --font:'Nunito',system-ui,sans-serif;
+  --serif:'Fraunces',Georgia,serif;
+  --moss:#4f7a33;--leaf:#8fbf4d;--sun:#f2b84b;--clay:#d9774b;--sky:#6fb0c4;--bark:#6b4f35;
+  --bg:#f5efe0;--panel:rgba(255,252,243,.82);--edge:rgba(79,122,51,.22);--text:#2f3a24;--muted:#6e7b5c;--on:#fffaf0;
+  --line:rgba(79,122,51,.18);--grid:rgba(79,122,51,.12);
+  --accent:var(--moss);--ok:#3f8a3a;--warn:#c08a1e;--bad:#c4572f;
+  --c1:#4f7a33;--c2:#f2b84b;--c3:#d9774b;--c4:#6fb0c4;--c5:#a3c46a;
+  --tip-bg:#2f3a24;--tip-fg:#fffaf0;--tip-radius:14;
+  --donut-border:#fffcf3;--donut-bw:3;--donut-radius:14;--donut-spacing:3;--donut-cutout:64%;--bar-radius:999;
+  --l1:rgba(79,122,51,.22);--l2:rgba(143,191,77,.28);--l3:rgba(111,176,196,.22);--vine:rgba(107,79,53,.22);--sunfill:rgba(242,184,75,.35);
+  --blob:44% 56% 52% 48% / 46% 44% 56% 54%;--blob2:56% 44% 46% 54% / 52% 58% 42% 48%;
+  --fly:0;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --moss:#9fd36b;--leaf:#c5e88f;--sun:#ffd27a;--clay:#ff9e74;--sky:#8ed2e6;
+  --bg:#132019;--panel:rgba(29,45,35,.82);--edge:rgba(159,211,107,.2);--text:#e9f0df;--muted:#a9b89a;--on:#132019;
+  --line:rgba(233,240,223,.12);--grid:rgba(233,240,223,.08);
+  --ok:#9fd36b;--warn:#ffd27a;--bad:#ff9e74;
+  --c1:#9fd36b;--c2:#ffd27a;--c3:#ff9e74;--c4:#8ed2e6;--c5:#5f9e4a;
+  --tip-bg:#e9f0df;--tip-fg:#132019;
+  --donut-border:#1d2d23;
+  --l1:rgba(159,211,107,.14);--l2:rgba(95,158,74,.18);--l3:rgba(142,210,230,.12);--vine:rgba(233,240,223,.1);--sunfill:rgba(255,210,122,.1);
+  --fly:1;
+}
+body{background:radial-gradient(ellipse at 80% -10%,color-mix(in srgb,var(--sun) 25%,transparent),transparent 50%),var(--bg);background-attachment:fixed}
+.sp-bg{position:fixed;inset:0;z-index:-1;pointer-events:none}
+.sp-bg svg{width:100%;height:100%}
+.sp-vine{fill:none;stroke:var(--vine);stroke-width:4;stroke-linecap:round}
+.sp-l1{fill:var(--l1)}.sp-l2{fill:var(--l2)}.sp-l3{fill:var(--l3)}
+.sp-bg path[class^="sp-l"]{stroke:var(--vine);stroke-width:2}
+.sp-sun{fill:var(--sunfill)}
+/* fireflies (dark only) */
+.sp-bg i{position:absolute;width:6px;height:6px;border-radius:50%;background:#fff3a0;box-shadow:0 0 12px 4px rgba(255,236,120,.6);opacity:calc(var(--fly) * .9);animation:fly 7s ease-in-out infinite alternate}
+.sp-bg i:nth-child(2){left:30%;top:40%}.sp-bg i:nth-child(3){left:62%;top:22%;animation-delay:-2s}.sp-bg i:nth-child(4){left:84%;top:66%;animation-delay:-4s}
+.sp-bg i:nth-child(5){left:46%;top:82%;animation-delay:-1s}.sp-bg i:nth-child(6){left:72%;top:46%;animation-delay:-3s}.sp-bg i:nth-child(7){left:22%;top:70%;animation-delay:-5s}
+.sp-bg i:nth-child(8){left:92%;top:14%;animation-delay:-6s}.sp-bg i:nth-child(9){left:54%;top:58%;animation-delay:-2.5s}
+@keyframes fly{0%{transform:translate(0,0);opacity:calc(var(--fly) * .2)}50%{opacity:calc(var(--fly) * .95)}100%{transform:translate(30px,-24px);opacity:calc(var(--fly) * .4)}}
+@media (prefers-reduced-motion:reduce){.sp-bg i{animation:none}}
+
+/* organic surfaces */
+.sidebar,.kpi,.card,.search,.user,.date-chip,.segmented,.icon-btn{background:var(--panel);border:1.5px solid var(--edge);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.sidebar{margin:16px 0 16px 16px;height:calc(100vh - 32px);top:16px;border-radius:36px 28px 40px 24px;box-shadow:0 18px 40px -20px rgba(47,58,36,.35)}
+.brand .logo{border-radius:50%;background:radial-gradient(circle at 40% 35%,#ffe7a8,var(--sun) 60%,#e09a2a);color:#5a3d10;font-family:var(--serif);font-size:20px;box-shadow:0 0 0 6px color-mix(in srgb,var(--sun) 25%,transparent)}
+.brand strong{font-family:var(--serif);font-weight:600;font-size:17px;font-variation-settings:'SOFT' 100}
+.nav-group{color:var(--moss);opacity:1;font-weight:800;letter-spacing:.12em}
+.nav-group::before{content:"❦ "}
+.nav-item{border-radius:var(--blob);font-weight:600}
+.nav-item:hover{background:color-mix(in srgb,var(--leaf) 18%,transparent)}
+.nav-item.active{background:var(--moss);color:var(--on);border-radius:var(--blob2);box-shadow:0 8px 18px -10px var(--moss)}
+.side-foot{border-radius:var(--blob);background:color-mix(in srgb,var(--sun) 18%,transparent)}
+.avatar{background:var(--clay);color:#fff}
+.search,.user,.segmented,.date-chip{border-radius:999px}
+.icon-btn{border-radius:50%}
+.page-head h1{font-family:var(--serif);font-weight:700;font-size:48px;letter-spacing:-.02em;font-variation-settings:'SOFT' 100;color:var(--moss)}
+.page-head h1::after{content:" ☀";color:var(--sun);font-size:32px}
+.page-head p{font-style:italic;font-family:var(--serif)}
+.segmented button{border-radius:999px;color:var(--muted);font-weight:700}
+.segmented button.active{background:var(--sun);color:#3a2a08}
+
+.kpis{gap:20px}
+.kpi{border-radius:var(--blob);padding:22px 22px 20px;box-shadow:0 16px 30px -20px rgba(47,58,36,.4)}
+.kpi:nth-child(even){border-radius:var(--blob2)}
+.kpi-icon{border-radius:50% 50% 50% 8%;color:#fff}
+.kpi-1 .kpi-icon{background:var(--moss)}.kpi-2 .kpi-icon{background:var(--sun);color:#3a2a08}.kpi-3 .kpi-icon{background:var(--sky)}.kpi-4 .kpi-icon{background:var(--clay)}
+.kpi-value{font-family:var(--serif);font-weight:700;font-variation-settings:'SOFT' 100}
+.kpi-label{font-weight:700}
+
+.grid{gap:22px}
+.card{position:relative;border-radius:34px 26px 38px 24px;box-shadow:0 18px 36px -22px rgba(47,58,36,.45);overflow:visible}
+.card::after{content:"";position:absolute;right:18px;top:-14px;width:46px;height:24px;background:var(--leaf);border-radius:0 100% 0 100%;transform:rotate(-24deg);box-shadow:inset -2px -2px 0 rgba(0,0,0,.08)}
+.c-bar::after{background:var(--sun)}.c-table::after{background:var(--sky)}.c-alloc::after{background:var(--clay)}
+.card-h h3{font-family:var(--serif);font-weight:600;font-size:19px;font-variation-settings:'SOFT' 100}
+.card-h p{font-style:italic}
+.link{color:var(--moss);font-weight:800}
+.donut-box{border-radius:50%;background:repeating-radial-gradient(circle,transparent 0 9px,color-mix(in srgb,var(--bark) 8%,transparent) 9px 10px)}
+.donut-center strong{font-family:var(--serif);font-weight:700}
+.legend li{border-color:var(--line)}
+.legend i{border-radius:0 100% 0 100%;width:12px;height:12px}
+.legend li{grid-template-columns:12px 1fr auto 52px}
+th{color:var(--moss);font-weight:800}
+tbody tr:hover td{background:color-mix(in srgb,var(--leaf) 14%,transparent)}
+.thumb{border-radius:var(--blob)}
+.meter{background:var(--line);height:6px;border-radius:999px}
+.meter i{background:linear-gradient(90deg,var(--leaf),var(--moss));border-radius:999px}
+.key span::before{border-radius:0 100% 0 100%}
+.key .ok::before,.alloc-bar .ok{background:var(--moss)}
+.key .warn::before,.alloc-bar .warn{background:var(--sun)}
+.key .bad::before,.alloc-bar .bad{background:var(--clay)}
+.alloc-bar{height:12px;border-radius:999px;background:var(--line);gap:3px}
+.alloc-bar span{border-radius:999px}
+.alloc-name i{border-radius:0 100% 0 100%}
+.alloc-summary strong{font-family:var(--serif);font-weight:700}
+@media (max-width:900px){.sidebar{margin:0;top:0;height:100vh;border-radius:0 36px 36px 0;background:var(--bg)}}
+@media (max-width:640px){.page-head h1{font-size:38px}}
+</style>
+</head>
+<body>
+<div class="sp-bg" aria-hidden="true"><svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+  <path class="sp-vine" d="M1440 120 C 1300 160, 1250 260, 1320 360 S 1280 560, 1440 640"/>
+  <path class="sp-vine" d="M260 900 C 320 800, 300 720, 380 660 S 520 620, 560 520"/>
+  <path class="sp-l1" transform="translate(1330 180) rotate(-140) scale(0.7)" d="M0 0 C 30 -40, 90 -40, 120 0 C 90 40, 30 40, 0 0 Z M0 0 L120 0"/><path class="sp-l2" transform="translate(1300 330) rotate(150) scale(0.55)" d="M0 0 C 30 -40, 90 -40, 120 0 C 90 40, 30 40, 0 0 Z M0 0 L120 0"/><path class="sp-l3" transform="translate(1350 520) rotate(-170) scale(0.8)" d="M0 0 C 30 -40, 90 -40, 120 0 C 90 40, 30 40, 0 0 Z M0 0 L120 0"/>
+  <path class="sp-l2" transform="translate(330 760) rotate(-60) scale(0.7)" d="M0 0 C 30 -40, 90 -40, 120 0 C 90 40, 30 40, 0 0 Z M0 0 L120 0"/><path class="sp-l1" transform="translate(420 650) rotate(-20) scale(0.6)" d="M0 0 C 30 -40, 90 -40, 120 0 C 90 40, 30 40, 0 0 Z M0 0 L120 0"/><path class="sp-l3" transform="translate(520 560) rotate(-80) scale(0.5)" d="M0 0 C 30 -40, 90 -40, 120 0 C 90 40, 30 40, 0 0 Z M0 0 L120 0"/>
+  <path class="sp-l1" transform="translate(700 40) rotate(30) scale(0.5)" d="M0 0 C 30 -40, 90 -40, 120 0 C 90 40, 30 40, 0 0 Z M0 0 L120 0"/><path class="sp-l2" transform="translate(980 870) rotate(-30) scale(0.6)" d="M0 0 C 30 -40, 90 -40, 120 0 C 90 40, 30 40, 0 0 Z M0 0 L120 0"/>
+  <circle class="sp-sun" cx="1180" cy="-40" r="170"/>
+</svg><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">T</div><div><strong>TIFFNY Inventory</strong><small>Stock &amp; Master SKU Manager</small></div></div>
+    <nav id="menu"></nav>
+    <div class="side-foot"><div class="avatar">RP</div><div><strong>Ritesh Patel</strong><small>Admin</small></div></div>
+  </aside>
+  <div class="scrim"></div>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" data-icon="menu" aria-label="Open menu"></button>
+      <label class="search"><span data-icon="search"></span><input type="search" placeholder="Search by SKU, product name, brand…"></label>
+      <div class="top-actions">
+        <button class="icon-btn theme-btn" id="themeToggle" type="button"></button>
+        <button class="icon-btn" data-icon="bell" aria-label="Notifications"><b>4</b></button>
+        <div class="user"><div class="avatar">R</div><div><strong>Ritesh Patel</strong><small>Admin · 07 Oct 2026</small></div></div>
+      </div>
+    </header>
+    <div class="page-head">
+      <div><h1>Dashboard</h1><p>Stock &amp; order overview across all platforms</p></div>
+      <div class="head-tools"><div id="periods" class="segmented"></div><div class="date-chip"><span data-icon="calendar"></span><span id="dateRange"></span></div></div>
+    </div>
+    <section id="kpis" class="kpis"></section>
+    <section class="grid">
+      <article class="card c-donut">
+        <header class="card-h"><div><h3>Platform-wise stock allocated</h3><p>Units currently allocated per channel</p></div></header>
+        <div class="donut-wrap"><div class="donut-box"><canvas id="donutChart"></canvas><div class="donut-center"><strong id="donutTotal"></strong><span>Total stock</span></div></div><ul id="donutLegend" class="legend"></ul></div>
+      </article>
+      <article class="card c-bar">
+        <header class="card-h"><div><h3>Platform-wise order overview</h3><p>Orders by channel, <span data-period-name></span></p></div></header>
+        <div class="chart-box"><canvas id="barChart"></canvas></div>
+      </article>
+      <article class="card c-table">
+        <header class="card-h"><div><h3>Top selling SKU</h3><p>Top 8 by units sold</p></div><a href="#" class="link">View all →</a></header>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>SKU / Product</th><th>Brand</th><th class="num">Sold qty</th><th class="num">Revenue</th></tr></thead><tbody id="skuBody"></tbody></table></div>
+      </article>
+      <article class="card c-alloc">
+        <header class="card-h"><div><h3>Platform-wise SKU allocation</h3><p>SKU health per channel</p></div><div class="key"><span class="ok">In stock</span><span class="warn">Low</span><span class="bad">Out</span></div></header>
+        <div id="alloc"></div>
+        <div id="allocSummary" class="alloc-summary"></div>
+      </article>
+    </section>
+  </main>
+</div>
+<script src="assets/dashboard.js"></script>
+</body>
+</html>
