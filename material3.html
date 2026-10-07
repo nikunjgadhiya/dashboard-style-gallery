@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('dash-theme:material3.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Material 3 Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Flex:opsz,wght@8..144,400;8..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  color-scheme:light;
+  --font:'Roboto',system-ui,sans-serif;
+  /* M3 tonal tokens from seed #6750A4 */
+  --primary:#6750a4;--on-primary:#ffffff;--primary-container:#eaddff;--on-primary-container:#21005d;
+  --secondary-container:#e8def8;--on-secondary-container:#1d192b;
+  --tertiary:#7d5260;--tertiary-container:#ffd8e4;--on-tertiary-container:#31111d;
+  --error:#b3261e;--error-container:#f9dedc;--on-error-container:#410e0b;
+  --surface:#fef7ff;--surface-low:#f7f2fa;--surface-container:#f3edf7;--surface-high:#ece6f0;--surface-highest:#e6e0e9;
+  --on-surface:#1d1b20;--on-surface-variant:#49454f;--outline:#79747e;--outline-variant:#cac4d0;
+  --bg:var(--surface);--text:var(--on-surface);--muted:var(--on-surface-variant);
+  --line:var(--outline-variant);--grid:color-mix(in srgb,var(--outline-variant) 60%,transparent);
+  --accent:var(--primary);--ok:#146c2e;--warn:#8b5000;--bad:var(--error);
+  --c1:#6750a4;--c2:#7d5260;--c3:#386a20;--c4:#c26c00;--c5:#006a6a;
+  --tip-bg:#322f35;--tip-fg:#f5eff7;--tip-radius:4;
+  --donut-border:var(--surface-low);--donut-bw:3;--donut-radius:4;--donut-spacing:2;--donut-cutout:70%;--bar-radius:6;
+  --elev1:0 1px 2px rgba(0,0,0,.3),0 1px 3px 1px rgba(0,0,0,.15);
+  --elev3:0 1px 3px rgba(0,0,0,.3),0 4px 8px 3px rgba(0,0,0,.15);
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --primary:#d0bcff;--on-primary:#381e72;--primary-container:#4f378b;--on-primary-container:#eaddff;
+  --secondary-container:#4a4458;--on-secondary-container:#e8def8;
+  --tertiary:#efb8c8;--tertiary-container:#633b48;--on-tertiary-container:#ffd8e4;
+  --error:#f2b8b5;--error-container:#8c1d18;--on-error-container:#f9dedc;
+  --surface:#141218;--surface-low:#1d1b20;--surface-container:#211f26;--surface-high:#2b2930;--surface-highest:#36343b;
+  --on-surface:#e6e0e9;--on-surface-variant:#cac4d0;--outline:#938f99;--outline-variant:#49454f;
+  --ok:#8fd99e;--warn:#ffb870;
+  --c1:#d0bcff;--c2:#efb8c8;--c3:#9fd67f;--c4:#ffb870;--c5:#4dd8d8;
+  --tip-bg:#e6e0e9;--tip-fg:#322f35;
+}
+
+body{background:var(--surface)}
+.ic{width:20px;height:20px}
+
+/* navigation drawer */
+.sidebar{background:var(--surface-low);width:280px;padding:12px;border-radius:0 16px 16px 0}
+.brand{padding:12px 16px 16px}
+.brand .logo{border-radius:12px;background:var(--primary-container);color:var(--on-primary-container)}
+.brand strong{font-family:'Roboto Flex',var(--font);font-weight:600;font-size:16px;letter-spacing:0}
+.nav-group{font-size:14px;text-transform:none;letter-spacing:.1px;opacity:1;color:var(--on-surface-variant);font-weight:500;padding:18px 16px 8px}
+.nav-item{height:56px;padding:0 16px;border-radius:999px;color:var(--on-surface-variant);font-size:14px;font-weight:500;letter-spacing:.1px;position:relative}
+.nav-item:hover{background:color-mix(in srgb,var(--on-surface) 8%,transparent)}
+.nav-item.active{background:var(--secondary-container);color:var(--on-secondary-container);font-weight:700}
+.nav-item:active{background:color-mix(in srgb,var(--on-surface) 12%,transparent)}
+.side-foot{border-radius:16px;background:var(--surface-container)}
+.avatar{background:var(--primary);color:var(--on-primary)}
+
+/* top app bar */
+.main{padding:16px 24px 96px}
+.search{height:56px;border-radius:28px;background:var(--surface-high);max-width:520px;color:var(--on-surface-variant)}
+.search:focus-within{background:var(--surface-highest)}
+.icon-btn{width:48px;height:48px;border-radius:50%;color:var(--on-surface-variant)}
+.icon-btn:hover{background:color-mix(in srgb,var(--on-surface) 8%,transparent)}
+.icon-btn b{background:var(--error);color:#fff;top:8px;right:8px}
+[data-theme="dark"] .icon-btn b{color:#601410}
+.user{background:var(--surface-container);border-radius:999px}
+.page-head h1{font-family:'Roboto Flex',var(--font);font-weight:400;font-size:36px;letter-spacing:0}
+.page-head p{color:var(--on-surface-variant)}
+
+/* segmented button */
+.segmented{padding:0;gap:0;border:1px solid var(--outline);border-radius:999px;overflow:hidden}
+.segmented button{height:40px;padding:0 16px;font-size:14px;font-weight:500;color:var(--on-surface);border-radius:0;letter-spacing:.1px}
+.segmented button+button{border-left:1px solid var(--outline)}
+.segmented button:hover{background:color-mix(in srgb,var(--on-surface) 8%,transparent)}
+.segmented button.active{background:var(--secondary-container);color:var(--on-secondary-container)}
+.segmented button.active::before{content:"✓ ";font-weight:700}
+/* assist chip */
+.date-chip{height:32px;border:1px solid var(--outline);border-radius:8px;font-size:14px;color:var(--on-surface-variant)}
+.date-chip .ic{width:18px;height:18px;color:var(--primary)}
+
+/* cards */
+.kpis,.grid{gap:16px}
+.kpis{margin-bottom:16px}
+.kpi{border-radius:16px;padding:20px}
+.kpi-1{background:var(--primary-container);color:var(--on-primary-container)}
+.kpi-2{background:var(--secondary-container);color:var(--on-secondary-container)}
+.kpi-3{background:var(--tertiary-container);color:var(--on-tertiary-container)}
+.kpi-4{background:var(--error-container);color:var(--on-error-container)}
+.kpi-label,.kpi-delta span{color:inherit;opacity:.78}
+.kpi-delta.up,.kpi-delta.down{color:inherit}
+.kpi-icon{width:48px;height:48px;border-radius:12px;background:color-mix(in srgb,currentColor 12%,transparent)}
+.kpi-value{font-family:'Roboto Flex',var(--font);font-weight:400;font-size:32px;letter-spacing:0}
+.card{background:var(--surface-low);border-radius:12px;box-shadow:var(--elev1);padding:20px}
+[data-theme="dark"] .card{background:var(--surface-container);box-shadow:none}
+.card-h h3{font-size:16px;font-weight:500;letter-spacing:.15px}
+.link{color:var(--primary);font-weight:500;font-size:14px;padding:10px 12px;border-radius:999px}
+.link:hover{background:color-mix(in srgb,var(--primary) 8%,transparent)}
+.legend li{border-color:var(--outline-variant)}
+.legend i{border-radius:50%}
+th{font-size:12px;letter-spacing:.5px;text-transform:none;color:var(--on-surface-variant);font-weight:500}
+td{border-color:var(--outline-variant)}
+tbody tr:hover td{background:color-mix(in srgb,var(--on-surface) 6%,transparent)}
+.thumb{border-radius:50%}
+.meter{background:var(--secondary-container);height:4px}
+.meter i{background:var(--primary)}
+.alloc-bar{height:8px;border-radius:4px;background:var(--surface-highest);gap:3px}
+.alloc-bar span{border-radius:4px}
+.alloc-summary{border-color:var(--outline-variant)}
+.alloc-summary strong{font-weight:400;font-size:24px}
+
+/* extended FAB */
+.m3-fab{position:fixed;right:24px;bottom:24px;z-index:30;display:flex;align-items:center;gap:12px;height:56px;padding:0 20px 0 16px;border-radius:16px;
+  background:var(--primary-container);color:var(--on-primary-container);font-size:14px;font-weight:500;letter-spacing:.1px;box-shadow:var(--elev3)}
+.m3-fab svg{width:24px;height:24px}
+.m3-fab:hover{box-shadow:0 2px 3px rgba(0,0,0,.3),0 6px 10px 4px rgba(0,0,0,.15)}
+@media (max-width:900px){.sidebar{border-radius:0 16px 16px 0}}
+@media (max-width:640px){.m3-fab span{display:none}.m3-fab{padding:0 16px}}
+</style>
+</head>
+<body>
+<button class="m3-fab" type="button" aria-label="Create purchase order"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span>New PO</span></button>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">T</div><div><strong>TIFFNY Inventory</strong><small>Stock &amp; Master SKU Manager</small></div></div>
+    <nav id="menu"></nav>
+    <div class="side-foot"><div class="avatar">RP</div><div><strong>Ritesh Patel</strong><small>Admin</small></div></div>
+  </aside>
+  <div class="scrim"></div>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" data-icon="menu" aria-label="Open menu"></button>
+      <label class="search"><span data-icon="search"></span><input type="search" placeholder="Search by SKU, product name, brand…"></label>
+      <div class="top-actions">
+        <button class="icon-btn theme-btn" id="themeToggle" type="button"></button>
+        <button class="icon-btn" data-icon="bell" aria-label="Notifications"><b>4</b></button>
+        <div class="user"><div class="avatar">R</div><div><strong>Ritesh Patel</strong><small>Admin · 07 Oct 2026</small></div></div>
+      </div>
+    </header>
+    <div class="page-head">
+      <div><h1>Dashboard</h1><p>Stock &amp; order overview across all platforms</p></div>
+      <div class="head-tools"><div id="periods" class="segmented"></div><div class="date-chip"><span data-icon="calendar"></span><span id="dateRange"></span></div></div>
+    </div>
+    <section id="kpis" class="kpis"></section>
+    <section class="grid">
+      <article class="card c-donut">
+        <header class="card-h"><div><h3>Platform-wise stock allocated</h3><p>Units currently allocated per channel</p></div></header>
+        <div class="donut-wrap"><div class="donut-box"><canvas id="donutChart"></canvas><div class="donut-center"><strong id="donutTotal"></strong><span>Total stock</span></div></div><ul id="donutLegend" class="legend"></ul></div>
+      </article>
+      <article class="card c-bar">
+        <header class="card-h"><div><h3>Platform-wise order overview</h3><p>Orders by channel, <span data-period-name></span></p></div></header>
+        <div class="chart-box"><canvas id="barChart"></canvas></div>
+      </article>
+      <article class="card c-table">
+        <header class="card-h"><div><h3>Top selling SKU</h3><p>Top 8 by units sold</p></div><a href="#" class="link">View all →</a></header>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>SKU / Product</th><th>Brand</th><th class="num">Sold qty</th><th class="num">Revenue</th></tr></thead><tbody id="skuBody"></tbody></table></div>
+      </article>
+      <article class="card c-alloc">
+        <header class="card-h"><div><h3>Platform-wise SKU allocation</h3><p>SKU health per channel</p></div><div class="key"><span class="ok">In stock</span><span class="warn">Low</span><span class="bad">Out</span></div></header>
+        <div id="alloc"></div>
+        <div id="allocSummary" class="alloc-summary"></div>
+      </article>
+    </section>
+  </main>
+</div>
+<script src="assets/dashboard.js"></script>
+</body>
+</html>
