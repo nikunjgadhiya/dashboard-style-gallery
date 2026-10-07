@@ -19,7 +19,7 @@ Each page includes:
 
 ## Style status
 
-### ✅ Done (20)
+### ✅ Done (38)
 
 | # | Style | File | Default theme | Other theme | Key CSS | Best for |
 |---|-------|------|---------------|-------------|---------|----------|
@@ -43,6 +43,24 @@ Each page includes:
 | 18 | Paper / Notebook | `notebook.html` | Light | Chalkboard | Ruled-paper gradients, sticky notes, sketchy borders | Education, planners |
 | 19 | Dark Luxury | `luxury.html` | Dark | Ivory + gold | Serif display, gold gradient text, hairlines | Premium brands, jewellery, fashion |
 | 20 | Kawaii / Pastel | `kawaii.html` | Light | Midnight kawaii | Pastel tokens, `clip-path` cat ears, bouncy shadows | Kids, lifestyle apps |
+| 21 | Bauhaus | `bauhaus.html` | Light | Dark | Colour blocks, geometric shapes, lowercase Jost | Design studios, education |
+| 22 | Art Deco | `artdeco.html` | Dark (emerald) | Cream + gold | Sunburst `repeating-conic-gradient`, arch radius, fan ornaments | Hospitality, luxury events |
+| 23 | Pixel Art / 8-bit | `pixel.html` | Dark (PICO-8) | Game Boy green | Box-shadow pixel borders, Press Start 2P, HP bars | Gaming, playful tools |
+| 24 | Blueprint | `blueprint.html` | Dark (Prussian blue) | Whiteprint | Layered grid gradients, title blocks, hatching | Engineering, manufacturing |
+| 25 | Newspaper / Editorial | `newspaper.html` | Light | Night Edition | Blackletter masthead, Playfair headlines, halftone | Media, reports |
+| 26 | Comic Book | `comic.html` | Light | Night comic | Halftone dots, starburst `clip-path`, speech bubbles | Entertainment, kids |
+| 27 | Solarpunk / Organic | `solarpunk.html` | Light | Night forest + fireflies | Organic `border-radius`, SVG leaves, Fraunces SOFT | Sustainability, agri-tech |
+| 28 | Glass + Bento hybrid | `glass-bento.html` | Dark | Light frosted | Bento `grid-template-areas` + `backdrop-filter` | Modern SaaS hubs |
+| 29 | Raw HTML (1996 web) | `rawhtml.html` | Light | GeoCities black | System defaults, outset/groove borders, CSS marquee | Art and portfolio sites |
+| 30 | Holographic / Iridescent | `holographic.html` | Light (pearl) | Black chrome | Pointer-driven CSS vars, foil `mix-blend-mode` | Web3, fashion |
+| 31 | Gradient Mesh / Grainy | `mesh.html` | Light | Dark mesh | Blurred blobs, `feTurbulence` grain, Instrument Serif | Startups, landing pages |
+| 32 | Data-Dense Terminal | `bloomberg.html` | Dark (amber) | FT salmon | High density, F-key bar, CSS price ticker | Trading, ops centres |
+| 33 | Spatial / visionOS | `spatial.html` | Dark | Daylight room | Glass windows, `perspective` tilt, hover-expand tab bar | AR/VR-style apps |
+| 34 | Origami / Paper Fold | `origami.html` | Light | Dark paper | Hard-stop crease gradients, dog-ears, ribbon tags | Creative brands |
+| 35 | Isometric 3D | `isometric.html` | Light | Dark | `skew()` CSS cubes, stacked-shadow extrusion | Inventory, logistics |
+| 36 | Retro 50s Diner | `diner.html` | Light | Neon night | Chrome gradient borders, checkerboard, Pacifico | Food, hospitality |
+| 37 | Sumi-e / Japanese Ink | `sumie.html` | Light (washi) | Night ink | SVG-mask brush strokes, ensō, vertical kanji | Minimal, artistic brands |
+| 38 | Accessible High-Contrast | `accessible.html` | Light | Black + yellow | `:focus-visible`, skip link, Okabe-Ito, 44px targets | Government, healthcare |
 
 Every style has a working **light and dark mode**.
 
@@ -50,14 +68,12 @@ Every style has a working **light and dark mode**.
 
 | # | Style | Look | Best for |
 |---|-------|------|----------|
-| 21 | Bauhaus | Primary colours, circles, squares and triangles, geometric type | Design studios, education |
-| 22 | Art Deco | Gold geometric fans, symmetry, stepped borders | Hospitality, luxury events |
-| 23 | Pixel Art / 8-bit | Pixel fonts, chunky pixel borders, sprite icons | Gaming, playful tools |
-| 24 | Blueprint | Cyan grid paper, white technical lines, dimension marks | Engineering, manufacturing |
-| 25 | Newspaper / Editorial | Columns, serif headlines, rules, halftone images | Media, reports |
-| 26 | Comic Book | Halftone dots, speech bubbles, bold outlines | Entertainment, kids |
-| 27 | Solarpunk / Organic | Soft greens, leaf shapes, natural textures | Sustainability, agri-tech |
-| 28 | Glass + Bento hybrid | Bento grid built from frosted glass tiles | Modern SaaS hubs |
+| 39 | Steampunk | Brass gears, rivets, sepia parchment, pressure gauges | Games, themed events |
+| 40 | Tron / Synth Grid | Glowing cyan outlines on black, light-cycle trails | Esports, tech launches |
+| 41 | Watercolour | Soft paint washes, bleeding edges, hand-lettered titles | Lifestyle, wellness |
+| 42 | Brutalist Concrete | Raw concrete textures, massive type, exposed grid | Architecture studios |
+| 43 | Arcade Cabinet | CRT bezel, coin-op marquee, joystick-style controls | Gaming hubs |
+| 44 | Material You Expressive | Shape morphing, bold colour roles, springy motion | Android-first products |
 
 ---
 
@@ -87,7 +103,10 @@ brutalism-color.html    Reuses brutalism.html styles, adds a colour layer at the
 memphis.html
 liquid-glass.html, material3.html, fluent.html, swiss.html, cyberpunk.html,
 win95.html, terminal.html, vaporwave.html, skeuomorphism.html, notebook.html,
-luxury.html, kawaii.html
+luxury.html, kawaii.html, bauhaus.html, artdeco.html, pixel.html, blueprint.html,
+newspaper.html, comic.html, solarpunk.html, glass-bento.html, rawhtml.html,
+holographic.html, mesh.html, bloomberg.html, spatial.html, origami.html,
+isometric.html, diner.html, sumie.html, accessible.html
 assets/
   base.css              Shared structural layout and responsive rules
   dashboard.js          Shared demo data, menu, KPIs, table, charts, period tabs, theme toggle
