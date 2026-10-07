@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('dash-theme:skeuomorphism.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Skeuomorphic Inventory Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  color-scheme:light;
+  --font:'Lato','Helvetica Neue',Arial,sans-serif;
+  --lcd-font:'Share Tech Mono',ui-monospace,monospace;
+  --bg:#e4dfd5;--text:#33302a;--muted:#6f685c;
+  --line:rgba(80,70,55,.16);--grid:rgba(80,70,55,.12);
+  --accent:#1f68d6;--ok:#2f7d32;--warn:#b7791f;--bad:#b23a32;
+  --c1:#c0392b;--c2:#2c6fbb;--c3:#3d8b37;--c4:#d4a017;--c5:#7d3c98;
+  --tip-bg:#33302a;--tip-fg:#fff;--tip-radius:6;
+  --donut-border:#fbf9f4;--donut-bw:2;--donut-radius:2;--bar-radius:3;--bar-border:rgba(0,0,0,.25);--bar-bw:1;
+  --linen:repeating-linear-gradient(0deg,rgba(255,255,255,.18) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(0,0,0,.035) 0 1px,transparent 1px 3px),#e4dfd5;
+  --leather:#5c3a21;--leather-text:#f3e3c3;--stitch:rgba(243,227,195,.55);
+  --paper:linear-gradient(180deg,#fffdf8,#f6f2e9);
+  --alu:repeating-linear-gradient(90deg,rgba(255,255,255,.12) 0 1px,rgba(0,0,0,.025) 1px 3px),linear-gradient(180deg,#f1f2f3,#c9ccd0);
+  --alu-border:#9a9ea4;--alu-text:#3b3f45;--emboss:0 1px 0 rgba(255,255,255,.8);
+  --well:#ffffff;--btn:linear-gradient(180deg,#fdfdfd,#dcdcdc);--btn-border:#8d8d8d;
+  --lcd:#b6c39f;--lcd-text:#25301b;--lcd-glow:none;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#2a2824;--text:#ece6d8;--muted:#b0a794;
+  --line:rgba(236,230,216,.12);--grid:rgba(236,230,216,.09);
+  --accent:#4a90e2;--ok:#7cc576;--warn:#e8b04a;--bad:#e5786d;
+  --c1:#e5786d;--c2:#6aa5e8;--c3:#7cc576;--c4:#e8c14a;--c5:#b58ad1;
+  --tip-bg:#ece6d8;--tip-fg:#2a2824;
+  --donut-border:#3a3732;--bar-border:rgba(0,0,0,.5);
+  --linen:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px),#2a2824;
+  --leather:#3a2414;--stitch:rgba(243,227,195,.35);
+  --paper:linear-gradient(180deg,#3d3a35,#34312c);
+  --alu:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,rgba(0,0,0,.08) 1px 3px),linear-gradient(180deg,#5d6168,#3d4046);
+  --alu-border:#25272b;--alu-text:#e6e8eb;--emboss:0 -1px 0 rgba(0,0,0,.7);
+  --well:#1f1d1a;--btn:linear-gradient(180deg,#5a5853,#3c3a36);--btn-border:#1c1b19;
+  --lcd:#0e1a0e;--lcd-text:#8dff7a;--lcd-glow:0 0 6px rgba(141,255,122,.7);
+}
+body{background:var(--linen);background-attachment:fixed}
+
+/* stitched leather sidebar */
+.sidebar{margin:14px 0 14px 14px;height:calc(100vh - 28px);top:14px;border-radius:14px;color:var(--leather-text);
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),radial-gradient(ellipse at 30% 10%,rgba(255,255,255,.12),transparent 60%),radial-gradient(ellipse at 50% 120%,rgba(0,0,0,.45),transparent 60%),var(--leather);
+  outline:2px dashed var(--stitch);outline-offset:-9px;box-shadow:0 10px 24px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.15);padding:24px 18px}
+.brand .logo{border-radius:50%;width:44px;height:44px;color:#5a3b0b;font-weight:900;font-size:20px;text-shadow:0 1px 0 rgba(255,240,200,.8);
+  background:radial-gradient(circle at 35% 30%,#fff2c2,#e3b85a 45%,#a5741f 80%);box-shadow:inset 0 1px 1px rgba(255,255,255,.8),inset 0 -2px 3px rgba(0,0,0,.35),0 2px 4px rgba(0,0,0,.5)}
+.brand strong{font-weight:900;text-shadow:0 -1px 0 rgba(0,0,0,.6)}
+.brand small{opacity:.75}
+.nav-group{color:var(--leather-text);opacity:.6;text-shadow:0 -1px 0 rgba(0,0,0,.6)}
+.nav-item{border-radius:8px;color:var(--leather-text);text-shadow:0 -1px 0 rgba(0,0,0,.65);font-weight:700}
+.nav-item:hover{background:rgba(0,0,0,.18)}
+.nav-item.active{background:rgba(0,0,0,.32);box-shadow:inset 0 2px 5px rgba(0,0,0,.6),0 1px 0 rgba(255,255,255,.12)}
+.nav-item.active .ic{color:#f1c86b}
+.side-foot{border-radius:10px;background:rgba(0,0,0,.25);box-shadow:inset 0 2px 4px rgba(0,0,0,.5),0 1px 0 rgba(255,255,255,.1)}
+.side-foot small{color:var(--leather-text);opacity:.7}
+.avatar{background:radial-gradient(circle at 35% 30%,#fff2c2,#e3b85a 45%,#a5741f 80%);color:#5a3b0b;box-shadow:inset 0 -2px 3px rgba(0,0,0,.3),0 1px 3px rgba(0,0,0,.5)}
+
+/* brushed aluminium toolbar */
+.topbar{background:var(--alu);border:1px solid var(--alu-border);border-radius:12px;padding:8px 10px;box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 3px 8px rgba(0,0,0,.18);color:var(--alu-text)}
+[data-theme="dark"] .topbar{box-shadow:inset 0 1px 0 rgba(255,255,255,.15),0 3px 8px rgba(0,0,0,.4)}
+.search{height:34px;border-radius:999px;background:var(--well);border:1px solid var(--btn-border);box-shadow:inset 0 2px 3px rgba(0,0,0,.25)}
+.icon-btn,.user{background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.12) 50%,rgba(0,0,0,0) 51%,rgba(0,0,0,.08)),var(--btn);border:1px solid var(--btn-border);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 1px 2px rgba(0,0,0,.25);color:var(--alu-text);text-shadow:var(--emboss)}
+.icon-btn{width:36px;height:36px;border-radius:50%}
+.icon-btn:active{box-shadow:inset 0 2px 4px rgba(0,0,0,.35)}
+.icon-btn b{background:radial-gradient(circle at 40% 30%,#ff8a80,#d32f2f);box-shadow:0 1px 2px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.5);border:1.5px solid #fff}
+.user{border-radius:999px}
+.page-head h1{font-weight:900;font-size:32px;color:var(--text);text-shadow:0 1px 0 rgba(255,255,255,.7),0 -1px 0 rgba(0,0,0,.15)}
+[data-theme="dark"] .page-head h1{text-shadow:0 -1px 0 rgba(0,0,0,.8),0 1px 0 rgba(255,255,255,.08)}
+/* iOS 6 segmented control */
+.segmented{padding:0;gap:0;border:1px solid var(--btn-border);border-radius:8px;overflow:hidden;box-shadow:0 1px 0 rgba(255,255,255,.6)}
+.segmented button{background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.12) 50%,rgba(0,0,0,0) 51%,rgba(0,0,0,.08)),var(--btn);color:var(--alu-text);font-weight:700;border-radius:0;text-shadow:var(--emboss);padding:7px 13px}
+.segmented button+button{border-left:1px solid var(--btn-border)}
+.segmented button.active{background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.12) 50%,rgba(0,0,0,0) 51%,rgba(0,0,0,.08)),linear-gradient(180deg,#5aa0f2,#1f68d6);color:#fff;text-shadow:0 -1px 0 rgba(0,0,0,.4);box-shadow:inset 0 1px 3px rgba(0,0,0,.35)}
+.date-chip{background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.12) 50%,rgba(0,0,0,0) 51%,rgba(0,0,0,.08)),var(--btn);border:1px solid var(--btn-border);border-radius:8px;color:var(--alu-text);text-shadow:var(--emboss);font-weight:700}
+
+/* paper cards with LCD readouts */
+.kpi,.card{background:var(--paper);border-radius:10px;border:1px solid rgba(0,0,0,.18);box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 4px 10px rgba(0,0,0,.18),0 1px 2px rgba(0,0,0,.2)}
+[data-theme="dark"] :is(.kpi,.card){border-color:rgba(0,0,0,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 4px 12px rgba(0,0,0,.45)}
+.kpi-icon{border-radius:12px;color:#fff;border:1px solid rgba(0,0,0,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 2px 4px rgba(0,0,0,.3)}
+.kpi-1 .kpi-icon{background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.12) 50%,rgba(0,0,0,0) 51%,rgba(0,0,0,.08)),linear-gradient(#e0574a,#a5281d)}
+.kpi-2 .kpi-icon{background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.12) 50%,rgba(0,0,0,0) 51%,rgba(0,0,0,.08)),linear-gradient(#4f90db,#1d5aa5)}
+.kpi-3 .kpi-icon{background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.12) 50%,rgba(0,0,0,0) 51%,rgba(0,0,0,.08)),linear-gradient(#5fae58,#2d6b28)}
+.kpi-4 .kpi-icon{background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.12) 50%,rgba(0,0,0,0) 51%,rgba(0,0,0,.08)),linear-gradient(#f0c040,#b58200)}
+.kpi-label{font-weight:700;text-shadow:var(--emboss)}
+.kpi-value{font-family:var(--lcd-font);font-weight:400;font-size:28px;letter-spacing:.04em;background:var(--lcd);color:var(--lcd-text);text-shadow:var(--lcd-glow);
+  padding:2px 10px;border-radius:5px;border:1px solid rgba(0,0,0,.35);box-shadow:inset 0 2px 5px rgba(0,0,0,.35),0 1px 0 rgba(255,255,255,.5);display:inline-block}
+.card{padding:0;overflow:hidden}
+.card>*:not(.card-h){margin:18px 20px}
+.card-h{background:var(--alu);border-bottom:1px solid var(--alu-border);padding:12px 18px;margin:0;color:var(--alu-text);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+[data-theme="dark"] .card-h{box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.card-h h3{font-weight:900;text-shadow:var(--emboss)}
+.card-h p{color:var(--alu-text);opacity:.75}
+.card-h .key{color:var(--alu-text)}
+.link{background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.12) 50%,rgba(0,0,0,0) 51%,rgba(0,0,0,.08)),var(--btn);border:1px solid var(--btn-border);border-radius:6px;padding:5px 10px;color:var(--alu-text);text-shadow:var(--emboss);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+.donut-box{border-radius:50%;background:radial-gradient(circle,rgba(0,0,0,.06),transparent 70%)}
+.donut-center strong{font-family:var(--lcd-font);font-weight:400}
+.legend li{border-color:var(--line)}
+.legend i{border-radius:50%;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 1px 1px rgba(0,0,0,.3)}
+tbody tr:nth-child(odd) td{background:rgba(0,0,0,.025)}
+tbody tr:hover td{background:linear-gradient(180deg,#5aa0f2,#1f68d6);color:#fff;text-shadow:0 -1px 0 rgba(0,0,0,.3)}
+tbody tr:hover :is(.prod,.brand-c,.rank){color:#fff;opacity:.85}
+.thumb{border-radius:50%;box-shadow:inset 0 2px 3px rgba(255,255,255,.35),inset 0 -2px 3px rgba(0,0,0,.35),0 1px 2px rgba(0,0,0,.4)}
+.meter{height:8px;border-radius:4px;background:var(--well);box-shadow:inset 0 1px 2px rgba(0,0,0,.35)}
+.meter i{background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.12) 50%,rgba(0,0,0,0) 51%,rgba(0,0,0,.08)),var(--accent)}
+.alloc-bar{height:14px;border-radius:7px;background:var(--well);box-shadow:inset 0 2px 3px rgba(0,0,0,.35);gap:0;padding:1px}
+.alloc-bar span{background-image:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.12) 50%,rgba(0,0,0,0) 51%,rgba(0,0,0,.08))!important}
+.alloc-bar .ok{background-color:var(--ok)}.alloc-bar .warn{background-color:var(--warn)}.alloc-bar .bad{background-color:var(--bad)}
+.alloc-bar span:first-child{border-radius:6px 0 0 6px}.alloc-bar span:last-child{border-radius:0 6px 6px 0}
+.alloc-summary{border-color:var(--line)}
+.alloc-summary strong{font-family:var(--lcd-font);font-weight:400}
+.alloc-summary div+div{border-color:var(--line)}
+@media (max-width:900px){.sidebar{margin:0;top:0;height:100vh;border-radius:0 14px 14px 0}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">T</div><div><strong>TIFFNY Inventory</strong><small>Stock &amp; Master SKU Manager</small></div></div>
+    <nav id="menu"></nav>
+    <div class="side-foot"><div class="avatar">RP</div><div><strong>Ritesh Patel</strong><small>Admin</small></div></div>
+  </aside>
+  <div class="scrim"></div>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" data-icon="menu" aria-label="Open menu"></button>
+      <label class="search"><span data-icon="search"></span><input type="search" placeholder="Search by SKU, product name, brand…"></label>
+      <div class="top-actions">
+        <button class="icon-btn theme-btn" id="themeToggle" type="button"></button>
+        <button class="icon-btn" data-icon="bell" aria-label="Notifications"><b>4</b></button>
+        <div class="user"><div class="avatar">R</div><div><strong>Ritesh Patel</strong><small>Admin · 07 Oct 2026</small></div></div>
+      </div>
+    </header>
+    <div class="page-head">
+      <div><h1>Dashboard</h1><p>Stock &amp; order overview across all platforms</p></div>
+      <div class="head-tools"><div id="periods" class="segmented"></div><div class="date-chip"><span data-icon="calendar"></span><span id="dateRange"></span></div></div>
+    </div>
+    <section id="kpis" class="kpis"></section>
+    <section class="grid">
+      <article class="card c-donut">
+        <header class="card-h"><div><h3>Platform-wise stock allocated</h3><p>Units currently allocated per channel</p></div></header>
+        <div class="donut-wrap"><div class="donut-box"><canvas id="donutChart"></canvas><div class="donut-center"><strong id="donutTotal"></strong><span>Total stock</span></div></div><ul id="donutLegend" class="legend"></ul></div>
+      </article>
+      <article class="card c-bar">
+        <header class="card-h"><div><h3>Platform-wise order overview</h3><p>Orders by channel, <span data-period-name></span></p></div></header>
+        <div class="chart-box"><canvas id="barChart"></canvas></div>
+      </article>
+      <article class="card c-table">
+        <header class="card-h"><div><h3>Top selling SKU</h3><p>Top 8 by units sold</p></div><a href="#" class="link">View all →</a></header>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>SKU / Product</th><th>Brand</th><th class="num">Sold qty</th><th class="num">Revenue</th></tr></thead><tbody id="skuBody"></tbody></table></div>
+      </article>
+      <article class="card c-alloc">
+        <header class="card-h"><div><h3>Platform-wise SKU allocation</h3><p>SKU health per channel</p></div><div class="key"><span class="ok">In stock</span><span class="warn">Low</span><span class="bad">Out</span></div></header>
+        <div id="alloc"></div>
+        <div id="allocSummary" class="alloc-summary"></div>
+      </article>
+    </section>
+  </main>
+</div>
+<script src="assets/dashboard.js"></script>
+</body>
+</html>
