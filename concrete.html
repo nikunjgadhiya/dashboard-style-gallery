@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('dash-theme:concrete.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Concrete Inventory Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  color-scheme:light;
+  --font:'Archivo',system-ui,sans-serif;
+  --mass:'Anton','Impact',sans-serif;
+  --bg:#c3c0b9;--slab:#dddad3;--slab-2:#d2cfc8;--text:#1d1d1b;--muted:#4f4d48;--orange:#ff5a1f;--on:#1d1d1b;
+  --tie:#5d5a54;--tie-ring:#a9a59d;--seam:rgba(29,29,27,.12);--grain-o:.5;
+  --line:rgba(29,29,27,.2);--grid:rgba(29,29,27,.14);--struct:rgba(255,90,31,.35);
+  --accent:var(--orange);--ok:#2f6b4f;--warn:#9a6a00;--bad:#c2410c;
+  --c1:#1d1d1b;--c2:#ff5a1f;--c3:#6e6b64;--c4:#9d9a93;--c5:#3d3c38;
+  --tip-bg:#1d1d1b;--tip-fg:#e8e6e0;--tip-radius:0;
+  --donut-border:#cfccc5;--donut-bw:3;--donut-radius:0;--donut-cutout:52%;--bar-radius:0;
+  --heavy:14px 14px 0 rgba(29,29,27,.35);
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#262624;--slab:#33332f;--slab-2:#2d2d2a;--text:#e8e6e0;--muted:#a6a39b;--orange:#ff6a33;
+  --tie:#121211;--tie-ring:#4a4944;--seam:rgba(0,0,0,.35);--grain-o:.6;
+  --line:rgba(232,230,224,.16);--grid:rgba(232,230,224,.1);--struct:rgba(255,106,51,.3);
+  --ok:#7fc4a1;--warn:#e0b04a;--bad:#ff8a5c;
+  --c1:#e8e6e0;--c2:#ff6a33;--c3:#8f8c84;--c4:#5c5a55;--c5:#bdbab2;
+  --tip-bg:#e8e6e0;--tip-fg:#1d1d1b;
+  --donut-border:#33332f;
+  --heavy:14px 14px 0 rgba(0,0,0,.55);
+}
+*{border-radius:0 !important}
+body{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E"),var(--bg);background-attachment:fixed}
+[data-theme="dark"] body{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E"),radial-gradient(ellipse at 30% 20%,rgba(255,255,255,.04),transparent 50%),var(--bg)}
+/* exposed structural grid */
+.cc-grid{position:fixed;inset:0 0 0 280px;z-index:-1;pointer-events:none;display:grid;grid-template-columns:repeat(4,1fr);
+  background:repeating-linear-gradient(90deg,var(--struct) 0 1px,transparent 1px 25%),repeating-linear-gradient(180deg,transparent 0 calc(25% - 1px),var(--struct) calc(25% - 1px) 25%)}
+.cc-grid i{font:400 14px var(--mass);font-style:normal;color:var(--orange);justify-self:start;margin:6px 0 0 -7px;background:var(--bg);width:16px;text-align:center;line-height:16px;height:16px;outline:1px solid var(--orange)}
+@media (max-width:900px){.cc-grid{left:0}}
+
+/* raw concrete slabs */
+.sidebar,.kpi,.card{background:radial-gradient(circle,var(--tie) 3.5px,var(--tie-ring) 4.5px,transparent 5.5px) 30px 30px/120px 80px,repeating-linear-gradient(180deg,transparent 0 79px,var(--seam) 79px 80px),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E"),linear-gradient(160deg,var(--slab),var(--slab-2));box-shadow:var(--heavy)}
+.sidebar{margin:18px 0 18px 18px;height:calc(100vh - 36px);top:18px;width:250px;padding:20px 16px}
+.brand{flex-direction:column;align-items:flex-start;gap:6px;border-bottom:4px solid var(--text);padding-bottom:16px}
+.brand .logo{display:none}
+.brand strong{font-family:var(--mass);font-weight:400;font-size:34px;line-height:.95;letter-spacing:.01em;text-transform:uppercase}
+.brand small{opacity:1;color:var(--muted);text-transform:uppercase;letter-spacing:.14em;font-size:10px;font-weight:700}
+.nav-group{font-family:var(--mass);font-weight:400;font-size:13px;letter-spacing:.08em;opacity:1;color:var(--orange)}
+.nav-item{font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:12.5px;border-left:6px solid transparent}
+.nav-item:hover{border-left-color:var(--text)}
+.nav-item.active{background:var(--text);color:var(--slab);border-left-color:var(--orange)}
+.side-foot{border-top:4px solid var(--text)}
+.avatar{background:var(--orange);color:#1d1d1b;font-family:var(--mass);font-weight:400}
+
+/* header */
+.search,.icon-btn,.user,.date-chip,.segmented{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E"),var(--slab);border:3px solid var(--text)}
+.search input{font-weight:600;text-transform:uppercase}
+.icon-btn b{background:var(--orange);color:#1d1d1b}
+.page-head{align-items:flex-end;margin-bottom:28px}
+.page-head h1{font-family:var(--mass);font-weight:400;font-size:clamp(64px,9vw,140px);line-height:.82;letter-spacing:-.01em;text-transform:uppercase}
+.page-head p{text-transform:uppercase;letter-spacing:.16em;font-weight:800;font-size:11px;color:var(--muted);margin-top:10px}
+.segmented{padding:0;gap:0}
+.segmented button{text-transform:uppercase;font-weight:800;font-size:11.5px;letter-spacing:.06em;color:var(--text)}
+.segmented button+button{border-left:3px solid var(--text)}
+.segmented button.active{background:var(--orange);color:#1d1d1b}
+.date-chip{font-weight:800;text-transform:uppercase;font-size:11.5px}
+
+/* monumental KPIs */
+.kpis{gap:22px;margin-bottom:28px}
+.kpi{flex-direction:column;gap:2px;padding:20px 22px}
+.kpi-icon{display:none}
+.kpi-label{text-transform:uppercase;letter-spacing:.14em;font-weight:800;font-size:11px;color:var(--text)}
+.kpi-value{font-family:var(--mass);font-weight:400;font-size:62px;line-height:1;letter-spacing:0;margin:6px 0}
+.kpi-4 .kpi-value{color:var(--orange)}
+.kpi-delta{font-weight:800;text-transform:uppercase;font-size:11px}
+
+.grid{gap:28px}
+.card-h{border-bottom:3px solid var(--text);padding-bottom:12px}
+.card-h h3{font-family:var(--mass);font-weight:400;font-size:28px;text-transform:uppercase;letter-spacing:.01em;line-height:1}
+.card-h p{text-transform:uppercase;letter-spacing:.1em;font-weight:700;font-size:10.5px}
+.link{background:var(--text);color:var(--slab);padding:6px 12px;text-transform:uppercase;font-weight:800;font-size:11px}
+.donut-center strong{font-family:var(--mass);font-weight:400;font-size:28px}
+.legend li{border-bottom:2px solid var(--line);text-transform:uppercase;font-weight:700;font-size:12px}
+.legend i{width:12px;height:12px}
+th{color:var(--text);font-weight:800;border-bottom:3px solid var(--text)}
+td{border-top:1px solid var(--line);font-weight:500}
+tbody tr:hover td{background:var(--text);color:var(--slab)}
+tbody tr:hover :is(.prod,.brand-c,.rank){color:var(--slab)}
+.sku{font-weight:800}
+.rank{font-family:var(--mass);font-size:18px;color:var(--orange)}
+.thumb{filter:grayscale(.6)}
+.meter{height:6px;background:var(--line)}
+.meter i{background:var(--text)}
+.key .ok::before,.alloc-bar .ok{background:var(--text)}
+.key .warn::before,.alloc-bar .warn{background:repeating-linear-gradient(45deg,var(--text) 0 2px,transparent 2px 6px)}
+.key .bad::before,.alloc-bar .bad{background:var(--orange)}
+.alloc-bar{height:16px;background:var(--line);border:2px solid var(--text);gap:0}
+.alloc-name{text-transform:uppercase;font-weight:800;font-size:12px}
+.alloc-summary{border-top:3px solid var(--text)}
+.alloc-summary div+div{border-left:3px solid var(--text)}
+.alloc-summary strong{font-family:var(--mass);font-weight:400;font-size:32px}
+@media (max-width:900px){.sidebar{margin:0;top:0;height:100vh}}
+@media (max-width:640px){.kpi-value{font-size:48px}}
+</style>
+</head>
+<body>
+<div class="cc-grid" aria-hidden="true"><i>A</i><i>B</i><i>C</i><i>D</i></div>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">T</div><div><strong>TIFFNY Inventory</strong><small>Stock &amp; Master SKU Manager</small></div></div>
+    <nav id="menu"></nav>
+    <div class="side-foot"><div class="avatar">RP</div><div><strong>Ritesh Patel</strong><small>Admin</small></div></div>
+  </aside>
+  <div class="scrim"></div>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" data-icon="menu" aria-label="Open menu"></button>
+      <label class="search"><span data-icon="search"></span><input type="search" placeholder="Search by SKU, product name, brand…"></label>
+      <div class="top-actions">
+        <button class="icon-btn theme-btn" id="themeToggle" type="button"></button>
+        <button class="icon-btn" data-icon="bell" aria-label="Notifications"><b>4</b></button>
+        <div class="user"><div class="avatar">R</div><div><strong>Ritesh Patel</strong><small>Admin · 07 Oct 2026</small></div></div>
+      </div>
+    </header>
+    <div class="page-head">
+      <div><h1>Dashboard</h1><p>Stock &amp; order overview across all platforms</p></div>
+      <div class="head-tools"><div id="periods" class="segmented"></div><div class="date-chip"><span data-icon="calendar"></span><span id="dateRange"></span></div></div>
+    </div>
+    <section id="kpis" class="kpis"></section>
+    <section class="grid">
+      <article class="card c-donut">
+        <header class="card-h"><div><h3>Platform-wise stock allocated</h3><p>Units currently allocated per channel</p></div></header>
+        <div class="donut-wrap"><div class="donut-box"><canvas id="donutChart"></canvas><div class="donut-center"><strong id="donutTotal"></strong><span>Total stock</span></div></div><ul id="donutLegend" class="legend"></ul></div>
+      </article>
+      <article class="card c-bar">
+        <header class="card-h"><div><h3>Platform-wise order overview</h3><p>Orders by channel, <span data-period-name></span></p></div></header>
+        <div class="chart-box"><canvas id="barChart"></canvas></div>
+      </article>
+      <article class="card c-table">
+        <header class="card-h"><div><h3>Top selling SKU</h3><p>Top 8 by units sold</p></div><a href="#" class="link">View all →</a></header>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>SKU / Product</th><th>Brand</th><th class="num">Sold qty</th><th class="num">Revenue</th></tr></thead><tbody id="skuBody"></tbody></table></div>
+      </article>
+      <article class="card c-alloc">
+        <header class="card-h"><div><h3>Platform-wise SKU allocation</h3><p>SKU health per channel</p></div><div class="key"><span class="ok">In stock</span><span class="warn">Low</span><span class="bad">Out</span></div></header>
+        <div id="alloc"></div>
+        <div id="allocSummary" class="alloc-summary"></div>
+      </article>
+    </section>
+  </main>
+</div>
+<script src="assets/dashboard.js"></script>
+</body>
+</html>
