@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('dash-theme:watercolour.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Watercolour Inventory Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  color-scheme:light;
+  --font:'Lora',Georgia,serif;
+  --hand:'Caveat','Segoe Print',cursive;
+  --blush:rgba(244,166,184,.55);--sky:rgba(142,197,232,.55);--sage:rgba(168,207,160,.55);--lilac:rgba(195,177,225,.55);--peach:rgba(247,197,159,.6);
+  --bg:#fbf8f2;--text:#3b3a4a;--muted:#77748a;--on:#3b3a4a;
+  --line:rgba(59,58,74,.12);--grid:rgba(59,58,74,.08);
+  --accent:#a0527a;--ok:#4f8a4b;--warn:#b5762a;--bad:#c2475f;
+  --c1:#e57f9b;--c2:#5ea8d8;--c3:#7fb87a;--c4:#a58bd6;--c5:#ef9f6a;
+  --tip-bg:#3b3a4a;--tip-fg:#fbf8f2;--tip-radius:10;
+  --donut-border:#fbf8f2;--donut-bw:3;--donut-radius:10;--donut-spacing:3;--donut-cutout:62%;--bar-radius:6;
+  --paper-o:1;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --blush:rgba(229,127,155,.32);--sky:rgba(94,168,216,.32);--sage:rgba(127,184,122,.3);--lilac:rgba(165,139,214,.34);--peach:rgba(239,159,106,.3);
+  --bg:#1c1d30;--text:#f1ecf7;--muted:#b5afc9;
+  --line:rgba(241,236,247,.12);--grid:rgba(241,236,247,.08);
+  --accent:#f2a6c2;--ok:#9ad493;--warn:#f2c07a;--bad:#f28aa0;
+  --c1:#f28aa0;--c2:#7fc0ea;--c3:#9ad493;--c4:#c1a8ef;--c5:#f5b585;
+  --tip-bg:#f1ecf7;--tip-fg:#1c1d30;
+  --donut-border:#1c1d30;
+  --paper-o:.35;
+}
+body{background:var(--bg);font-size:15px}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .35 0 0 0 0 .3 0 0 0 .16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");opacity:var(--paper-o);pointer-events:none}
+
+/* soft wash layer with bleeding edges behind each surface */
+.sidebar,.kpi,.card,.search,.user,.date-chip,.segmented,.icon-btn{position:relative;isolation:isolate;background:transparent}
+.sidebar{position:sticky}
+:is(.sidebar,.kpi,.card,.search,.user,.date-chip,.segmented,.icon-btn)::before{content:"";position:absolute;inset:-4px;z-index:-1;border-radius:18px;filter:url(#wc);pointer-events:none;
+  background:var(--wash,radial-gradient(ellipse at 20% 20%,var(--lilac),transparent 60%),radial-gradient(ellipse at 85% 80%,var(--sky),transparent 62%),radial-gradient(ellipse at 60% 30%,color-mix(in srgb,var(--lilac) 50%,transparent),transparent 70%))}
+.sidebar{--wash:radial-gradient(ellipse at 20% 20%,var(--lilac),transparent 60%),radial-gradient(ellipse at 85% 80%,var(--blush),transparent 62%),radial-gradient(ellipse at 60% 30%,color-mix(in srgb,var(--lilac) 50%,transparent),transparent 70%);margin:18px 0 18px 18px;height:calc(100vh - 36px);top:18px}
+.search,.user,.date-chip,.segmented,.icon-btn{--wash:radial-gradient(ellipse at 20% 20%,var(--sky),transparent 60%),radial-gradient(ellipse at 85% 80%,var(--sage),transparent 62%),radial-gradient(ellipse at 60% 30%,color-mix(in srgb,var(--sky) 50%,transparent),transparent 70%)}
+.brand .logo{border-radius:50%;background:var(--blush);color:var(--text);font-family:var(--hand);font-size:24px;font-weight:700;filter:url(#wc)}
+.brand strong{font-family:var(--hand);font-size:24px;font-weight:700;letter-spacing:0}
+.brand small{font-style:italic;opacity:.8}
+.nav-group{font-family:var(--hand);font-size:17px;letter-spacing:0;text-transform:none;opacity:1;color:var(--accent);font-weight:700}
+.nav-item{font-weight:500;position:relative;isolation:isolate;border-radius:14px}
+.nav-item:hover{background:rgba(255,255,255,.25)}
+[data-theme="dark"] .nav-item:hover{background:rgba(255,255,255,.05)}
+.nav-item.active{font-weight:600}
+.nav-item.active::before{content:"";position:absolute;inset:0 -4px;z-index:-1;border-radius:14px;background:radial-gradient(ellipse,var(--blush),transparent 75%),var(--peach);filter:url(#wc)}
+.side-foot{border-top:1px dashed var(--line)}
+.avatar{background:var(--sage);color:var(--text);font-family:var(--hand);font-size:18px}
+.search,.user,.segmented,.date-chip{border-radius:999px}
+.icon-btn{border-radius:50%}
+.icon-btn b{background:var(--bad)}
+.page-head h1{font-family:var(--hand);font-weight:700;font-size:62px;letter-spacing:0;line-height:1;color:var(--accent)}
+.page-head p{font-style:italic}
+.segmented button{color:var(--muted);font-weight:500;border-radius:999px;position:relative;isolation:isolate}
+.segmented button.active{color:var(--text);font-weight:600}
+.segmented button.active::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:999px;background:var(--peach);filter:url(#wc)}
+
+.kpis{gap:22px}
+.kpi{flex-direction:column;gap:10px;padding:22px}
+.kpi-1{--wash:radial-gradient(ellipse at 20% 20%,var(--blush),transparent 60%),radial-gradient(ellipse at 85% 80%,var(--peach),transparent 62%),radial-gradient(ellipse at 60% 30%,color-mix(in srgb,var(--blush) 50%,transparent),transparent 70%)}.kpi-2{--wash:radial-gradient(ellipse at 20% 20%,var(--sky),transparent 60%),radial-gradient(ellipse at 85% 80%,var(--lilac),transparent 62%),radial-gradient(ellipse at 60% 30%,color-mix(in srgb,var(--sky) 50%,transparent),transparent 70%)}
+.kpi-3{--wash:radial-gradient(ellipse at 20% 20%,var(--sage),transparent 60%),radial-gradient(ellipse at 85% 80%,var(--sky),transparent 62%),radial-gradient(ellipse at 60% 30%,color-mix(in srgb,var(--sage) 50%,transparent),transparent 70%)}.kpi-4{--wash:radial-gradient(ellipse at 20% 20%,var(--peach),transparent 60%),radial-gradient(ellipse at 85% 80%,var(--blush),transparent 62%),radial-gradient(ellipse at 60% 30%,color-mix(in srgb,var(--peach) 50%,transparent),transparent 70%)}
+.kpi-icon{border-radius:50%;background:rgba(255,255,255,.45);color:var(--text)}
+[data-theme="dark"] .kpi-icon{background:rgba(255,255,255,.08)}
+.kpi-label{font-style:italic}
+.kpi-value{font-family:var(--hand);font-weight:700;font-size:44px;line-height:1;letter-spacing:0}
+
+.grid{gap:28px}
+.card{--wash:radial-gradient(ellipse at 20% 20%,rgba(255,255,255,.6),transparent 60%),radial-gradient(ellipse at 85% 80%,var(--lilac),transparent 62%),radial-gradient(ellipse at 60% 30%,color-mix(in srgb,rgba(255,255,255,.6) 50%,transparent),transparent 70%)}
+[data-theme="dark"] .card{--wash:radial-gradient(ellipse at 20% 20%,rgba(255,255,255,.04),transparent 60%),radial-gradient(ellipse at 85% 80%,var(--lilac),transparent 62%),radial-gradient(ellipse at 60% 30%,color-mix(in srgb,rgba(255,255,255,.04) 50%,transparent),transparent 70%)}
+.c-bar{--wash:radial-gradient(ellipse at 20% 20%,rgba(255,255,255,.6),transparent 60%),radial-gradient(ellipse at 85% 80%,var(--sky),transparent 62%),radial-gradient(ellipse at 60% 30%,color-mix(in srgb,rgba(255,255,255,.6) 50%,transparent),transparent 70%)}.c-table{--wash:radial-gradient(ellipse at 20% 20%,rgba(255,255,255,.6),transparent 60%),radial-gradient(ellipse at 85% 80%,var(--sage),transparent 62%),radial-gradient(ellipse at 60% 30%,color-mix(in srgb,rgba(255,255,255,.6) 50%,transparent),transparent 70%)}.c-alloc{--wash:radial-gradient(ellipse at 20% 20%,rgba(255,255,255,.6),transparent 60%),radial-gradient(ellipse at 85% 80%,var(--peach),transparent 62%),radial-gradient(ellipse at 60% 30%,color-mix(in srgb,rgba(255,255,255,.6) 50%,transparent),transparent 70%)}
+[data-theme="dark"] .c-bar{--wash:radial-gradient(ellipse at 20% 20%,rgba(255,255,255,.04),transparent 60%),radial-gradient(ellipse at 85% 80%,var(--sky),transparent 62%),radial-gradient(ellipse at 60% 30%,color-mix(in srgb,rgba(255,255,255,.04) 50%,transparent),transparent 70%)}
+[data-theme="dark"] .c-table{--wash:radial-gradient(ellipse at 20% 20%,rgba(255,255,255,.04),transparent 60%),radial-gradient(ellipse at 85% 80%,var(--sage),transparent 62%),radial-gradient(ellipse at 60% 30%,color-mix(in srgb,rgba(255,255,255,.04) 50%,transparent),transparent 70%)}
+[data-theme="dark"] .c-alloc{--wash:radial-gradient(ellipse at 20% 20%,rgba(255,255,255,.04),transparent 60%),radial-gradient(ellipse at 85% 80%,var(--peach),transparent 62%),radial-gradient(ellipse at 60% 30%,color-mix(in srgb,rgba(255,255,255,.04) 50%,transparent),transparent 70%)}
+.card-h h3{font-family:var(--hand);font-weight:700;font-size:28px;letter-spacing:0;line-height:1}
+.card-h p{font-style:italic}
+.link{font-family:var(--hand);font-size:20px;font-weight:700;color:var(--accent)}
+.donut-center strong{font-family:var(--hand);font-weight:700;font-size:30px}
+.legend li{border-bottom:1px dashed var(--line)}
+.legend i{border-radius:50%;width:14px;height:14px;filter:url(#wc);opacity:.85}
+.legend li{grid-template-columns:14px 1fr auto 52px}
+th{font-family:var(--hand);font-size:17px;font-weight:700;text-transform:none;letter-spacing:0;color:var(--accent)}
+td{border-top:1px dashed var(--line)}
+tbody tr:hover td{background:rgba(244,166,184,.14)}
+.thumb{border-radius:50%;filter:url(#wc) saturate(.7)}
+.meter{background:var(--line);height:6px;border-radius:999px}
+.meter i{background:linear-gradient(90deg,var(--c1),var(--c4));border-radius:999px;opacity:.8}
+.key span::before{border-radius:50%}
+.alloc-bar{height:12px;background:var(--line);border-radius:999px;gap:3px}
+.alloc-bar span{border-radius:999px;opacity:.85}
+.alloc-summary{border-top:1px dashed var(--line)}
+.alloc-summary div+div{border-left:1px dashed var(--line)}
+.alloc-summary strong{font-family:var(--hand);font-weight:700;font-size:30px}
+@media (max-width:900px){.sidebar{position:fixed;margin:0;top:0;height:100vh;background:var(--bg)}}
+@media (max-width:640px){.page-head h1{font-size:48px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="wc" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="3" seed="4"/><feDisplacementMap in="SourceGraphic" scale="22"/><feGaussianBlur stdDeviation="1.2"/></filter></svg>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">T</div><div><strong>TIFFNY Inventory</strong><small>Stock &amp; Master SKU Manager</small></div></div>
+    <nav id="menu"></nav>
+    <div class="side-foot"><div class="avatar">RP</div><div><strong>Ritesh Patel</strong><small>Admin</small></div></div>
+  </aside>
+  <div class="scrim"></div>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" data-icon="menu" aria-label="Open menu"></button>
+      <label class="search"><span data-icon="search"></span><input type="search" placeholder="Search by SKU, product name, brand…"></label>
+      <div class="top-actions">
+        <button class="icon-btn theme-btn" id="themeToggle" type="button"></button>
+        <button class="icon-btn" data-icon="bell" aria-label="Notifications"><b>4</b></button>
+        <div class="user"><div class="avatar">R</div><div><strong>Ritesh Patel</strong><small>Admin · 07 Oct 2026</small></div></div>
+      </div>
+    </header>
+    <div class="page-head">
+      <div><h1>Dashboard</h1><p>Stock &amp; order overview across all platforms</p></div>
+      <div class="head-tools"><div id="periods" class="segmented"></div><div class="date-chip"><span data-icon="calendar"></span><span id="dateRange"></span></div></div>
+    </div>
+    <section id="kpis" class="kpis"></section>
+    <section class="grid">
+      <article class="card c-donut">
+        <header class="card-h"><div><h3>Platform-wise stock allocated</h3><p>Units currently allocated per channel</p></div></header>
+        <div class="donut-wrap"><div class="donut-box"><canvas id="donutChart"></canvas><div class="donut-center"><strong id="donutTotal"></strong><span>Total stock</span></div></div><ul id="donutLegend" class="legend"></ul></div>
+      </article>
+      <article class="card c-bar">
+        <header class="card-h"><div><h3>Platform-wise order overview</h3><p>Orders by channel, <span data-period-name></span></p></div></header>
+        <div class="chart-box"><canvas id="barChart"></canvas></div>
+      </article>
+      <article class="card c-table">
+        <header class="card-h"><div><h3>Top selling SKU</h3><p>Top 8 by units sold</p></div><a href="#" class="link">View all →</a></header>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>SKU / Product</th><th>Brand</th><th class="num">Sold qty</th><th class="num">Revenue</th></tr></thead><tbody id="skuBody"></tbody></table></div>
+      </article>
+      <article class="card c-alloc">
+        <header class="card-h"><div><h3>Platform-wise SKU allocation</h3><p>SKU health per channel</p></div><div class="key"><span class="ok">In stock</span><span class="warn">Low</span><span class="bad">Out</span></div></header>
+        <div id="alloc"></div>
+        <div id="allocSummary" class="alloc-summary"></div>
+      </article>
+    </section>
+  </main>
+</div>
+<script src="assets/dashboard.js"></script>
+</body>
+</html>
