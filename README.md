@@ -19,7 +19,7 @@ Each page includes:
 
 ## Style status
 
-### ✅ Done (38)
+### ✅ Done (44)
 
 | # | Style | File | Default theme | Other theme | Key CSS | Best for |
 |---|-------|------|---------------|-------------|---------|----------|
@@ -61,6 +61,12 @@ Each page includes:
 | 36 | Retro 50s Diner | `diner.html` | Light | Neon night | Chrome gradient borders, checkerboard, Pacifico | Food, hospitality |
 | 37 | Sumi-e / Japanese Ink | `sumie.html` | Light (washi) | Night ink | SVG-mask brush strokes, ensō, vertical kanji | Minimal, artistic brands |
 | 38 | Accessible High-Contrast | `accessible.html` | Light | Black + yellow | `:focus-visible`, skip link, Okabe-Ito, 44px targets | Government, healthcare |
+| 39 | Steampunk | `steampunk.html` | Light (parchment) | Night workshop | Brass gradient borders, rivets, conic gauge KPIs, SVG gears | Games, themed events |
+| 40 | Tron / Synth Grid | `tron.html` | Dark | White simulation grid | Glow lines, perspective grid floor, identity discs, light trails | Esports, tech launches |
+| 41 | Watercolour | `watercolour.html` | Light (paper) | Indigo night wash | `feDisplacementMap` bleeding washes, Caveat lettering | Lifestyle, wellness |
+| 42 | Brutalist Concrete | `concrete.html` | Light (concrete) | Wet concrete | Concrete texture, formwork tie holes, Anton, structural grid | Architecture studios |
+| 43 | Arcade Cabinet | `arcade.html` | Dark cabinet | Yellow daytime cabinet | CRT bezel + scanlines, neon marquee, arcade-button nav | Gaming hubs |
+| 44 | Material You Expressive | `expressive.html` | Light | M3 dark | Polar `clip-path` shapes, spring motion, Roboto Flex `wdth` | Android-first products |
 
 Every style has a working **light and dark mode**.
 
@@ -68,12 +74,12 @@ Every style has a working **light and dark mode**.
 
 | # | Style | Look | Best for |
 |---|-------|------|----------|
-| 39 | Steampunk | Brass gears, rivets, sepia parchment, pressure gauges | Games, themed events |
-| 40 | Tron / Synth Grid | Glowing cyan outlines on black, light-cycle trails | Esports, tech launches |
-| 41 | Watercolour | Soft paint washes, bleeding edges, hand-lettered titles | Lifestyle, wellness |
-| 42 | Brutalist Concrete | Raw concrete textures, massive type, exposed grid | Architecture studios |
-| 43 | Arcade Cabinet | CRT bezel, coin-op marquee, joystick-style controls | Gaming hubs |
-| 44 | Material You Expressive | Shape morphing, bold colour roles, springy motion | Android-first products |
+| 45 | Gothic / Dark Academia | Candle-lit library, burgundy and parchment, ornate frames, old serif | Literature, education |
+| 46 | Tropical / Tiki | Palm leaves, bamboo, sunset gradients, carved wood | Travel, hospitality |
+| 47 | Space Mission Control | NASA-style consoles, telemetry readouts, orbit diagrams | Aerospace, monitoring |
+| 48 | Lo-fi / Cozy | Warm desk scene, soft grain, rain-on-window mood | Productivity, study apps |
+| 49 | Minimal Mono (Apple-like) | Pure greyscale, SF-style type, generous whitespace | Premium SaaS |
+| 50 | Quilted / Tactile Fabric | Stitched fabric panels, denim and felt textures | Kids, crafts, fashion |
 
 ---
 
@@ -106,7 +112,8 @@ win95.html, terminal.html, vaporwave.html, skeuomorphism.html, notebook.html,
 luxury.html, kawaii.html, bauhaus.html, artdeco.html, pixel.html, blueprint.html,
 newspaper.html, comic.html, solarpunk.html, glass-bento.html, rawhtml.html,
 holographic.html, mesh.html, bloomberg.html, spatial.html, origami.html,
-isometric.html, diner.html, sumie.html, accessible.html
+isometric.html, diner.html, sumie.html, accessible.html, steampunk.html,
+tron.html, watercolour.html, concrete.html, arcade.html, expressive.html
 assets/
   base.css              Shared structural layout and responsive rules
   dashboard.js          Shared demo data, menu, KPIs, table, charts, period tabs, theme toggle
