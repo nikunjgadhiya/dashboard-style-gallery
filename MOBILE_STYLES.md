@@ -1,6 +1,6 @@
-# Mobile App Design Styles (Planned)
+# Mobile App Design Styles
 
-Mobile app versions of the TIFFNY Inventory dashboard, to build later. Each design would be a phone-sized HTML prototype (390×844 frame) with the same data as the web gallery: KPIs, stock donut, order chart, top SKUs and SKU allocation.
+Mobile app versions of the TIFFNY Inventory dashboard as clickable phone-sized HTML prototypes (shown in a 390×844 frame on desktop, full screen on a real phone), with the same data as the web gallery. Browse them in `mobile.html`. Each style also exports a Flutter `ThemeData` file to `flutter/themes/` (see `flutter/README.md`).
 
 ## Screens per design
 
@@ -21,14 +21,28 @@ Common pieces: bottom tab bar (Home, Stock, Scan, Orders, More), a floating scan
 
 ---
 
+## ✅ Done
+
+| # | Style | File | Default theme | Flutter theme |
+|---|-------|------|---------------|---------------|
+| M1 | iOS 26 Liquid Glass | `m-ios-glass.html` | Light | `flutter/themes/ios_glass_theme.dart` |
+| M2 | Material 3 Expressive | `m-material.html` | Light | `flutter/themes/material_theme.dart` |
+| M8 | Bento Mobile | `m-bento.html` | Light | `flutter/themes/bento_theme.dart` |
+| M17 | Chat-First AI Assistant | `m-chat.html` | Light | `flutter/themes/chat_theme.dart` |
+| M18 | Scanner-First Warehouse | `m-scanner.html` | Dark | `flutter/themes/scanner_theme.dart` |
+
+All done styles have 10 working screens (Home, Stock, SKU detail, Orders, Scan, Purchase orders, New PO, Alerts, Profile, More), search and filters, charts, and a light/dark switch (in Profile, or in the side panel on desktop).
+
+---
+
 ## ⏳ Pending mobile styles
 
 ### Platform-native
 
 | # | Style | Look | Best for |
 |---|-------|------|----------|
-| M1 | iOS 26 Liquid Glass | Glass tab bar and sheets, large titles, SF-style type, inset grouped lists | iPhone-first apps |
-| M2 | Material 3 Expressive (Android) | Shape-morphing FAB, navigation bar with pill indicator, tonal surfaces | Android-first apps |
+| M1 | ~~iOS 26 Liquid Glass~~ ✅ | Glass tab bar and sheets, large titles, SF-style type, inset grouped lists | iPhone-first apps |
+| M2 | ~~Material 3 Expressive (Android)~~ ✅ | Shape-morphing FAB, navigation bar with pill indicator, tonal surfaces | Android-first apps |
 | M3 | One UI (Samsung) | Big header area for reachability, content in the bottom half, rounded cards | One-handed use |
 | M4 | HarmonyOS / Fluent mobile | Clean cards, soft depth, cross-device style | Enterprise mobile |
 
@@ -39,7 +53,7 @@ Common pieces: bottom tab bar (Home, Stock, Scan, Orders, More), a floating scan
 | M5 | Glassmorphism Mobile | Frosted cards over a gradient wallpaper, glass tab bar | Consumer, lifestyle |
 | M6 | Neumorphism Mobile | Soft raised controls, pressed tab icons, calm palette | Smart-home, utilities |
 | M7 | Claymorphism Mobile | Puffy pastel cards, bouncy buttons, playful icons | Friendly fintech |
-| M8 | Bento Mobile | Single-column bento tiles of mixed sizes, bold hero tile | Analytics summaries |
+| M8 | ~~Bento Mobile~~ ✅ | Single-column bento tiles of mixed sizes, bold hero tile | Analytics summaries |
 | M9 | Neo-Brutalism Mobile | Thick borders, hard shadows, loud colour blocks | Creator and indie apps |
 | M10 | Dark Luxury Mobile | Black and gold, serif numbers, minimal chrome | Premium retail |
 | M11 | Kawaii Mobile | Pastel, cat-ear cards, sticker icons, cheerful empty states | Kids, lifestyle |
@@ -53,8 +67,8 @@ Common pieces: bottom tab bar (Home, Stock, Scan, Orders, More), a floating scan
 | M14 | Card Stack / Swipe | Tinder-style swipeable SKU cards to approve or reorder | Fast decisions |
 | M15 | Super-App Grid | Icon grid home (like WeChat / Paytm) with mini-app tiles | Multi-module apps |
 | M16 | Widget-Based Home | Home made of resizable widgets (iOS / Android widget look) | At-a-glance stats |
-| M17 | Chat-First / AI Assistant | Conversational home ("How much stock on Amazon?") with answer cards | AI-driven apps |
-| M18 | Scanner-First Warehouse | Camera-dominant UI, big tap targets, high contrast for warehouse floors | Field and warehouse staff |
+| M17 | ~~Chat-First / AI Assistant~~ ✅ | Conversational home ("How much stock on Amazon?") with answer cards | AI-driven apps |
+| M18 | ~~Scanner-First Warehouse~~ ✅ | Camera-dominant UI, big tap targets, high contrast for warehouse floors | Field and warehouse staff |
 | M19 | Map / Location View | Warehouse and store locations on a map with stock pins | Multi-location inventory |
 | M20 | Wearable Companion | Apple Watch / Wear OS glanceable KPIs and alerts | Managers on the move |
 
@@ -67,4 +81,4 @@ Common pieces: bottom tab bar (Home, Stock, Scan, Orders, More), a floating scan
 - **Data and charts:** reuse `assets/dashboard.js` for the data, with charts tuned for small widths.
 - **Theme:** the light/dark toggle sits on the Profile screen and is remembered per style, like the web pages.
 - **Gallery:** add a `mobile.html` gallery page linking all mobile styles, and add a link to it from `index.html`.
-- **Suggested order:** M1 iOS Liquid Glass → M2 Material Expressive → M18 Scanner-First → M8 Bento → M17 Chat-First, then the rest.
+- **Suggested order:** ~~M1 → M2 → M18 → M8 → M17~~ (done), then M3–M7, M9–M16, M19, M20.
