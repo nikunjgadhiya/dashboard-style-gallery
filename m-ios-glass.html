@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('mtheme:m-ios-glass.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>iOS Liquid Glass · TIFFNY Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/mobile.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{color-scheme:light;--bg:#e9eef7;--surface:#ffffffb8;--surface-2:#ffffff73;--text:#0b0b0f;--muted:#5e6270;--line:#3c3c4324;--accent:#007aff;--on-accent:#ffffff;--ok:#28a745;--warn:#e08600;--bad:#ff3b30;--c1:#007aff;--c2:#34c759;--c3:#af52de;--c4:#ff9500;--c5:#ff2d55;--radius:22px;--font:-apple-system,BlinkMacSystemFont,'SF Pro Text','Inter',system-ui,sans-serif}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0b0c12;--surface:#24242ea6;--surface-2:#ffffff17;--text:#f5f5f7;--muted:#a1a1ab;--line:#ffffff1f;--accent:#0a84ff;--on-accent:#ffffff;--ok:#30d158;--warn:#ff9f0a;--bad:#ff453a;--c1:#0a84ff;--c2:#30d158;--c3:#bf5af2;--c4:#ff9f0a;--c5:#ff375f}
+:root{
+  --wall:radial-gradient(60% 40% at 0% 0%,#ff9a62 0,transparent 70%),radial-gradient(60% 40% at 100% 18%,#5fa8ff 0,transparent 70%),radial-gradient(70% 45% at 90% 100%,#c86bff 0,transparent 70%),radial-gradient(60% 40% at 0% 85%,#3fe0c5 0,transparent 70%),#e9eef7;
+  --rim:rgba(255,255,255,.85);--glass-shadow:0 8px 28px rgba(20,30,60,.12);
+  --stage:linear-gradient(135deg,#ffe2d1,#dbe8ff 50%,#efdcff);--stage-text:#0b0b0f;
+  --tip-bg:rgba(20,22,30,.86);--donut-border:rgba(255,255,255,.9);--bar-radius:8;
+}
+:root[data-theme="dark"]{
+  --wall:radial-gradient(60% 40% at 0% 0%,rgba(255,106,61,.55) 0,transparent 70%),radial-gradient(60% 40% at 100% 18%,rgba(10,90,255,.6) 0,transparent 70%),radial-gradient(70% 45% at 90% 100%,rgba(150,50,255,.55) 0,transparent 70%),radial-gradient(60% 40% at 0% 85%,rgba(0,170,150,.45) 0,transparent 70%),#0b0c12;
+  --rim:rgba(255,255,255,.22);--glass-shadow:0 8px 28px rgba(0,0,0,.45);
+  --stage:linear-gradient(135deg,#1a1230,#0b1530 50%,#20102c);--stage-text:#f5f5f7;--stage-on:#0b0b0f;--stage-chip:rgba(255,255,255,.1);
+  --tip-bg:rgba(240,242,250,.92);--tip-fg:#0b0b0f;--donut-border:rgba(40,40,50,.9);
+}
+.app{background:var(--wall)}
+/* liquid glass material */
+.card,.kpi,.list.boxed,.search,.chip,.icon-btn,.stat,.tile,.sheet,.quick .qi,.btn,.input{
+  background:var(--surface);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);
+  box-shadow:var(--glass-shadow),inset 0 1px 0 var(--rim),inset 0 0 0 .5px rgba(255,255,255,.35);border-color:transparent}
+.app-head h1{font-size:34px;letter-spacing:-.025em}
+.hello h1{font-size:28px}
+/* iOS segmented control for the period */
+[data-role="period"]{margin:0 0 14px;padding:3px;gap:2px;border-radius:12px;background:var(--surface-2);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+[data-role="period"] .chip{flex:1;background:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;border-radius:9px;padding:7px 0;text-align:center;color:var(--text)}
+[data-role="period"] .chip.on{background:var(--surface);color:var(--text);box-shadow:0 2px 6px rgba(0,0,0,.12),inset 0 1px 0 var(--rim)}
+.chip.on{background:var(--accent);color:#fff}
+.kpi-i{border-radius:11px;box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
+.btn.primary{background:var(--accent);color:#fff}
+/* floating glass tab bar */
+.tabbar{left:14px;right:14px;bottom:24px;border:0;border-radius:999px;padding:6px 8px;background:var(--surface);backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  box-shadow:0 12px 30px rgba(20,30,60,.2),inset 0 1px 0 var(--rim);align-items:center}
+.tabbar button{border-radius:999px;padding:6px 0}
+.tabbar button.on{background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.tabbar .scan-tab .si{width:44px;height:44px;margin:0;border-radius:50%;box-shadow:none}
+.home-ind{bottom:6px}
+@media (max-width:500px){.tabbar{bottom:max(14px,env(safe-area-inset-bottom))}}
+</style>
+</head>
+<body data-name="iOS 26 Liquid Glass" data-desc="iPhone-native look: glass cards and a floating glass tab bar over a vivid wallpaper, large titles, an iOS segmented control and inset grouped lists." data-flutter="flutter/themes/ios_glass_theme.dart">
+<div class="stage">
+  <aside class="panel" id="panel"></aside>
+  <div class="device"><div class="app" id="app"></div></div>
+</div>
+<script src="assets/mobile.js"></script>
+</body>
+</html>
