@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('mtheme:m-chat.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Chat-First · TIFFNY Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/mobile.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{color-scheme:light;--bg:#f7f7fb;--surface:#ffffff;--surface-2:#efeff7;--text:#14142b;--muted:#6b6b85;--line:#14142b14;--accent:#6d4aff;--on-accent:#ffffff;--ok:#12a150;--warn:#d97706;--bad:#e5484d;--c1:#6d4aff;--c2:#2f80ff;--c3:#14b8a6;--c4:#f59e0b;--c5:#ec4899;--radius:20px;--font:'Inter',system-ui,sans-serif}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0d0d16;--surface:#181826;--surface-2:#232336;--text:#f0f0ff;--muted:#9a9ab8;--line:#ffffff17;--accent:#8f75ff;--on-accent:#ffffff;--ok:#3ecf8e;--warn:#fbbf24;--bad:#ff6b6f;--c1:#8f75ff;--c2:#5aa0ff;--c3:#2dd4bf;--c4:#fbbf24;--c5:#f472b6}
+:root{--ai:linear-gradient(135deg,#8b5cf6,#3b82f6);--stage:linear-gradient(135deg,#efeaff,#e3eeff);--stage-text:#14142b;--shadow:0 1px 2px rgba(20,20,43,.04),0 8px 24px rgba(20,20,43,.06);--donut-cutout:72%}
+:root[data-theme="dark"]{--stage:linear-gradient(135deg,#14102a,#0b1426);--stage-text:#f0f0ff;--stage-on:#14142b;--stage-chip:rgba(255,255,255,.08)}
+.bot-av{width:30px;height:30px;border-radius:10px;background:var(--ai);color:#fff;display:grid;place-items:center;flex:none}
+.bot-av .ic{width:16px;height:16px}
+.bot-av.big{width:44px;height:44px;border-radius:14px}
+.bot-av.big .ic{width:22px;height:22px}
+.hello h1{font-size:22px;background:var(--ai);-webkit-background-clip:text;background-clip:text;color:transparent}
+.chat{display:flex;flex-direction:column;gap:12px;padding-bottom:12px}
+.msg{display:flex;gap:8px;align-items:flex-end;max-width:100%}
+.msg.me{justify-content:flex-end}
+.bubble{border-radius:20px;padding:12px 14px;font-size:14.5px;line-height:1.45;max-width:86%}
+.msg.bot .bubble{background:var(--surface);box-shadow:var(--shadow);border-bottom-left-radius:6px;flex:1}
+.msg.me .bubble{background:var(--ai);color:#fff;border-bottom-right-radius:6px}
+.bubble p+*{margin-top:10px}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sum div{background:var(--surface-2);border-radius:12px;padding:8px 10px}
+.sum small{display:block;font-size:11px;color:var(--muted)}
+.sum b{font-size:16px}
+.ans-donut{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:center}
+.ans-donut .donut{height:96px}
+.ans-donut .donut-c b{font-size:14px}
+.bubble .list .row{padding:9px 0}
+.bubble .thumb{width:34px;height:34px;border-radius:10px}
+.ans-actions{display:flex;gap:8px}
+.ans-actions .btn{height:42px;font-size:13.5px}
+.bubble .chart-sm{height:120px}
+.suggest{display:flex;flex-wrap:wrap;gap:8px;padding-left:38px}
+.suggest .chip{border:1.5px solid color-mix(in srgb,var(--accent) 35%,transparent);background:var(--surface);color:var(--accent);box-shadow:none}
+.composer{position:sticky;bottom:8px;margin:4px -6px 0;z-index:20;display:flex;align-items:center;gap:8px;padding:6px;border-radius:999px;background:var(--surface);box-shadow:0 10px 30px rgba(20,20,43,.14);border:1px solid var(--line)}
+.composer .icon-btn{width:38px;height:38px;background:var(--surface-2);box-shadow:none}
+.composer input{flex:1;border:0;background:none;outline:none;font-size:14.5px;min-width:0;color:var(--text)}
+.composer input::placeholder{color:var(--muted)}
+.send{width:40px;height:40px;border-radius:50%;background:var(--ai);color:#fff;display:grid;place-items:center}
+.chip.on{background:var(--ai);color:#fff}
+.btn.primary,.avatar,.tabbar .scan-tab .si{background:var(--ai);color:#fff}
+.kpi-i{background:var(--k)}
+.tabbar button.on{color:var(--accent)}
+[data-screen="home"]{padding-bottom:98px}
+@media (max-width:500px){[data-screen="home"]{padding-bottom:calc(84px + env(safe-area-inset-bottom))}}
+</style>
+</head>
+<body data-name="Chat-First AI Assistant" data-desc="Home is a conversation: the assistant greets with a daily summary, answers with charts and SKU lists, and suggests follow-up questions. A composer sits above the tab bar." data-flutter="flutter/themes/chat_theme.dart">
+<div class="stage">
+  <aside class="panel" id="panel"></aside>
+  <div class="device"><div class="app" id="app"></div></div>
+</div>
+<script>
+window.MobileVariant = function variant(h) {
+  const total = h.STOCK.reduce((a, b) => a + b, 0);
+  const bot = (inner) => `<div class="msg bot"><span class="bot-av">${h.icon('trend')}</span><div class="bubble">${inner}</div></div>`;
+  const me = (t) => `<div class="msg me"><div class="bubble">${t}</div></div>`;
+  const low = h.SKUS.filter((s) => s.status !== 'in');
+  const ANSWERS = {
+    orders: [`How are orders this week?`, `<p>Orders are <b>up 18.7%</b>. 1,541 orders this week; Amazon leads with 38%.</p><div class="chart-sm"><canvas data-ans="bars"></canvas></div>`],
+    po: [`Draft a PO for low stock`, `<p>I drafted <b>PO-2026-0143</b> for ${low.length} low/out SKUs from <b>Shree Textiles</b>.</p><div class="ans-actions"><button class="btn primary" data-go="po-new">Review PO</button><button class="btn" data-go="po">All POs</button></div>`],
+    returns: [`Any returns today?`, `<p><b>1 return</b>: #OD-48177 (Flipkart, ₹2,400) reached the warehouse yesterday.</p>`],
+  };
+  h.SCREENS.home = () => `
+    <header class="app-head"><span class="bot-av big">${h.icon('trend')}</span><div class="hello"><small>Inventory assistant</small><h1>Ask TIFFNY</h1></div>
+      <button class="icon-btn" data-go="alerts" aria-label="Alerts">${h.icon('bell')}<b>3</b></button></header>
+    <div class="chat">
+      ${bot(`<p>Good morning, Ritesh. Here's today:</p><div class="sum">${[['Stock', '1,45,288'], ['Orders', '6,420'], ['Low', '1,705']].map(([l, v]) => `<div><small>${l}</small><b>${v}</b></div>`).join('')}</div>`)}
+      ${me('How much stock is on Amazon?')}
+      ${bot(`<p><b>58,420 units</b> on Amazon, 40% of all stock. Flipkart is next with 31,250.</p><div class="ans-donut"><div class="donut"><canvas data-chart="donut"></canvas><div class="donut-c"><b>${h.lakh(total)}</b><span>total</span></div></div>
+        <ul class="legend">${h.PLATFORMS.slice(0, 3).map((p, j) => `<li><i style="background:var(--c${j + 1})"></i><span>${p}</span><b>${h.fmt(h.STOCK[j])}</b></li>`).join('')}</ul></div>`)}
+      ${me('Which SKUs need reordering?')}
+      ${bot(`<p>${low.length} SKUs are low or out of stock:</p><div class="list">${low.slice(0, 4).map(h.skuRow).join('')}</div>`)}
+      <div class="suggest">${Object.entries(ANSWERS).map(([k, [q]]) => `<button class="chip" data-ask="${k}">${q}</button>`).join('')}</div>
+    </div>
+    <div class="composer"><button class="icon-btn" aria-label="Attach">${h.icon('plus')}</button><input type="text" placeholder="Ask about stock, orders, POs…" aria-label="Ask"><button class="send" aria-label="Send">${h.icon('chev')}</button></div>`;
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-ask]');
+    if (!b) return;
+    const [q, a] = ANSWERS[b.dataset.ask];
+    b.remove();
+    const chat = document.querySelector('.chat');
+    chat.querySelector('.suggest').insertAdjacentHTML('beforebegin', me(q) + bot(a));
+    const scr = chat.closest('.screen');
+    scr.scrollTo({ top: scr.scrollHeight, behavior: 'smooth' });
+    const msgs = chat.querySelectorAll('.msg');
+    const cv = msgs[msgs.length - 1].querySelector('canvas[data-ans="bars"]');
+    if (cv && window.Chart) {
+      const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+      new Chart(cv, { type: 'bar', data: { labels: ['T', 'F', 'S', 'S', 'M', 'T', 'W'], datasets: [{ data: [190, 240, 260, 210, 230, 200, 211], backgroundColor: css('--accent'), borderRadius: 8, maxBarThickness: 22 }] },
+        options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, border: { display: false } }, y: { display: false } } } });
+    }
+  });
+};
+</script>
+<script src="assets/mobile.js"></script>
+</body>
+</html>
