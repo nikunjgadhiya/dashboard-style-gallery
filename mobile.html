@@ -36,6 +36,12 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,
 .pv-scan .phone::before{content:"";position:absolute;left:8px;right:8px;top:30px;height:80px;border-radius:12px;background:repeating-linear-gradient(-45deg,#ffd400 0 10px,#e6bf00 10px 20px)}
 .pv-scan .phone::after{content:"";position:absolute;left:38px;top:50px;width:30px;height:30px;border-radius:50%;background:#0b0b0b}
 .pv-scan .phone i{position:absolute;left:8px;right:8px;top:118px;height:70px;background:linear-gradient(90deg,#1a1a1a 48%,transparent 48% 52%,#ffd400 52%);border-radius:10px}
+.pv-bnt{background:#ecece8}
+.pv-bnt .phone{background:#f4f4f1;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:34px;gap:5px;padding:28px 7px 7px}
+.pv-bnt .phone i{border-radius:9px;background:#fff;border:1px solid #e7e5e4}
+.pv-bnt .phone i:first-child{grid-column:1/-1;grid-row:span 2;background:#18181b}
+.pv-bnt .phone i:nth-child(2){background:#d9f99d}
+.pv-bnt .phone i:nth-child(5){grid-column:1/-1}
 </style>
 </head>
 <body>
@@ -47,6 +53,7 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,
     <a class="card" href="m-ios-glass.html"><div class="pv pv-ios"><div class="phone"></div></div><div class="body"><h2>M1 · iOS 26 Liquid Glass</h2><p>iPhone-native look: glass cards and a floating glass tab bar over a vivid wallpaper, large titles, an iOS segmented control and inset grouped lists.</p><div class="tags"><span>backdrop-filter</span><span>floating tab bar</span><span>iOS segmented</span></div></div></a>
     <a class="card" href="m-material.html"><div class="pv pv-md"><div class="phone"><i></i></div></div><div class="body"><h2>M2 · Material 3 Expressive</h2><p>Android-native Material 3 Expressive: tonal containers, cookie/flower/clover shapes, a pill-indicator navigation bar, outlined filter chips and a shape FAB for scanning.</p><div class="tags"><span>clip-path shapes</span><span>pill nav indicator</span><span>spring motion</span></div></div></a>
     <a class="card" href="m-scanner.html"><div class="pv pv-scan"><div class="phone"><i></i></div></div><div class="body"><h2>M18 · Scanner-First Warehouse</h2><p>Built for the warehouse floor: high-contrast safety yellow, a huge pulsing scan button, big task tiles, oversized touch targets and a recent-scans list.</p><div class="tags"><span>high contrast</span><span>big tap targets</span><span>screen variant</span></div></div></a>
+    <a class="card" href="m-bento.html"><div class="pv pv-bnt"><div class="phone"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="body"><h2>M8 · Bento Mobile</h2><p>A single-column bento grid of mixed-size tiles: black hero with lime bars, compact KPI tiles, a wide donut tile and quick scan/alert tiles, with thin borders and big radii.</p><div class="tags"><span>mixed-size tiles</span><span>screen variant</span><span>lime accent</span></div></div></a>
 <!--cards-->
   </div>
 </div>
