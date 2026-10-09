@@ -206,6 +206,11 @@
       <div class="cta"><button class="btn" data-go="scan">${icon('scan')}Scan</button><button class="btn primary" data-go="po-new">${icon('cart')}Reorder</button></div>`;
   };
 
+  // Pattern styles (card stack, chat-first, widgets...) can replace or add screens before the app is built.
+  if (typeof window.MobileVariant === 'function') {
+    window.MobileVariant({ SCREENS, icon, SKUS, PLATFORMS, STOCK, ORDERS, ALERTS, POS, STATUS_LABEL, fmt, lakh, rupee, kpis, skuRow });
+  }
+
   /* ---------- shell ---------- */
   const app = $('#app');
   const SB = `<svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5" width="3" height="7" rx="1" fill="currentColor"/><rect x="10" y="2.5" width="3" height="9.5" rx="1" fill="currentColor"/><rect x="15" y="0" width="3" height="12" rx="1" fill="currentColor"/></svg>
