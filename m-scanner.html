@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('mtheme:m-scanner.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Scanner-First · TIFFNY Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/mobile.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{color-scheme:light;--bg:#ececea;--surface:#ffffff;--surface-2:#e0e0dc;--text:#0d0d0d;--muted:#4a4a46;--line:#0d0d0d26;--accent:#ffcc00;--on-accent:#0d0d0d;--ok:#0a8f3d;--warn:#c26a00;--bad:#d61f1f;--c1:#0d0d0d;--c2:#ffcc00;--c3:#0a8f3d;--c4:#d61f1f;--c5:#6b6b66;--radius:14px;--font:'Barlow',system-ui,sans-serif}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0b0b0b;--surface:#1a1a1a;--surface-2:#262626;--text:#ffffff;--muted:#b5b5b0;--line:#ffffff26;--accent:#ffd400;--on-accent:#0b0b0b;--ok:#3ddc84;--warn:#ffa31a;--bad:#ff4d4d;--c1:#ffd400;--c2:#ffffff;--c3:#3ddc84;--c4:#ff4d4d;--c5:#8a8a85}
+:root{--display:'Barlow Condensed','Barlow',sans-serif;--shadow:none;--shadow-sm:none;--stage:#d9d9d4;--stage-text:#0d0d0d;--tip-bg:#0d0d0d;--bar-radius:4;--donut-radius:0;--donut-spacing:2}
+:root[data-theme="dark"]{--stage:#141414;--stage-text:#ffffff;--stage-on:#0b0b0b;--stage-chip:rgba(255,255,255,.08);--tip-bg:#ffd400;--tip-fg:#0b0b0b}
+body{font-size:16px}
+.app-head h1,.hello h1{font-family:var(--display);font-weight:800;font-size:34px;text-transform:uppercase;letter-spacing:.01em}
+.hello small{font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
+:root[data-theme="light"] .hello small{color:var(--muted)}
+.card,.list.boxed,.kpi,.stat,.tile,.search,.icon-btn,.chip,.input,.btn,.sheet{border:2px solid var(--line)}
+.icon-btn{width:52px;height:52px;border-radius:14px}
+.big-scan{width:100%;height:230px;border-radius:24px;background:repeating-linear-gradient(-45deg,var(--accent) 0 22px,color-mix(in srgb,var(--accent) 88%,#000) 22px 44px);color:var(--on-accent);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;margin-bottom:14px;border:3px solid var(--on-accent);box-shadow:0 0 0 3px var(--accent)}
+.big-scan .ring{width:96px;height:96px;border-radius:50%;background:var(--on-accent);color:var(--accent);display:grid;place-items:center;animation:pulse 1.6s ease-out infinite}
+.big-scan .ring .ic{width:46px;height:46px}
+.big-scan b{font-family:var(--display);font-weight:800;font-size:30px;text-transform:uppercase;letter-spacing:.04em;margin-top:6px}
+.big-scan small{font-weight:700;font-size:13px;opacity:.8}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--on-accent) 55%,transparent)}100%{box-shadow:0 0 0 26px transparent}}
+@media (prefers-reduced-motion:reduce){.big-scan .ring{animation:none}}
+.tasks{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.task{min-height:112px;border-radius:16px;background:var(--surface);border:2px solid var(--line);padding:14px;display:flex;flex-direction:column;gap:4px;justify-content:flex-end;text-align:left;position:relative}
+.task .ic{position:absolute;top:14px;left:14px;width:28px;height:28px;color:var(--accent)}
+:root[data-theme="light"] .task .ic{color:var(--text)}
+.task b{font-family:var(--display);font-weight:800;font-size:22px;text-transform:uppercase}
+.task small{font-weight:700;color:var(--muted)}
+.task.k4{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.task.k4 .ic,.task.k4 small{color:var(--on-accent)}
+.shift{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.shift div{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:10px 12px}
+.shift small{display:block;font-size:11px;font-weight:700;text-transform:uppercase;color:var(--muted)}
+.shift b{font-family:var(--display);font-size:28px;font-weight:800}
+.shift .err{color:var(--bad)}
+.card-h h3{font-family:var(--display);font-weight:800;font-size:20px;text-transform:uppercase}
+.row{padding:14px 0}
+.row-main b{font-size:15.5px}
+.thumb{width:50px;height:50px;border-radius:10px}
+.chip{padding:12px 18px;font-weight:800;font-size:14px;border-radius:12px}
+.chip.on{color:var(--on-accent)}
+.kpi strong,.stat b{font-family:var(--display);font-size:28px}
+.btn{height:60px;border-radius:14px;font-family:var(--display);font-size:20px;font-weight:800;text-transform:uppercase}
+.badge{font-size:12px;padding:4px 9px;border-radius:6px;text-transform:uppercase}
+.search{height:56px;font-size:17px}
+.viewfinder{height:400px}
+.screen.scan{--scan-frame:#ffd400;--scan-laser:#ffd400}
+.tabbar{background:var(--surface);border-top:2px solid var(--line);padding:8px 8px 26px}
+.tabbar button{font-size:12px;font-weight:800;text-transform:uppercase}
+.tabbar button .ic{width:26px;height:26px}
+.tabbar button.on{color:var(--text)}
+.tabbar button.on .ic{color:var(--accent)}
+:root[data-theme="light"] .tabbar button.on .ic{color:var(--text)}
+.tabbar .scan-tab .si{width:64px;height:64px;border-radius:16px;border:3px solid var(--on-accent);box-shadow:0 0 0 3px var(--accent)}
+</style>
+</head>
+<body data-name="Scanner-First Warehouse" data-desc="Built for the warehouse floor: high-contrast safety yellow, a huge pulsing scan button, big task tiles, oversized touch targets and a recent-scans list." data-flutter="flutter/themes/scanner_theme.dart">
+<div class="stage">
+  <aside class="panel" id="panel"></aside>
+  <div class="device"><div class="app" id="app"></div></div>
+</div>
+<script>
+window.MobileVariant = function variant(h) {
+  h.SCREENS.home = () => `
+    <header class="app-head"><div class="hello"><small>Warehouse · Bay 4 · Shift A</small><h1>Hi, Ritesh</h1></div>
+      <button class="icon-btn" data-go="alerts" aria-label="Alerts">${h.icon('bell')}<b>3</b></button></header>
+    <button class="big-scan" data-go="scan"><span class="ring">${h.icon('scan')}</span><b>Tap to scan</b><small>Barcode · QR · Bin label</small></button>
+    <div class="tasks">
+      ${[['Pick list', '12 orders', 'bag', 'orders', 'k1'], ['Put-away', '5 pallets', 'box', 'stock', 'k2'], ['Cycle count', '3 bins', 'tag', 'stock', 'k3'], ['Receive GRN', '2 trucks', 'truck', 'po', 'k4']]
+        .map(([t, s, ic, g, k]) => `<button class="task ${k}" data-go="${g}">${h.icon(ic)}<b>${t}</b><small>${s}</small></button>`).join('')}
+    </div>
+    <div class="shift"><div><small>Scanned today</small><b>284</b></div><div><small>Picked</small><b>196</b></div><div><small>Errors</small><b class="err">2</b></div></div>
+    <section class="card"><div class="card-h"><h3>Recent scans</h3><button class="link" data-go="stock">All stock</button></div>
+      <div class="list">${h.SKUS.slice(0, 4).map(h.skuRow).join('')}</div></section>`;
+};
+</script>
+<script src="assets/mobile.js"></script>
+</body>
+</html>
