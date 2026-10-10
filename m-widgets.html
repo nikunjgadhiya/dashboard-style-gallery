@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('mtheme:m-widgets.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Widgets · TIFFNY Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/mobile.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{color-scheme:light;--bg:#dfe6f5;--surface:#ffffffd9;--surface-2:#f1f4fa;--text:#111827;--muted:#6b7280;--line:#1118271a;--accent:#2563eb;--on-accent:#ffffff;--ok:#16a34a;--warn:#ea580c;--bad:#dc2626;--c1:#2563eb;--c2:#16a34a;--c3:#9333ea;--c4:#ea580c;--c5:#db2777;--radius:22px;--font:-apple-system,BlinkMacSystemFont,'Inter',system-ui,sans-serif}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0b0f1a;--surface:#1c2233d9;--surface-2:#232a3d;--text:#f3f4f6;--muted:#9ca3af;--line:#ffffff17;--accent:#60a5fa;--on-accent:#0b0f1a;--ok:#4ade80;--warn:#fb923c;--bad:#f87171;--c1:#60a5fa;--c2:#4ade80;--c3:#c084fc;--c4:#fb923c;--c5:#f472b6}
+:root{--wall:radial-gradient(80% 50% at 10% 0%,#a7c5ff,transparent 60%),radial-gradient(70% 50% at 100% 40%,#f9c4e1,transparent 60%),radial-gradient(80% 50% at 20% 100%,#b6f0d8,transparent 60%),#dfe6f5;
+  --stage:#dfe6f5;--stage-text:#111827;--shadow:0 6px 20px rgba(17,24,39,.08);--bar-radius:6;--donut-spacing:2}
+:root[data-theme="dark"]{--wall:radial-gradient(80% 50% at 10% 0%,rgba(37,99,235,.45),transparent 60%),radial-gradient(70% 50% at 100% 40%,rgba(219,39,119,.35),transparent 60%),radial-gradient(80% 50% at 20% 100%,rgba(22,163,74,.3),transparent 60%),#0b0f1a;
+  --stage:#05070d;--stage-text:#f3f4f6;--stage-on:#0b0f1a;--stage-chip:rgba(255,255,255,.08)}
+.app{background:var(--wall)}
+.card,.list.boxed,.kpi,.stat,.tile,.sheet,.search,.chip,.icon-btn,.quick .qi,.btn{backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.edit-btn{padding:7px 14px;border-radius:999px;background:var(--surface);font-weight:600;font-size:13px;backdrop-filter:blur(20px)}
+.widgets{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.w{border-radius:24px;background:var(--surface);backdrop-filter:blur(24px) saturate(160%);-webkit-backdrop-filter:blur(24px) saturate(160%);box-shadow:var(--shadow);padding:14px;text-align:left;display:flex;flex-direction:column;gap:4px;min-height:150px}
+.w-m{grid-column:1/-1;min-height:0}
+.w-h{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700;color:var(--muted)}
+.w-h span{display:flex;align-items:center;gap:6px}
+.w-h .ic{width:15px;height:15px}
+.w-h em{font-style:normal;font-weight:500}
+.w strong{font-size:30px;font-weight:800;letter-spacing:-.03em}
+.w small{color:var(--muted);font-size:11.5px;margin-top:auto}
+.w-orders .w-h span{color:var(--c1)}
+.w-orders .chart-sm{height:90px}
+.w-stock .w-h span{color:var(--c2)}
+.ring{--p:72;width:78px;height:78px;margin:8px auto 4px;border-radius:50%;background:conic-gradient(var(--c2) calc(var(--p)*1%),var(--line) 0);display:grid;place-items:center;position:relative}
+.ring::before{content:"";position:absolute;inset:9px;border-radius:50%;background:var(--surface-2)}
+.ring b{position:relative;font-size:16px}
+.w-low .w-h span{color:var(--bad)}
+.w-low strong{color:var(--bad)}
+.w-low ul{list-style:none;font-size:11px;color:var(--muted);display:flex;flex-direction:column;gap:2px;margin-top:auto}
+.w-low li{display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden}
+.w-low li i{width:8px;height:8px;border-radius:50%;flex:none}
+.w-donut{flex-direction:row;align-items:center;gap:14px}
+.w-donut .donut{width:110px;height:110px;flex:none}
+.w-donut .legend{flex:1;font-size:12px;gap:5px}
+.w-scan{background:linear-gradient(145deg,#3b82f6,#1d4ed8);color:#fff;justify-content:flex-end}
+.w-scan .ic{width:34px;height:34px;margin-bottom:auto}
+.w-scan b{font-size:20px}
+.w-scan small{color:rgba(255,255,255,.8);margin-top:0}
+.w-alerts .w-h span{color:var(--c4)}
+.w-top .list .row{padding:8px 0}
+.w-top .thumb{width:36px;height:36px}
+.dots{display:flex;justify-content:center;gap:6px;margin:16px 0 4px}
+.dots i{width:7px;height:7px;border-radius:50%;background:color-mix(in srgb,var(--text) 25%,transparent)}
+.dots i.on{background:var(--text)}
+.tabbar{left:12px;right:12px;bottom:22px;border-radius:30px;border:0;background:var(--surface);backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);padding:8px 6px;align-items:center;box-shadow:var(--shadow)}
+.tabbar .scan-tab .si{width:46px;height:46px;margin:0;border-radius:15px;box-shadow:none}
+.home-ind{bottom:5px}
+@media (max-width:500px){.tabbar{bottom:max(12px,env(safe-area-inset-bottom))}}
+</style>
+</head>
+<body data-name="Widget-Based Home" data-desc="Home is a phone home screen of widgets on a wallpaper: small, medium and wide widgets for orders, stock ring, low stock, donut, scan, alerts and top sellers." data-flutter="flutter/themes/widgets_theme.dart">
+<div class="stage">
+  <aside class="panel" id="panel"></aside>
+  <div class="device"><div class="app" id="app"></div></div>
+</div>
+<script>
+window.MobileVariant = function variant(h) {
+  const total = h.STOCK.reduce((a, b) => a + b, 0);
+  const low = h.SKUS.filter((s) => s.status !== 'in');
+  h.SCREENS.home = () => `
+    <header class="app-head"><div class="hello"><small>Wednesday, 7 October</small><h1>Today</h1></div><button class="edit-btn">Edit</button></header>
+    <div class="widgets">
+      <button class="w w-m w-orders" data-go="orders"><div class="w-h"><span>${h.icon('cart')}Orders</span><em>This month</em></div><strong>6,420</strong><div class="chart-sm"><canvas data-chart="bars"></canvas></div></button>
+      <button class="w w-s w-stock" data-go="stock"><div class="w-h"><span>${h.icon('box')}Stock</span></div><div class="ring" style="--p:72"><b>72%</b></div><small>1,45,288 units</small></button>
+      <button class="w w-s w-low" data-go="stock" data-filter-to="low"><div class="w-h"><span>${h.icon('alert')}Low</span></div><strong>1,705</strong><ul>${low.slice(0, 3).map((s) => `<li><i style="background:${s.sw}"></i>${s.sku.split('-').slice(-2).join('-')}</li>`).join('')}</ul></button>
+      <section class="w w-m w-donut"><div class="donut"><canvas data-chart="donut"></canvas><div class="donut-c"><b>${h.lakh(total)}</b><span>units</span></div></div>
+        <ul class="legend">${h.PLATFORMS.map((p, j) => `<li><i style="background:var(--c${j + 1})"></i><span>${p}</span><b>${Math.round((h.STOCK[j] / total) * 100)}%</b></li>`).join('')}</ul></section>
+      <button class="w w-s w-scan" data-go="scan">${h.icon('scan')}<b>Scan</b><small>Tap to open camera</small></button>
+      <button class="w w-s w-alerts" data-go="alerts"><div class="w-h"><span>${h.icon('bell')}Alerts</span></div><strong>3</strong><small>1 out of stock · 1 low · 1 PO</small></button>
+      <section class="w w-m w-top"><div class="w-h"><span>${h.icon('trend')}Top sellers</span><button class="link" data-go="stock">All</button></div><div class="list">${h.SKUS.slice(0, 3).map(h.skuRow).join('')}</div></section>
+    </div>
+    <div class="dots"><i class="on"></i><i></i><i></i></div>`;
+};
+</script>
+<script src="assets/mobile.js"></script>
+</body>
+</html>
