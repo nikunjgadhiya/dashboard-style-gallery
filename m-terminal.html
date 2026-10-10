@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('mtheme:m-terminal.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Terminal · TIFFNY Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/mobile.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{color-scheme:light;--bg:#f3f0e2;--surface:#f8f6ec;--surface-2:#e2efdc;--text:#10331d;--muted:#4a6a52;--line:#10331d40;--accent:#0b7a34;--on-accent:#f3f0e2;--ok:#0b7a34;--warn:#9a5300;--bad:#b3261e;--c1:#0b7a34;--c2:#c27c00;--c3:#5b7a63;--c4:#10331d;--c5:#2aa3a3;--radius:0px;--font:'JetBrains Mono',ui-monospace,monospace}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#040904;--surface:#071207;--surface-2:#0c1f0d;--text:#33ff66;--muted:#25a84c;--line:#33ff6640;--accent:#33ff66;--on-accent:#040904;--ok:#33ff66;--warn:#ffb000;--bad:#ff5555;--c1:#33ff66;--c2:#ffb000;--c3:#1f9e45;--c4:#b6ff9c;--c5:#00d4a0}
+:root{--vt:'VT323',monospace;--glow:none;--scan:transparent;--shadow:none;--shadow-sm:none;--stage:#e8e4d4;--stage-text:#10331d;
+  --bar-radius:0;--donut-radius:0;--donut-spacing:0;--donut-bw:2;--donut-border:#f3f0e2;--tip-bg:#10331d;--tip-fg:#f3f0e2;--tip-radius:0}
+:root[data-theme="dark"]{--glow:0 0 5px rgba(51,255,102,.55);--scan:rgba(0,0,0,.3);--stage:#020502;--stage-text:#33ff66;--stage-on:#040904;--stage-chip:rgba(51,255,102,.1);--donut-border:#040904;--tip-bg:#040904;--tip-fg:#33ff66;--frame:#111}
+.app *{border-radius:0!important}
+body{text-shadow:var(--glow);font-size:13px}
+.app{background:var(--bg)}
+.app::after{content:"";position:absolute;inset:0;z-index:50;pointer-events:none;background:repeating-linear-gradient(180deg,var(--scan) 0 1px,transparent 1px 3px)}
+:root[data-theme="light"] .app{background:repeating-linear-gradient(180deg,#e2efdc 0 26px,transparent 26px 52px),var(--bg)}
+.card,.kpi,.list.boxed,.stat,.tile,.sheet,.search,.chip,.icon-btn,.btn,.input,.quick .qi{border:1px solid var(--line);background:transparent}
+.app-head h1,.hello h1,.sku-title h1{font-family:var(--vt);font-weight:400;font-size:40px;letter-spacing:.02em}
+.app-head h1::before{content:"~/";color:var(--muted)}
+.hello h1::after,.app-head h1::after{content:"█";animation:blink 1s steps(1) infinite;margin-left:4px}
+@keyframes blink{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.hello h1::after,.app-head h1::after{animation:none}}
+.hello small::before{content:"$ whoami → "}
+.app-head h2{font-weight:700;text-transform:uppercase;font-size:14px}
+.app-head h2::before{content:"[ "}.app-head h2::after{content:" ]"}
+.chip{color:var(--text);padding:6px 8px;font-weight:500}
+.chip::before{content:"["}.chip::after{content:"]"}
+.chip.on{background:var(--accent);color:var(--on-accent);text-shadow:none}
+.kpi-i{background:none;border:1px solid var(--line);color:var(--text)}
+.kpi small::before{content:"$ cat "}
+.kpi strong{font-family:var(--vt);font-weight:400;font-size:38px;line-height:1}
+.delta.up::before{content:"[OK] "}.delta.down::before{content:"[WARN] "}
+.card-h h3{text-transform:uppercase;font-size:13px}
+.card-h h3::before{content:"┌─[ ";color:var(--muted)}.card-h h3::after{content:" ]";color:var(--muted)}
+.link::before{content:"> "}
+.quick .qi{color:var(--text)}
+.search::before{content:"grep -i";color:var(--warn);white-space:nowrap}
+.search .ic{display:none}
+.search input{font-family:inherit}
+.thumb{width:12px;height:36px;border:1px solid var(--line)}
+.thumb .ic{display:none}
+.row:hover{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.badge,.status{background:none!important;border:1px solid currentColor;text-transform:uppercase;font-size:10px}
+.btn{color:var(--text);font-weight:700;text-transform:uppercase}
+.btn::before{content:"$ "}
+.btn.primary{background:var(--accent);color:var(--on-accent);text-shadow:none}
+.pbar .track{height:10px;background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 8px)}
+.pbar .track i{background:repeating-linear-gradient(90deg,currentColor 0 6px,transparent 6px 8px)!important;color:var(--accent)}
+.legend i{border-radius:0}
+.set .si,.tile .ti{background:none;border:1px solid var(--line);color:var(--text)}
+.switch{border:1px solid var(--line);background:none}
+.switch::after{border-radius:0;background:var(--muted)}
+.switch.on{background:none}
+.switch.on::after{background:var(--accent)}
+.avatar{background:none;border:1px solid var(--line);color:var(--text);font-family:var(--vt);font-size:22px}
+.icon-btn b{background:var(--bad);color:#000}
+.screen.scan{--scan-frame:#33ff66;--scan-laser:#33ff66}
+.tabbar{background:var(--bg);border-top:1px dashed var(--line)}
+.tabbar button{text-transform:uppercase;font-size:10px}
+.tabbar button.on{background:var(--accent);color:var(--on-accent);text-shadow:none}
+.tabbar .scan-tab .si{background:none;border:1px solid var(--accent);color:var(--text);box-shadow:var(--glow)}
+</style>
+</head>
+<body data-name="Terminal Mobile" data-desc="Green-phosphor CRT in your pocket: monospace everything, scanlines, $-prompt headers, [bracketed] chips, inverted selections and a grep-style search. Light mode is green-bar paper." data-flutter="flutter/themes/terminal_theme.dart">
+<div class="stage">
+  <aside class="panel" id="panel"></aside>
+  <div class="device"><div class="app" id="app"></div></div>
+</div>
+<script src="assets/mobile.js"></script>
+</body>
+</html>
