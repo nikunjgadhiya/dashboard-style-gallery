@@ -8,9 +8,24 @@ flutter/
   themes/
     ios_glass_theme.dart       M1 iOS 26 Liquid Glass
     material_theme.dart        M2 Material 3 Expressive
+    oneui_theme.dart           M3 One UI (Samsung)
+    harmony_theme.dart         M4 HarmonyOS / Fluent Mobile
+    glass_theme.dart           M5 Glassmorphism Mobile
+    neu_theme.dart             M6 Neumorphism Mobile
+    clay_theme.dart            M7 Claymorphism Mobile
     bento_theme.dart           M8 Bento Mobile
+    brutal_theme.dart          M9 Neo-Brutalism Mobile
+    luxury_theme.dart          M10 Dark Luxury Mobile
+    kawaii_theme.dart          M11 Kawaii Mobile
+    terminal_theme.dart        M12 Terminal Mobile
+    swiss_theme.dart           M13 Swiss Minimal Mobile
+    swipe_theme.dart           M14 Card Stack / Swipe
+    superapp_theme.dart        M15 Super-App Grid
+    widgets_theme.dart         M16 Widget-Based Home
     chat_theme.dart            M17 Chat-First AI Assistant
     scanner_theme.dart         M18 Scanner-First Warehouse
+    map_theme.dart             M19 Map / Location View
+    watch_theme.dart           M20 Wearable Companion
 ```
 
 ## Use a theme

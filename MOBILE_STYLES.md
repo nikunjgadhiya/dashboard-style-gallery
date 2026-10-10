@@ -21,56 +21,45 @@ Common pieces: bottom tab bar (Home, Stock, Scan, Orders, More), a floating scan
 
 ---
 
-## ✅ Done
+## ✅ Done (20)
 
 | # | Style | File | Default theme | Flutter theme |
 |---|-------|------|---------------|---------------|
 | M1 | iOS 26 Liquid Glass | `m-ios-glass.html` | Light | `flutter/themes/ios_glass_theme.dart` |
 | M2 | Material 3 Expressive | `m-material.html` | Light | `flutter/themes/material_theme.dart` |
+| M3 | One UI (Samsung) | `m-oneui.html` | Light | `flutter/themes/oneui_theme.dart` |
+| M4 | HarmonyOS / Fluent Mobile | `m-harmony.html` | Light | `flutter/themes/harmony_theme.dart` |
+| M5 | Glassmorphism Mobile | `m-glass.html` | Dark | `flutter/themes/glass_theme.dart` |
+| M6 | Neumorphism Mobile | `m-neu.html` | Light | `flutter/themes/neu_theme.dart` |
+| M7 | Claymorphism Mobile | `m-clay.html` | Light | `flutter/themes/clay_theme.dart` |
 | M8 | Bento Mobile | `m-bento.html` | Light | `flutter/themes/bento_theme.dart` |
+| M9 | Neo-Brutalism Mobile | `m-brutal.html` | Light | `flutter/themes/brutal_theme.dart` |
+| M10 | Dark Luxury Mobile | `m-luxury.html` | Dark | `flutter/themes/luxury_theme.dart` |
+| M11 | Kawaii Mobile | `m-kawaii.html` | Light | `flutter/themes/kawaii_theme.dart` |
+| M12 | Terminal Mobile | `m-terminal.html` | Dark | `flutter/themes/terminal_theme.dart` |
+| M13 | Swiss Minimal Mobile | `m-swiss.html` | Light | `flutter/themes/swiss_theme.dart` |
+| M14 | Card Stack / Swipe | `m-swipe.html` | Light | `flutter/themes/swipe_theme.dart` |
+| M15 | Super-App Grid | `m-superapp.html` | Light | `flutter/themes/superapp_theme.dart` |
+| M16 | Widget-Based Home | `m-widgets.html` | Light | `flutter/themes/widgets_theme.dart` |
 | M17 | Chat-First AI Assistant | `m-chat.html` | Light | `flutter/themes/chat_theme.dart` |
 | M18 | Scanner-First Warehouse | `m-scanner.html` | Dark | `flutter/themes/scanner_theme.dart` |
+| M19 | Map / Location View | `m-map.html` | Light | `flutter/themes/map_theme.dart` |
+| M20 | Wearable Companion | `m-watch.html` | Dark | `flutter/themes/watch_theme.dart` |
 
-All done styles have 10 working screens (Home, Stock, SKU detail, Orders, Scan, Purchase orders, New PO, Alerts, Profile, More), search and filters, charts, and a light/dark switch (in Profile, or in the side panel on desktop).
+All 20 styles have 10 working screens (Home, Stock, SKU detail, Orders, Scan, Purchase orders, New PO, Alerts, Profile, More), search and filters, charts, and a light/dark switch (in Profile, or in the side panel on desktop).
 
 ---
 
-## ⏳ Pending mobile styles
-
-### Platform-native
+## ⏳ Pending (next ideas)
 
 | # | Style | Look | Best for |
 |---|-------|------|----------|
-| M1 | ~~iOS 26 Liquid Glass~~ ✅ | Glass tab bar and sheets, large titles, SF-style type, inset grouped lists | iPhone-first apps |
-| M2 | ~~Material 3 Expressive (Android)~~ ✅ | Shape-morphing FAB, navigation bar with pill indicator, tonal surfaces | Android-first apps |
-| M3 | One UI (Samsung) | Big header area for reachability, content in the bottom half, rounded cards | One-handed use |
-| M4 | HarmonyOS / Fluent mobile | Clean cards, soft depth, cross-device style | Enterprise mobile |
-
-### Visual styles (adapted from the web gallery)
-
-| # | Style | Look | Best for |
-|---|-------|------|----------|
-| M5 | Glassmorphism Mobile | Frosted cards over a gradient wallpaper, glass tab bar | Consumer, lifestyle |
-| M6 | Neumorphism Mobile | Soft raised controls, pressed tab icons, calm palette | Smart-home, utilities |
-| M7 | Claymorphism Mobile | Puffy pastel cards, bouncy buttons, playful icons | Friendly fintech |
-| M8 | ~~Bento Mobile~~ ✅ | Single-column bento tiles of mixed sizes, bold hero tile | Analytics summaries |
-| M9 | Neo-Brutalism Mobile | Thick borders, hard shadows, loud colour blocks | Creator and indie apps |
-| M10 | Dark Luxury Mobile | Black and gold, serif numbers, minimal chrome | Premium retail |
-| M11 | Kawaii Mobile | Pastel, cat-ear cards, sticker icons, cheerful empty states | Kids, lifestyle |
-| M12 | Terminal Mobile | Green-on-black, monospace, command-style search | Developer tools |
-| M13 | Swiss Minimal Mobile | Big type, strict grid, one accent colour | Reports, finance |
-
-### Mobile-first patterns
-
-| # | Style | Look | Best for |
-|---|-------|------|----------|
-| M14 | Card Stack / Swipe | Tinder-style swipeable SKU cards to approve or reorder | Fast decisions |
-| M15 | Super-App Grid | Icon grid home (like WeChat / Paytm) with mini-app tiles | Multi-module apps |
-| M16 | Widget-Based Home | Home made of resizable widgets (iOS / Android widget look) | At-a-glance stats |
-| M17 | ~~Chat-First / AI Assistant~~ ✅ | Conversational home ("How much stock on Amazon?") with answer cards | AI-driven apps |
-| M18 | ~~Scanner-First Warehouse~~ ✅ | Camera-dominant UI, big tap targets, high contrast for warehouse floors | Field and warehouse staff |
-| M19 | Map / Location View | Warehouse and store locations on a map with stock pins | Multi-location inventory |
-| M20 | Wearable Companion | Apple Watch / Wear OS glanceable KPIs and alerts | Managers on the move |
+| M21 | Tablet / iPad Split View | Sidebar + list + detail in three columns on a tablet frame | Store managers on iPad |
+| M22 | Foldable (Galaxy Fold) | Cover-screen summary that unfolds into a two-pane dashboard | Power users |
+| M23 | Voice-First | Big mic button, spoken answers shown as cards, waveform | Hands-busy warehouse staff |
+| M24 | AR Shelf Scan | Camera view with floating stock labels over shelves | Shelf audits |
+| M25 | Kiosk / Rugged Handheld | Huge buttons, physical-key hints, sunlight-readable contrast | Zebra-style scanners |
+| M26 | Notification-Centric | Lock-screen-style live activities and actionable notifications | Managers on the move |
 
 ---
 
@@ -81,4 +70,5 @@ All done styles have 10 working screens (Home, Stock, SKU detail, Orders, Scan, 
 - **Data and charts:** reuse `assets/dashboard.js` for the data, with charts tuned for small widths.
 - **Theme:** the light/dark toggle sits on the Profile screen and is remembered per style, like the web pages.
 - **Gallery:** add a `mobile.html` gallery page linking all mobile styles, and add a link to it from `index.html`.
-- **Suggested order:** ~~M1 → M2 → M18 → M8 → M17~~ (done), then M3–M7, M9–M16, M19, M20.
+- **Built:** all 20 styles (M1–M20). Pattern styles (M8, M14–M20) replace the Home screen through `window.MobileVariant` in `assets/mobile.js`.
+
