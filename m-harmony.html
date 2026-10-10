@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('mtheme:m-harmony.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>HarmonyOS · TIFFNY Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/mobile.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{color-scheme:light;--bg:#f1f3f5;--surface:#ffffff;--surface-2:#e9edf2;--text:#182431;--muted:#66727f;--line:#1824311a;--accent:#0a59f7;--on-accent:#ffffff;--ok:#41ba41;--warn:#ed6f21;--bad:#e84026;--c1:#0a59f7;--c2:#2ec5c8;--c3:#8b5cf6;--c4:#ed6f21;--c5:#e84382;--radius:24px;--font:'HarmonyOS Sans','Noto Sans',system-ui,sans-serif}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0b0d10;--surface:#191c21;--surface-2:#24282f;--text:#e5e8ec;--muted:#9aa3ad;--line:#ffffff17;--accent:#317af7;--on-accent:#ffffff;--ok:#5cd65c;--warn:#ff8f4a;--bad:#ff6a52;--c1:#317af7;--c2:#3fd8db;--c3:#a07bff;--c4:#ff8f4a;--c5:#ff6aa3}
+:root{--shadow:0 2px 6px rgba(24,36,49,.04),0 12px 28px rgba(24,36,49,.06);--shadow-sm:0 2px 6px rgba(24,36,49,.05);--stage:linear-gradient(160deg,#eef3ff,#f1f3f5);--stage-text:#182431;--bar-radius:999;--donut-spacing:2;--donut-radius:999}
+:root[data-theme="dark"]{--shadow:0 12px 28px rgba(0,0,0,.4);--stage:linear-gradient(160deg,#0f1625,#0b0d10);--stage-text:#e5e8ec;--stage-on:#182431;--stage-chip:rgba(255,255,255,.08)}
+.island{width:12px;height:12px;border-radius:50%;margin-left:-6px;top:17px}
+.app-head h1{font-weight:700;font-size:30px}
+/* service cards with a soft corner glow */
+.card,.kpi,.tile{position:relative;overflow:hidden}
+.card::before,.kpi::before,.tile::before{content:"";position:absolute;width:180px;height:180px;right:-70px;top:-90px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--k,var(--accent)) 16%,transparent),transparent 70%);pointer-events:none}
+.kpi>*,.card>*,.tile>*{position:relative}
+.kpi-i,.tile .ti{border-radius:50%;background:linear-gradient(145deg,color-mix(in srgb,var(--k,var(--accent)) 70%,#fff),var(--k,var(--accent)));color:#fff;box-shadow:0 6px 14px -6px var(--k,var(--accent))}
+.kpi strong{font-weight:700}
+.chip{border-radius:999px;font-weight:500}
+.chip.on{background:var(--accent);box-shadow:0 6px 14px -6px var(--accent)}
+.quick .qi{border-radius:50%;background:linear-gradient(145deg,#fff,var(--surface-2));color:var(--accent)}
+:root[data-theme="dark"] .quick .qi{background:linear-gradient(145deg,#2a2f37,#1b1e23)}
+.btn{border-radius:999px}
+.btn.primary{background:linear-gradient(135deg,#3d84ff,var(--accent));box-shadow:0 10px 20px -10px var(--accent)}
+.search{border-radius:999px;background:var(--surface-2);box-shadow:none}
+.thumb{border-radius:14px}
+.switch.on{background:var(--accent)}
+.tabbar{background:color-mix(in srgb,var(--surface) 82%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:0;box-shadow:0 -4px 20px rgba(24,36,49,.06)}
+.tabbar button{font-weight:500}
+.tabbar .scan-tab .si{border-radius:50%;background:linear-gradient(135deg,#3d84ff,var(--accent))}
+</style>
+</head>
+<body data-name="HarmonyOS / Fluent Mobile" data-desc="Cross-device calm: rounded service cards with a soft gradient corner glow, gradient circle icons, a translucent tab bar, crisp blue and gentle depth." data-flutter="flutter/themes/harmony_theme.dart">
+<div class="stage">
+  <aside class="panel" id="panel"></aside>
+  <div class="device"><div class="app" id="app"></div></div>
+</div>
+<script src="assets/mobile.js"></script>
+</body>
+</html>
