@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('mtheme:m-superapp.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Super-App · TIFFNY Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/mobile.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{color-scheme:light;--bg:#f2f5fb;--surface:#ffffff;--surface-2:#eef2fa;--text:#101828;--muted:#667085;--line:#10182814;--accent:#0f4fd6;--on-accent:#ffffff;--ok:#12b76a;--warn:#f79009;--bad:#f04438;--c1:#0f4fd6;--c2:#12b886;--c3:#ff7a1a;--c4:#7c4dff;--c5:#ec4899;--radius:18px;--font:'Inter',system-ui,sans-serif}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0b1120;--surface:#141c2f;--surface-2:#1b2540;--text:#eef2ff;--muted:#98a2b3;--line:#ffffff14;--accent:#4f86ff;--on-accent:#ffffff;--ok:#32d583;--warn:#fdb022;--bad:#f97066;--c1:#4f86ff;--c2:#2dd4a8;--c3:#ff9a4d;--c4:#9b7bff;--c5:#f472b6}
+:root{--head:linear-gradient(160deg,#1556e8,#0b3aa8);--stage:#e8eef9;--stage-text:#101828}
+:root[data-theme="dark"]{--head:linear-gradient(160deg,#173a8a,#0b1530);--stage:#070b16;--stage-text:#eef2ff;--stage-on:#0b1120;--stage-chip:rgba(255,255,255,.08)}
+.app:has([data-screen="home"].active) .statusbar{background:#1556e8;color:#fff}
+:root[data-theme="dark"] .app:has([data-screen="home"].active) .statusbar{background:#173a8a}
+[data-screen="home"]{padding-top:0}
+.sa-head{background:var(--head);margin:0 -18px;padding:6px 18px 74px;color:#fff;border-radius:0 0 28px 28px}
+.sa-top{display:flex;align-items:center;gap:10px}
+.sa-logo{width:36px;height:36px;border-radius:11px;background:#fff;color:#0f4fd6;font-weight:800;display:grid;place-items:center;flex:none}
+.sa-search{flex:1;display:flex;align-items:center;gap:8px;height:38px;padding:0 12px;border-radius:999px;background:rgba(255,255,255,.18);color:rgba(255,255,255,.8);min-width:0}
+.sa-search .ic{width:17px;height:17px}
+.sa-search input{flex:1;border:0;background:none;outline:none;color:#fff;font-size:13.5px;min-width:0}
+.sa-search input::placeholder{color:rgba(255,255,255,.75)}
+.sa-ic{position:relative;color:#fff}
+.sa-ic b{position:absolute;top:-6px;right:-7px;min-width:16px;height:16px;border-radius:8px;background:#f04438;font-size:9.5px;display:grid;place-items:center}
+.wallet{margin-top:18px;display:flex;flex-direction:column;gap:14px}
+.wallet small{opacity:.8;font-size:12.5px}
+.wallet strong{display:block;font-size:32px;font-weight:800;letter-spacing:-.02em;margin:2px 0}
+.wallet span{font-size:12.5px;opacity:.8}
+.wallet-acts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.wallet-acts button{display:flex;align-items:center;justify-content:center;gap:6px;height:40px;border-radius:12px;background:rgba(255,255,255,.16);color:#fff;font-weight:600;font-size:13px}
+.wallet-acts .ic{width:17px;height:17px}
+.sa-grid{position:relative;margin:-56px 0 16px;background:var(--surface);border-radius:22px;padding:16px 8px 8px;display:grid;grid-template-columns:repeat(4,1fr);gap:4px 0;box-shadow:0 10px 30px rgba(16,24,40,.08)}
+.sa-grid button{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:11.5px;font-weight:600;color:var(--text);padding:6px 0 10px}
+.sa-grid span{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;color:var(--a);background:color-mix(in srgb,var(--a) 13%,transparent)}
+.sa-grid span .ic{width:22px;height:22px}
+.banners{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -18px 16px;padding:0 18px;scrollbar-width:none}
+.banners::-webkit-scrollbar{display:none}
+.bn{flex:none;width:84%;scroll-snap-align:center;border-radius:20px;padding:16px;color:#fff;display:flex;flex-direction:column;gap:4px;min-height:118px}
+.bn small{opacity:.85;font-weight:600;font-size:12px}
+.bn b{font-size:18px;font-weight:800;line-height:1.2}
+.bn button{margin-top:auto;align-self:flex-start;background:rgba(255,255,255,.22);color:#fff;font-weight:700;font-size:12.5px;padding:7px 12px;border-radius:999px}
+.b1{background:linear-gradient(135deg,#ff7a1a,#f43f5e)}.b2{background:linear-gradient(135deg,#7c4dff,#2f6bff)}.b3{background:linear-gradient(135deg,#12b886,#0ea5e9)}
+.tabbar .scan-tab .si{border-radius:50%}
+</style>
+</head>
+<body data-name="Super-App Grid" data-desc="WeChat / Paytm-style super-app home: a blue header with an inventory-value wallet card, a 12-icon mini-app grid, swipeable promo banners and recent activity." data-flutter="flutter/themes/superapp_theme.dart">
+<div class="stage">
+  <aside class="panel" id="panel"></aside>
+  <div class="device"><div class="app" id="app"></div></div>
+</div>
+<script>
+window.MobileVariant = function variant(h) {
+  const APPS = [
+    ['Stock', 'box', 'stock', '#2f6bff'], ['Orders', 'bag', 'orders', '#ff7a1a'], ['Scan', 'scan', 'scan', '#12b886'], ['New PO', 'plus', 'po-new', '#7c4dff'],
+    ['POs', 'file', 'po', '#0ea5e9'], ['Alerts', 'bell', 'alerts', '#f43f5e'], ['Low stock', 'alert', 'stock', '#f59e0b'], ['Vendors', 'truck', 'po', '#14b8a6'],
+    ['Barcodes', 'tag', 'scan', '#6366f1'], ['Reports', 'trend', 'home', '#ec4899'], ['Imports', 'upload', 'more', '#64748b'], ['Settings', 'sliders', 'profile', '#475569'],
+  ];
+  h.SCREENS.home = () => `
+    <div class="sa-head">
+      <div class="sa-top"><span class="sa-logo">T</span><label class="sa-search">${h.icon('search')}<input placeholder="Search apps, SKUs, orders" aria-label="Search"></label><button class="sa-ic" data-go="alerts" aria-label="Alerts">${h.icon('bell')}<b>3</b></button></div>
+      <div class="wallet"><div><small>Inventory value</small><strong>₹3.48 Cr</strong><span>1,45,288 units · 3,179 SKUs</span></div>
+        <div class="wallet-acts"><button data-go="scan">${h.icon('scan')}<span>Scan</span></button><button data-go="po-new">${h.icon('plus')}<span>Order</span></button><button data-go="stock">${h.icon('box')}<span>Stock</span></button></div></div>
+    </div>
+    <section class="sa-grid">${APPS.map(([l, ic, g, c]) => `<button data-go="${g}"${l === 'Low stock' ? ' data-filter-to="low"' : ''}><span style="--a:${c}">${h.icon(ic)}</span>${l}</button>`).join('')}</section>
+    <div class="banners">
+      <article class="bn b1"><small>Festive season</small><b>Stock up 1,705 low items</b><button data-go="stock" data-filter-to="low">Review →</button></article>
+      <article class="bn b2"><small>Flipkart Big Billion</small><b>Orders up 18.7% this month</b><button data-go="orders">See orders →</button></article>
+      <article class="bn b3"><small>New</small><b>Scan bin labels in bulk</b><button data-go="scan">Try it →</button></article>
+    </div>
+    <section class="card"><div class="card-h"><h3>Recent activity</h3><button class="link" data-go="orders">All</button></div>
+      <div class="list">${h.SKUS.slice(0, 3).map(h.skuRow).join('')}</div></section>`;
+};
+</script>
+<script src="assets/mobile.js"></script>
+</body>
+</html>

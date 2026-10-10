@@ -95,6 +95,10 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,
 .pv-swipe .phone i:nth-child(1){transform:translateY(8px) scale(.94);opacity:.7}
 .pv-swipe .phone i:nth-child(2){transform:rotate(9deg) translateX(14px);background:linear-gradient(#262b36 0 60%,#fff 60%)}
 .pv-swipe .phone b{position:absolute;left:24px;top:56px;transform:rotate(-12deg);font:800 11px Outfit,sans-serif;color:#1fb37a;border:2px solid;padding:1px 5px;border-radius:5px;z-index:2}
+.pv-super{background:#e8eef9}
+.pv-super .phone{background:#f2f5fb}
+.pv-super .phone::before{content:"";position:absolute;left:0;right:0;top:0;height:78px;background:linear-gradient(160deg,#1556e8,#0b3aa8);border-radius:0 0 14px 14px}
+.pv-super .phone i{position:absolute;left:8px;right:8px;top:62px;height:80px;border-radius:12px;background:radial-gradient(circle,#dbe6ff 7px,transparent 7.5px) 4px 4px/25px 25px,#fff;box-shadow:0 6px 14px rgba(16,24,40,.12)}
 </style>
 </head>
 <body>
@@ -119,6 +123,7 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,
     <a class="card" href="m-terminal.html"><div class="pv pv-mterm"><div class="phone">~/stock█<br>[OK] 1,45,288<br>[WARN] 1,705 low<br>$ scan_</div></div><div class="body"><h2>M12 · Terminal Mobile</h2><p>Green-phosphor CRT in your pocket: monospace everything, scanlines, $-prompt headers, [bracketed] chips, inverted selections and a grep-style search. Light mode is green-bar paper.</p><div class="tags"><span>monospace</span><span>scanlines</span><span>prompt prefixes</span></div></div></a>
     <a class="card" href="m-swiss.html"><div class="pv pv-mswiss"><div class="phone"><b>Stock<i>.</i></b><span>1,45,288</span></div></div><div class="body"><h2>M13 · Swiss Minimal Mobile</h2><p>International Typographic Style on a phone: huge tight headings with a red full stop, hairline rules instead of cards, giant numerals and a text-only tab bar.</p><div class="tags"><span>giant type</span><span>hairline rules</span><span>text-only tab bar</span></div></div></a>
     <a class="card" href="m-swipe.html"><div class="pv pv-swipe"><div class="phone"><i></i><i></i><b>REORDER</b></div></div><div class="body"><h2>M14 · Card Stack / Swipe</h2><p>Tinder-style reorder queue: swipe low and out-of-stock SKU cards right to reorder or left to skip, with live REORDER/SKIP stamps, undo and an all-caught-up state.</p><div class="tags"><span>pointer drag</span><span>swipe stamps</span><span>screen variant</span></div></div></a>
+    <a class="card" href="m-superapp.html"><div class="pv pv-super"><div class="phone"><i></i></div></div><div class="body"><h2>M15 · Super-App Grid</h2><p>WeChat / Paytm-style super-app home: a blue header with an inventory-value wallet card, a 12-icon mini-app grid, swipeable promo banners and recent activity.</p><div class="tags"><span>mini-app grid</span><span>wallet header</span><span>snap carousel</span></div></div></a>
 <!--cards-->
   </div>
 </div>
