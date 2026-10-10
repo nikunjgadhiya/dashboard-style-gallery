@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('mtheme:m-swipe.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Swipe Review · TIFFNY Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/mobile.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{color-scheme:light;--bg:#fff1f0;--surface:#ffffff;--surface-2:#fff5f4;--text:#24151a;--muted:#7f6a70;--line:#24151a14;--accent:#ff4f6d;--on-accent:#ffffff;--ok:#1fb37a;--warn:#f29a1d;--bad:#ff4f6d;--c1:#ff4f6d;--c2:#ff9a3c;--c3:#7c5cff;--c4:#1fb37a;--c5:#2fa8ff;--radius:26px;--font:'Outfit',system-ui,sans-serif}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#170d12;--surface:#24161d;--surface-2:#2e1d25;--text:#fdeef1;--muted:#c2a6ae;--line:#ffffff17;--accent:#ff6a85;--on-accent:#ffffff;--ok:#34d399;--warn:#fbbf24;--bad:#ff6a85;--c1:#ff6a85;--c2:#ffad5c;--c3:#9a82ff;--c4:#34d399;--c5:#5cbcff}
+:root{--grad:linear-gradient(135deg,#ff7a59,#ff4f6d 50%,#d93c9a);--stage:linear-gradient(135deg,#ffe3dc,#ffe0ef);--stage-text:#24151a;--shadow:0 18px 40px -18px rgba(120,30,60,.35);--shadow-sm:0 6px 14px -8px rgba(120,30,60,.3)}
+:root[data-theme="dark"]{--stage:linear-gradient(135deg,#2a0f1a,#170d12);--stage-text:#fdeef1;--stage-on:#170d12;--stage-chip:rgba(255,255,255,.08)}
+.app{background:radial-gradient(70% 40% at 50% 0,color-mix(in srgb,var(--accent) 22%,transparent),transparent 70%),var(--bg)}
+.hello h1{font-size:28px;font-weight:800}
+.avatar,.btn.primary,.chip.on,.tabbar .scan-tab .si{background:var(--grad);color:#fff}
+.queue-meta{font-size:13px;color:var(--muted);margin:-6px 0 14px}
+.queue-meta b{color:var(--accent);font-size:15px}
+.deck{position:relative;height:430px;margin-bottom:18px}
+.swipe{position:absolute;inset:0;border-radius:28px;background:var(--surface);box-shadow:var(--shadow);overflow:hidden;touch-action:none;cursor:grab;user-select:none;--p:0}
+.swipe:not(.gone):not([data-depth="0"]){transform:translateY(20px) scale(.92);opacity:0}
+.swipe[data-depth="1"]{transform:translateY(10px) scale(.96)!important;opacity:.85!important;transition:transform .3s,opacity .3s}
+.swipe[data-depth="2"]{transform:translateY(20px) scale(.92)!important;opacity:.55!important;transition:transform .3s,opacity .3s}
+.swipe:active{cursor:grabbing}
+.sw-img{height:240px;background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--sw) 55%,#fff),var(--sw));display:grid;place-items:center;color:rgba(255,255,255,.85);position:relative}
+.sw-img .ic{width:110px;height:110px;stroke-width:1.1}
+.sw-img .badge{position:absolute;left:14px;top:14px;background:var(--surface);font-size:11.5px;padding:5px 10px}
+.sw-body{padding:16px 18px}
+.sw-body h3{font-size:21px;font-weight:800;letter-spacing:-.01em}
+.sw-body p{color:var(--muted);font-size:13.5px;margin:2px 0 12px}
+.sw-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sw-stats div{background:var(--surface-2);border-radius:14px;padding:8px 10px}
+.sw-stats small{display:block;font-size:10.5px;color:var(--muted)}
+.sw-stats b{font-size:17px;font-weight:800}
+.stamp{position:absolute;top:28px;font-style:normal;font-weight:800;font-size:24px;letter-spacing:.08em;padding:4px 12px;border:4px solid;border-radius:10px;pointer-events:none}
+.stamp.yes{left:20px;color:var(--ok);transform:rotate(-14deg);opacity:clamp(0,var(--p),1)}
+.stamp.no{right:20px;color:var(--bad);transform:rotate(14deg);opacity:clamp(0,calc(var(--p) * -1),1)}
+.swipe.went-yes .stamp.yes,.swipe.went-no .stamp.no{opacity:1}
+.deck-empty{position:absolute;inset:0;border-radius:28px;border:2px dashed var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:24px;z-index:-1}
+.deck-empty span{width:64px;height:64px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center}
+.deck-empty b{font-size:20px}
+.deck-empty small{color:var(--muted)}
+.deck-empty .btn{flex:none;width:180px;margin-top:8px}
+.deck-actions{display:flex;justify-content:center;align-items:center;gap:22px}
+.da{width:64px;height:64px;border-radius:50%;background:var(--surface);box-shadow:var(--shadow);display:grid;place-items:center;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.da:active{transform:scale(.88)}
+.da .ic{width:28px;height:28px;stroke-width:2.6}
+.da.no{color:var(--bad)}.da.yes{color:var(--ok)}
+.da.undo{width:48px;height:48px;color:var(--warn)}
+.da.undo .ic{width:20px;height:20px}
+.tabbar{border-top:0;box-shadow:0 -8px 24px rgba(120,30,60,.08)}
+.tabbar .scan-tab .si{border-radius:50%}
+</style>
+</head>
+<body data-name="Card Stack / Swipe" data-desc="Tinder-style reorder queue: swipe low and out-of-stock SKU cards right to reorder or left to skip, with live REORDER/SKIP stamps, undo and an all-caught-up state." data-flutter="flutter/themes/swipe_theme.dart">
+<div class="stage">
+  <aside class="panel" id="panel"></aside>
+  <div class="device"><div class="app" id="app"></div></div>
+</div>
+<script>
+window.MobileVariant = function variant(h) {
+  const deck = h.SKUS.filter((s) => s.status !== 'in');
+  const card = (s) => `<article class="swipe" data-i="${s.i}">
+      <div class="sw-img" style="--sw:${s.sw}">${h.icon('shirt')}<em class="badge ${s.status}">${h.STATUS_LABEL[s.status]}</em></div>
+      <div class="sw-body"><h3>${s.sku}</h3><p>${s.name} · ${s.brand}</p>
+        <div class="sw-stats"><div><small>In stock</small><b>${h.fmt(s.stock)}</b></div><div><small>Sold 30d</small><b>${h.fmt(s.sold)}</b></div><div><small>Suggest</small><b>${Math.max(100, Math.round(s.sold / 40) * 10)}</b></div></div></div>
+      <i class="stamp yes">REORDER</i><i class="stamp no">SKIP</i></article>`;
+  h.SCREENS.home = () => `
+    <header class="app-head"><div class="hello"><small>Daily review</small><h1>Reorder queue</h1></div><button class="avatar" data-go="profile" aria-label="Profile">R</button></header>
+    <p class="queue-meta"><b data-done>0</b> of ${deck.length} reviewed · swipe right to reorder, left to skip</p>
+    <div class="deck">${deck.slice().reverse().map(card).join('')}
+      <div class="deck-empty"><span>${h.icon('check')}</span><b>All caught up</b><small>Reordered items were added to a draft PO.</small><button class="btn primary" data-go="po">View POs</button></div></div>
+    <div class="deck-actions"><button class="da no" data-swipe="-1" aria-label="Skip">${h.icon('x')}</button><button class="da undo" data-undo aria-label="Undo"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button><button class="da yes" data-swipe="1" aria-label="Reorder">${h.icon('check')}</button></div>`;
+
+  let done = 0;
+  const gone = [];
+  const top = () => [...document.querySelectorAll('.swipe:not(.gone)')].pop();
+  const restack = () => {
+    const live = [...document.querySelectorAll('.swipe:not(.gone)')].reverse();
+    document.querySelectorAll('.swipe').forEach((c) => c.removeAttribute('data-depth'));
+    live.forEach((c, k) => { if (k < 3) c.dataset.depth = k; });
+  };
+  setTimeout(restack, 0);
+  const setMeta = () => { const m = document.querySelector('[data-done]'); if (m) m.textContent = done; };
+  const fling = (c, dir) => {
+    if (!c) return;
+    c.style.transition = 'transform .35s ease, opacity .35s';
+    c.style.transform = `translate(${dir * 480}px,-30px) rotate(${dir * 28}deg)`;
+    c.style.opacity = '0';
+    c.classList.add('gone', dir > 0 ? 'went-yes' : 'went-no');
+    gone.push(c); done++; setMeta(); restack();
+  };
+  let drag = null;
+  document.addEventListener('pointerdown', (e) => {
+    const c = e.target.closest('.swipe');
+    if (!c || c !== top()) return;
+    drag = { c, x: e.clientX, y: e.clientY, dx: 0 };
+    c.setPointerCapture(e.pointerId);
+    c.style.transition = 'none';
+  });
+  document.addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    drag.dx = e.clientX - drag.x;
+    const dy = (e.clientY - drag.y) * 0.2;
+    drag.c.style.transform = `translate(${drag.dx}px,${dy}px) rotate(${drag.dx / 16}deg)`;
+    drag.c.style.setProperty('--p', Math.max(-1, Math.min(1, drag.dx / 110)));
+  });
+  document.addEventListener('pointerup', () => {
+    if (!drag) return;
+    const { c, dx } = drag;
+    drag = null;
+    if (Math.abs(dx) > 100) fling(c, Math.sign(dx));
+    else { c.style.transition = 'transform .3s cubic-bezier(.34,1.56,.64,1)'; c.style.transform = ''; c.style.setProperty('--p', 0); }
+  });
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-swipe],[data-undo]');
+    if (!b) return;
+    if (b.hasAttribute('data-undo')) {
+      const c = gone.pop();
+      if (!c) return;
+      c.classList.remove('gone', 'went-yes', 'went-no');
+      c.style.transition = 'transform .35s cubic-bezier(.34,1.56,.64,1), opacity .3s';
+      c.style.transform = ''; c.style.opacity = '1'; c.style.setProperty('--p', 0);
+      done--; setMeta(); restack();
+    } else fling(top(), +b.dataset.swipe);
+  });
+};
+</script>
+<script src="assets/mobile.js"></script>
+</body>
+</html>
