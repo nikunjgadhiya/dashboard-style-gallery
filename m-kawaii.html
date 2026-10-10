@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('mtheme:m-kawaii.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kawaii · TIFFNY Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/mobile.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{color-scheme:light;--bg:#fff5fa;--surface:#ffffff;--surface-2:#fff0f7;--text:#6b4f72;--muted:#a58aad;--line:#f6cfe3;--accent:#ff8fc1;--on-accent:#ffffff;--ok:#3fb889;--warn:#e89a3c;--bad:#ff5c8d;--c1:#ff8fc1;--c2:#7fd8b4;--c3:#b49cff;--c4:#ffb880;--c5:#7cc4ff;--radius:28px;--font:'Fredoka',system-ui,sans-serif}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#231b38;--surface:#2f2549;--surface-2:#3a2f58;--text:#fbe8ff;--muted:#c3b3dc;--line:#4c3d72;--accent:#ff9fcb;--on-accent:#231b38;--ok:#7fd8b4;--warn:#ffd36e;--bad:#ff8fb5;--c1:#ff9fcb;--c2:#7fd8b4;--c3:#c3afff;--c4:#ffc79a;--c5:#8fcfff}
+:root{--shadow:0 6px 0 var(--line);--shadow-sm:0 4px 0 var(--line);--stage:radial-gradient(circle,rgba(255,143,193,.22) 2px,transparent 2.5px) 0 0/30px 30px,#fff5fa;--stage-text:#6b4f72;
+  --k1:#ffe3ef;--k2:#dcf7ec;--k3:#ece5ff;--k4:#ffe9d6;--donut-radius:14;--donut-spacing:4;--donut-bw:0;--bar-radius:999;--tip-bg:#6b4f72;--tip-radius:14}
+:root[data-theme="dark"]{--k1:#4a2a48;--k2:#1f4038;--k3:#3a2f63;--k4:#4a3526;--stage:#1c1530;--stage-text:#fbe8ff;--stage-on:#231b38;--stage-chip:rgba(255,255,255,.08)}
+body{font-weight:500}
+.app{background:radial-gradient(circle,color-mix(in srgb,var(--c1) 22%,transparent) 2px,transparent 2.5px) 0 0/30px 30px,radial-gradient(circle,color-mix(in srgb,var(--c2) 22%,transparent) 2px,transparent 2.5px) 15px 15px/30px 30px,var(--bg)}
+.hello h1::after{content:" ♡";color:var(--accent)}
+.app-head h1{font-weight:700}
+.card,.list.boxed,.stat,.tile,.sheet,.search,.icon-btn,.chip,.btn,.input{border:2.5px solid var(--line)}
+.card{position:relative;margin-top:14px}
+.card::before,.card::after{content:"";position:absolute;top:-17px;width:26px;height:20px;background:var(--accent);clip-path:polygon(50% 0,100% 100%,0 100%)}
+.card::before{left:26px;transform:rotate(-14deg)}
+.card::after{left:60px;transform:rotate(14deg)}
+.card-h h3::after{content:" ✦";color:var(--accent);font-size:13px}
+.kpi{border:2.5px solid;position:relative}
+.k1{background:var(--k1);border-color:color-mix(in srgb,var(--c1) 45%,var(--k1));box-shadow:0 6px 0 color-mix(in srgb,var(--c1) 45%,var(--k1))}
+.k2{background:var(--k2);border-color:color-mix(in srgb,var(--c2) 45%,var(--k2));box-shadow:0 6px 0 color-mix(in srgb,var(--c2) 45%,var(--k2))}
+.k3{background:var(--k3);border-color:color-mix(in srgb,var(--c3) 45%,var(--k3));box-shadow:0 6px 0 color-mix(in srgb,var(--c3) 45%,var(--k3))}
+.k4{background:var(--k4);border-color:color-mix(in srgb,var(--c4) 45%,var(--k4));box-shadow:0 6px 0 color-mix(in srgb,var(--c4) 45%,var(--k4))}
+.kpi::after{content:"✦";position:absolute;right:14px;top:10px;color:#fff;font-size:16px;text-shadow:0 0 1px var(--muted)}
+.kpi-i{border-radius:50%}
+.kpi strong{font-weight:700}
+.chip{font-weight:600}
+.chip.on{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 4px 0 color-mix(in srgb,var(--accent) 60%,#a03a6a)}
+.quick .qi{border-radius:50%;border:2.5px solid var(--line)}
+.btn,.chip,.quick .qi,.kpi{transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+:is(.btn,.chip,.kpi):active,.quick button:active .qi{transform:translateY(3px)}
+.btn{border-radius:999px;font-weight:600}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 5px 0 color-mix(in srgb,var(--accent) 60%,#a03a6a)}
+.avatar{background:var(--c2);color:#fff;box-shadow:0 4px 0 color-mix(in srgb,var(--c2) 60%,#1d6b4f)}
+.thumb{border-radius:50%;border:3px solid var(--surface);box-shadow:0 0 0 2px var(--line)}
+.badge,.status{border-radius:999px}
+.pbar .track{height:12px}
+.switch.on{background:var(--accent)}
+.set .si,.tile .ti{border-radius:50%}
+.tabbar{left:12px;right:12px;bottom:18px;border-radius:30px;border:2.5px solid var(--line);background:var(--surface);box-shadow:0 6px 0 var(--line);padding:8px 6px;align-items:center}
+.tabbar button{font-weight:600}
+.tabbar button.on::after{content:"♥";font-size:9px;color:var(--accent);line-height:1}
+.tabbar .scan-tab .si{border-radius:50%;width:56px;height:56px;margin-top:-26px;box-shadow:0 5px 0 color-mix(in srgb,var(--accent) 60%,#a03a6a)}
+.home-ind{bottom:4px}
+@media (max-width:500px){.tabbar{bottom:max(10px,env(safe-area-inset-bottom))}}
+</style>
+</head>
+<body data-name="Kawaii Mobile" data-desc="Candy pastels, rounded Fredoka type, cat-ear cards, bouncy pastel KPI tiles, hearts and sparkles, with a cheerful pink tab bar. Dark mode is midnight kawaii." data-flutter="flutter/themes/kawaii_theme.dart">
+<div class="stage">
+  <aside class="panel" id="panel"></aside>
+  <div class="device"><div class="app" id="app"></div></div>
+</div>
+<script src="assets/mobile.js"></script>
+</body>
+</html>
