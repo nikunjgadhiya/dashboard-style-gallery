@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('mtheme:m-map.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Map View · TIFFNY Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/mobile.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{color-scheme:light;--bg:#ffffff;--surface:#ffffff;--surface-2:#f1f3f4;--text:#202124;--muted:#5f6368;--line:#2021241a;--accent:#1a73e8;--on-accent:#ffffff;--ok:#188038;--warn:#e37400;--bad:#d93025;--c1:#1a73e8;--c2:#188038;--c3:#a142f4;--c4:#e37400;--c5:#d01884;--radius:18px;--font:'Inter',system-ui,sans-serif}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#121418;--surface:#1e2127;--surface-2:#2a2e36;--text:#e8eaed;--muted:#9aa0a6;--line:#ffffff1a;--accent:#8ab4f8;--on-accent:#0b1220;--ok:#81c995;--warn:#fdd663;--bad:#f28b82;--c1:#8ab4f8;--c2:#81c995;--c3:#c58af9;--c4:#fdd663;--c5:#ff8bcb}
+:root{--land:#eef1ea;--water:#aadaff;--park:#c8e6c9;--road:#ffffff;--major:#fde293;--major-edge:#f9c74f;--stage:#e8eaed;--stage-text:#202124}
+:root[data-theme="dark"]{--land:#1d2330;--water:#0e1c30;--park:#1f3326;--road:#2b3344;--major:#4a4126;--major-edge:#6b5c2a;--stage:#0b0d11;--stage-text:#e8eaed;--stage-on:#121418;--stage-chip:rgba(255,255,255,.08)}
+[data-screen="home"]{padding-top:0}
+.map{position:relative;height:430px;margin:0 -18px;overflow:hidden;
+  background:linear-gradient(104deg,var(--water) 0 21%,transparent 21.4%),
+    radial-gradient(ellipse 60px 40px at 76% 18%,var(--park) 98%,transparent 100%),radial-gradient(ellipse 80px 50px at 30% 62%,var(--park) 98%,transparent 100%),
+    radial-gradient(ellipse 50px 70px at 88% 66%,var(--water) 98%,transparent 100%),
+    repeating-linear-gradient(0deg,transparent 0 44px,var(--road) 44px 47px),repeating-linear-gradient(90deg,transparent 0 52px,var(--road) 52px 55px),var(--land)}
+.road{position:absolute;height:9px;background:var(--major);border:1.5px solid var(--major-edge);border-left:0;border-right:0;transform-origin:left center}
+.r1{left:-10%;top:40%;width:130%;transform:rotate(-24deg)}
+.r2{left:30%;top:-5%;width:110%;transform:rotate(68deg)}
+.r3{left:-5%;top:78%;width:120%;transform:rotate(8deg)}
+.sea-label{position:absolute;left:3%;top:56%;font-size:10px;font-style:italic;color:color-mix(in srgb,var(--accent) 70%,var(--muted));transform:rotate(-80deg);letter-spacing:.2em}
+.pin{position:absolute;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;z-index:2;transition:transform .2s}
+.pin b{background:var(--pc,var(--ok));color:#fff;font-size:12px;font-weight:800;padding:5px 9px;border-radius:999px;box-shadow:0 4px 10px rgba(0,0,0,.25);border:2px solid #fff}
+.pin::after{content:"";width:0;height:0;border:6px solid transparent;border-top:8px solid var(--pc,var(--ok));margin-top:-1px}
+.pin.low{--pc:var(--warn)}.pin.out{--pc:var(--bad)}
+.pin.sel{transform:translate(-50%,-100%) scale(1.18);z-index:3}
+.pin.sel b{box-shadow:0 0 0 4px color-mix(in srgb,var(--pc,var(--ok)) 30%,transparent),0 6px 14px rgba(0,0,0,.3)}
+.me{position:absolute;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:var(--accent);border:3px solid #fff;box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 50%,transparent);animation:me 2s infinite}
+@keyframes me{to{box-shadow:0 0 0 22px transparent}}
+@media (prefers-reduced-motion:reduce){.me{animation:none}}
+.map-ctl{position:absolute;right:14px;top:100px;display:flex;flex-direction:column;border-radius:12px;background:var(--surface);box-shadow:0 2px 8px rgba(0,0,0,.2);overflow:hidden}
+.map-ctl button{width:40px;height:40px;display:grid;place-items:center;color:var(--muted)}
+.map-ctl button+button{border-top:1px solid var(--line)}
+.map-ctl .ic{width:19px;height:19px}
+.map-top{position:absolute;left:14px;right:14px;top:12px;display:flex;gap:10px;align-items:center}
+.map-top .search{flex:1;margin:0;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.18);height:46px}
+.loc-sheet{position:relative;margin:-26px -18px 0;background:var(--surface);border-radius:24px 24px 0 0;padding:8px 18px 4px;box-shadow:0 -6px 20px rgba(0,0,0,.12);z-index:4}
+.loc-sum{display:flex;justify-content:space-between;align-items:center;margin:6px 0 4px}
+.loc-sum small{display:block;font-size:12px;color:var(--muted)}
+.loc-sum b{font-size:20px;font-weight:800}
+.loc{border-radius:14px;padding:10px 8px;margin:0 -8px;width:calc(100% + 16px)}
+.loc.sel{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.loc-ic{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok);border-radius:50%}
+.loc-ic.low{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
+.loc-ic.out{background:color-mix(in srgb,var(--bad) 15%,transparent);color:var(--bad)}
+.tabbar .scan-tab .si{border-radius:50%}
+</style>
+</head>
+<body data-name="Map / Location View" data-desc="A live stock map: warehouse and store pins with stock counts, a pulsing you-are-here dot, map controls and a bottom sheet of locations that syncs with the selected pin." data-flutter="flutter/themes/map_theme.dart">
+<div class="stage">
+  <aside class="panel" id="panel"></aside>
+  <div class="device"><div class="app" id="app"></div></div>
+</div>
+<script>
+window.MobileVariant = function variant(h) {
+  const LOCS = [
+    ['ahd', 'Ahmedabad Warehouse', 'Main DC · Bay 1–8', 62400, 'in', 58, 30],
+    ['mum', 'Mumbai Fulfilment', 'Amazon & Flipkart', 41800, 'in', 34, 76],
+    ['srt', 'Surat Store', 'Retail · 2 floors', 18200, 'low', 44, 52],
+    ['pun', 'Pune Store', 'Retail', 12900, 'low', 66, 84],
+    ['vad', 'Vadodara Store', 'Retail', 9988, 'out', 72, 42],
+  ];
+  const label = { in: 'Healthy', low: 'Low stock', out: 'Stock-outs' };
+  h.SCREENS.home = () => `
+    <div class="map" aria-label="Stock map">
+      <i class="road r1"></i><i class="road r2"></i><i class="road r3"></i>
+      <span class="sea-label">Arabian Sea</span>
+      ${LOCS.map(([id, n, , q, st, x, y], k) => `<button class="pin ${st}${k ? '' : ' sel'}" data-loc="${id}" style="left:${x}%;top:${y}%"><b>${h.fmt(q / 1000)}k</b></button>`).join('')}
+      <span class="me" style="left:50%;top:46%"></span>
+      <div class="map-ctl"><button aria-label="Zoom in">${h.icon('plus')}</button><button aria-label="Zoom out"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg></button><button aria-label="Locate">${h.icon('globe')}</button></div>
+      <div class="map-top"><label class="search">${h.icon('search')}<input placeholder="Search locations" aria-label="Search locations"></label><button class="avatar" data-go="profile" aria-label="Profile">R</button></div>
+    </div>
+    <section class="loc-sheet"><div class="grab"></div>
+      <div class="loc-sum"><div><small>5 locations</small><b>1,45,288 units</b></div><span class="badge low">2 need attention</span></div>
+      <div class="list">${LOCS.map(([id, n, sub, q, st], k) => `<button class="row loc${k ? '' : ' sel'}" data-loc="${id}">
+        <span class="thumb loc-ic ${st}">${h.icon(k < 2 ? 'box' : 'home')}</span><span class="row-main"><b>${n}</b><small>${sub}</small></span>
+        <span class="row-end"><b>${h.fmt(q)}</b><em class="badge ${st}">${label[st]}</em></span></button>`).join('')}</div>
+    </section>`;
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-loc]');
+    if (!b) return;
+    const id = b.dataset.loc;
+    document.querySelectorAll('[data-loc]').forEach((x) => x.classList.toggle('sel', x.dataset.loc === id));
+    const row = document.querySelector(`.loc[data-loc="${id}"]`);
+    if (b.classList.contains('pin') && row) row.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  });
+};
+</script>
+<script src="assets/mobile.js"></script>
+</body>
+</html>
