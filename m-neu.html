@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('mtheme:m-neu.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Neumorphism · TIFFNY Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/mobile.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{color-scheme:light;--bg:#e6ebf3;--surface:#e6ebf3;--surface-2:#dde3ed;--text:#3b4660;--muted:#7e89a2;--line:#3b46601f;--accent:#5b6cff;--on-accent:#ffffff;--ok:#1fb89a;--warn:#e39a2f;--bad:#ef5d7a;--c1:#5b6cff;--c2:#22c3a6;--c3:#a66bff;--c4:#ff8a5b;--c5:#ff6b9a;--radius:22px;--font:'Manrope',system-ui,sans-serif}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#282d37;--surface:#282d37;--surface-2:#2f3541;--text:#dfe4ef;--muted:#8d96ab;--line:#ffffff12;--accent:#8492ff;--on-accent:#1d212a;--ok:#2fd1b0;--warn:#f4b155;--bad:#f2738c;--c1:#8492ff;--c2:#2fd1b0;--c3:#b88aff;--c4:#ff9d74;--c5:#ff85ad}
+:root{--hi:#ffffff;--lo:#c3cad8;--raise:7px 7px 14px var(--lo),-7px -7px 14px var(--hi);--raise-sm:4px 4px 8px var(--lo),-4px -4px 8px var(--hi);
+  --press:inset 4px 4px 8px var(--lo),inset -4px -4px 8px var(--hi);--shadow:var(--raise);--shadow-sm:var(--raise-sm);
+  --stage:#e6ebf3;--stage-text:#3b4660;--donut-border:#e6ebf3;--donut-bw:5;--bar-radius:8;--tip-bg:#3b4660}
+:root[data-theme="dark"]{--hi:#323844;--lo:#1c2027;--stage:#282d37;--stage-text:#dfe4ef;--stage-on:#282d37;--stage-chip:#2f3541;--donut-border:#282d37;--tip-bg:#141820}
+.panel .jump button,.panel .p-theme{background:var(--stage);box-shadow:4px 4px 8px var(--lo),-4px -4px 8px var(--hi)}
+.panel .jump button.on{background:var(--stage);color:var(--accent);box-shadow:inset 3px 3px 6px var(--lo),inset -3px -3px 6px var(--hi)}
+.device{background:var(--bg);box-shadow:16px 16px 40px var(--lo),-16px -16px 40px var(--hi);padding:14px}
+.icon-btn,.avatar{box-shadow:var(--raise-sm)}
+.avatar{background:var(--bg);color:var(--accent)}
+.chip{background:var(--bg);box-shadow:var(--raise-sm)}
+.chip.on{background:var(--bg);color:var(--accent);box-shadow:var(--press)}
+.kpi-i{background:var(--bg);color:var(--k);box-shadow:var(--raise-sm);border-radius:50%}
+.search,.input{background:var(--bg);box-shadow:var(--press);border:0}
+.list.boxed .row{border-color:transparent}
+.thumb{border:4px solid var(--bg);box-shadow:var(--raise-sm);border-radius:50%}
+.quick .qi{background:var(--bg);box-shadow:var(--raise);border-radius:50%}
+.quick button:active .qi{box-shadow:var(--press)}
+.pbar .track,.badge{box-shadow:var(--press)}
+.pbar .track{background:var(--bg);height:10px;padding:2px}
+.btn{background:var(--bg);box-shadow:var(--raise)}
+.btn.primary{background:var(--bg);color:var(--accent);box-shadow:var(--raise)}
+.btn:active{box-shadow:var(--press)}
+.stat{box-shadow:var(--press)}
+.switch{background:var(--bg);box-shadow:var(--press)}
+.switch::after{box-shadow:var(--raise-sm);background:var(--bg)}
+.switch.on::after{background:var(--accent)}
+.set .si{border-radius:50%;box-shadow:var(--raise-sm);background:var(--bg);color:var(--s)}
+.tile .ti{border-radius:50%;background:var(--bg);box-shadow:var(--raise-sm)}
+.step i{background:var(--bg);box-shadow:var(--raise-sm);border:0}
+.step.done i{background:var(--bg);color:var(--accent);box-shadow:var(--press)}
+.sheet{box-shadow:var(--raise)}
+.screen.scan .sheet{background:var(--bg)}
+.tabbar{background:var(--bg);border-top:0;box-shadow:0 -6px 16px var(--lo)}
+.tabbar button .ic{width:44px;height:36px;padding:8px 12px;border-radius:14px}
+.tabbar button.on{color:var(--accent)}
+.tabbar button.on .ic{box-shadow:var(--press)}
+.tabbar .scan-tab .si{background:var(--bg);color:var(--accent);box-shadow:var(--raise);border-radius:50%}
+.tabbar .scan-tab .si .ic{box-shadow:none;width:26px;height:26px;padding:0}
+</style>
+</head>
+<body data-name="Neumorphism Mobile" data-desc="Soft extruded controls molded from the background: raised cards, pressed-in active chips and tab icons, inset search well and tracks, in calm grey-blue or charcoal." data-flutter="flutter/themes/neu_theme.dart">
+<div class="stage">
+  <aside class="panel" id="panel"></aside>
+  <div class="device"><div class="app" id="app"></div></div>
+</div>
+<script src="assets/mobile.js"></script>
+</body>
+</html>
