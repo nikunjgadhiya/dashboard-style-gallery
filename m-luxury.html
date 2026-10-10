@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('mtheme:m-luxury.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Dark Luxury · TIFFNY Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/mobile.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{color-scheme:light;--bg:#f6f2e9;--surface:#fffdf8;--surface-2:#f1ebdd;--text:#1a1814;--muted:#7a7262;--line:#a8823c40;--accent:#8a6a1c;--on-accent:#fffdf8;--ok:#4f7a3a;--warn:#8a6a1c;--bad:#8b2e2e;--c1:#8a6a1c;--c2:#1a1814;--c3:#c9b88f;--c4:#6b5a3e;--c5:#d9cdb0;--radius:2px;--font:'Montserrat',system-ui,sans-serif}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0a0a0a;--surface:#121212;--surface-2:#191919;--text:#ece6da;--muted:#8a8478;--line:#c9a96133;--accent:#c9a961;--on-accent:#0a0a0a;--ok:#a3b87a;--warn:#c9a961;--bad:#c0645a;--c1:#c9a961;--c2:#e8d9b5;--c3:#8c6a3f;--c4:#f5f0e6;--c5:#5e5a52}
+:root{--serif:'Cormorant Garamond',Georgia,serif;--gold-grad:linear-gradient(120deg,#8a6a2c,#c9a961 35%,#a8823c 60%,#8a6a2c);--shadow:none;--shadow-sm:none;
+  --stage:#f6f2e9;--stage-text:#1a1814;--donut-cutout:86%;--donut-bw:3;--donut-radius:0;--donut-spacing:0;--bar-radius:0;--tip-bg:#1a1814;--tip-fg:#e6c98a;--tip-radius:0}
+:root[data-theme="dark"]{--gold-grad:linear-gradient(120deg,#a8823c,#e6c98a 30%,#f6e3b0 45%,#b8924a 70%,#e6c98a);--stage:#050505;--stage-text:#ece6da;--stage-on:#0a0a0a;--stage-chip:rgba(201,169,97,.12)}
+body{font-weight:400;letter-spacing:.01em}
+.app-head h1,.hello h1,.sku-title h1{font-family:var(--serif);font-weight:400;font-style:italic;font-size:38px;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.01em}
+.app-head h2{font-family:var(--serif);font-size:22px;font-weight:500;letter-spacing:.04em}
+.hello small,.kpi small,.stat small,.card-h .muted,.group h4,.pbar span,.legend span,.field label{text-transform:uppercase;letter-spacing:.22em;font-size:9.5px;font-weight:500}
+.card,.kpi,.list.boxed,.stat,.tile,.sheet,.search,.chip,.icon-btn,.btn,.input{border:1px solid var(--line);border-radius:2px}
+.card,.kpi,.tile{position:relative}
+.card::before,.kpi::before,.card::after,.kpi::after{content:"";position:absolute;width:12px;height:12px;pointer-events:none}
+.card::before,.kpi::before{left:-1px;top:-1px;border-left:1px solid var(--accent);border-top:1px solid var(--accent)}
+.card::after,.kpi::after{right:-1px;bottom:-1px;border-right:1px solid var(--accent);border-bottom:1px solid var(--accent)}
+.kpi-i{background:none;border:1px solid var(--line);border-radius:50%;color:var(--accent)}
+.kpi strong,.stat b,.row-end b,.donut-c b{font-family:var(--serif);font-weight:500;font-size:30px;letter-spacing:.01em}
+.stat b,.row-end b{font-size:20px}
+.delta.up{color:var(--accent)}
+.card-h h3{font-family:var(--serif);font-weight:500;font-size:21px;letter-spacing:.02em}
+.link{color:var(--accent);text-transform:uppercase;letter-spacing:.2em;font-size:9.5px}
+.chip{background:none;text-transform:uppercase;letter-spacing:.16em;font-size:10px;font-weight:500;color:var(--muted)}
+.chip.on{background:none;color:var(--accent);border-color:var(--accent)}
+.quick .qi{background:none;border:1px solid var(--line);border-radius:50%;color:var(--accent)}
+.quick button{text-transform:uppercase;letter-spacing:.14em;font-size:9px}
+.avatar{background:none;border:1px solid var(--accent);color:var(--accent);font-family:var(--serif);font-size:20px}
+.icon-btn{background:none}
+.icon-btn b{background:var(--accent);color:var(--on-accent);border-color:var(--bg)}
+.thumb{border-radius:50%;box-shadow:0 0 0 1px var(--bg),0 0 0 2px var(--line)}
+.row-main b{font-weight:500;letter-spacing:.06em;font-size:12.5px}
+.badge,.status{border-radius:0;background:none!important;border:1px solid currentColor;text-transform:uppercase;letter-spacing:.1em;font-size:9px;font-weight:500}
+.btn{background:none;text-transform:uppercase;letter-spacing:.2em;font-size:11px;font-weight:500}
+.btn.primary{background:var(--gold-grad);color:#0a0a0a;border:0}
+.pbar .track{height:2px;border-radius:0}
+.legend i{transform:rotate(45deg);border-radius:0;width:7px;height:7px}
+.set .si,.tile .ti{background:none;border:1px solid var(--line);color:var(--accent);border-radius:50%}
+.switch{border-radius:999px;background:var(--surface-2);border:1px solid var(--line)}
+.switch.on{background:var(--accent)}
+.search{background:none;border-width:0 0 1px;border-radius:0;box-shadow:none}
+.tabbar{background:var(--bg);border-top:1px solid var(--line);padding:10px 10px 28px}
+.tabbar button{font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:500}
+.tabbar button .ic{stroke-width:1.3}
+.tabbar button.on{color:var(--accent)}
+.tabbar .scan-tab .si{background:none;border:1px solid var(--accent);color:var(--accent);border-radius:50%;box-shadow:0 0 0 4px var(--bg),0 0 0 5px var(--line)}
+</style>
+</head>
+<body data-name="Dark Luxury Mobile" data-desc="Black and gold: light serif headings and numbers, spaced small-caps labels, gold hairlines, corner marks and a minimal outlined tab bar. Light mode is ivory." data-flutter="flutter/themes/luxury_theme.dart">
+<div class="stage">
+  <aside class="panel" id="panel"></aside>
+  <div class="device"><div class="app" id="app"></div></div>
+</div>
+<script src="assets/mobile.js"></script>
+</body>
+</html>
