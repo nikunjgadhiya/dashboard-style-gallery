@@ -109,6 +109,13 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,
 .pv-map .phone b{position:absolute;padding:2px 6px;border-radius:999px;color:#fff;font:800 9px Inter,sans-serif;border:1.5px solid #fff}
 .pv-map .phone b:nth-child(1){left:50%;top:40px;background:#188038}.pv-map .phone b:nth-child(2){left:22%;top:90px;background:#e37400}.pv-map .phone b:nth-child(3){left:58%;top:120px;background:#d93025}
 .pv-map .phone i{position:absolute;left:0;right:0;bottom:0;height:56px;background:#fff;border-radius:14px 14px 0 0}
+.pv-watch{background:radial-gradient(circle at 50% 40%,#2a2a30,#0c0c0e)}
+.pv-watch b{position:relative;width:120px;height:146px;border-radius:36px;background:#000;box-shadow:0 0 0 7px #2c2c2e,0 0 0 9px #111,0 18px 30px -10px rgba(0,0,0,.6);display:grid;place-items:center}
+.pv-watch b::after{content:"";position:absolute;right:-14px;top:40px;width:6px;height:24px;border-radius:3px;background:#5a5a60}
+.pv-watch i{position:absolute;border-radius:50%;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 8px),#000 calc(100% - 7px));mask:radial-gradient(farthest-side,transparent calc(100% - 8px),#000 calc(100% - 7px))}
+.pv-watch i:nth-child(1){width:84px;height:84px;background:conic-gradient(#fa114f 72%,rgba(250,17,79,.2) 0)}
+.pv-watch i:nth-child(2){width:66px;height:66px;background:conic-gradient(#a6ff00 64%,rgba(166,255,0,.2) 0)}
+.pv-watch i:nth-child(3){width:48px;height:48px;background:conic-gradient(#00f0ff 46%,rgba(0,240,255,.2) 0)}
 </style>
 </head>
 <body>
@@ -136,6 +143,7 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,
     <a class="card" href="m-superapp.html"><div class="pv pv-super"><div class="phone"><i></i></div></div><div class="body"><h2>M15 · Super-App Grid</h2><p>WeChat / Paytm-style super-app home: a blue header with an inventory-value wallet card, a 12-icon mini-app grid, swipeable promo banners and recent activity.</p><div class="tags"><span>mini-app grid</span><span>wallet header</span><span>snap carousel</span></div></div></a>
     <a class="card" href="m-widgets.html"><div class="pv pv-widg"><div class="phone"><i></i><i></i><i></i><i></i><i></i></div></div><div class="body"><h2>M16 · Widget-Based Home</h2><p>Home is a phone home screen of widgets on a wallpaper: small, medium and wide widgets for orders, stock ring, low stock, donut, scan, alerts and top sellers.</p><div class="tags"><span>home-screen widgets</span><span>conic ring</span><span>screen variant</span></div></div></a>
     <a class="card" href="m-map.html"><div class="pv pv-map"><div class="phone"><b>62k</b><b>18k</b><b>10k</b><i></i></div></div><div class="body"><h2>M19 · Map / Location View</h2><p>A live stock map: warehouse and store pins with stock counts, a pulsing you-are-here dot, map controls and a bottom sheet of locations that syncs with the selected pin.</p><div class="tags"><span>CSS-drawn map</span><span>pins + sheet sync</span><span>screen variant</span></div></div></a>
+    <a class="card" href="m-watch.html"><div class="pv pv-watch"><b><i></i><i></i><i></i></b></div><div class="body"><h2>M20 · Wearable Companion</h2><p>Smartwatch companion: a watch frame on desktop, an activity-ring face for stock health, orders goal and low stock, round complications and glanceable alerts.</p><div class="tags"><span>watch frame</span><span>activity rings</span><span>screen variant</span></div></div></a>
 <!--cards-->
   </div>
 </div>
