@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('mtheme:m-brutal.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Neo-Brutalism · TIFFNY Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/mobile.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{color-scheme:light;--bg:#fff4e0;--surface:#ffffff;--surface-2:#fff4e0;--text:#0a0a0a;--muted:#4a4a4a;--line:#0a0a0a;--accent:#ff6b9d;--on-accent:#0a0a0a;--ok:#0f8a4f;--warn:#b86e00;--bad:#d62f4b;--c1:#4d96ff;--c2:#3ddc97;--c3:#ff6b9d;--c4:#ffd23f;--c5:#a78bfa;--radius:10px;--font:'Space Grotesk',system-ui,sans-serif}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#15151b;--surface:#212129;--surface-2:#2a2a33;--text:#f5efe0;--muted:#bdb7a8;--line:#f5efe0;--accent:#ff6b9d;--on-accent:#0a0a0a;--ok:#3ddc97;--warn:#ffd23f;--bad:#ff6b9d;--c1:#4d96ff;--c2:#3ddc97;--c3:#ff6b9d;--c4:#ffd23f;--c5:#a78bfa}
+:root{--display:'Archivo Black',sans-serif;--ink:var(--line);--hard:4px 4px 0 var(--ink);--shadow:var(--hard);--shadow-sm:3px 3px 0 var(--ink);
+  --yellow:#ffd23f;--pink:#ff6b9d;--blue:#4d96ff;--green:#3ddc97;--on:#0a0a0a;
+  --stage:#fff4e0;--stage-text:#0a0a0a;--bar-border:#0a0a0a;--bar-bw:2;--bar-radius:0;--donut-border:#0a0a0a;--donut-bw:2;--donut-radius:0;--donut-spacing:0;--tip-bg:#0a0a0a;--tip-radius:0}
+:root[data-theme="dark"]{--stage:#15151b;--stage-text:#f5efe0;--stage-on:#15151b;--stage-chip:rgba(255,255,255,.1);--bar-border:#f5efe0;--donut-border:#f5efe0;--tip-bg:#f5efe0;--tip-fg:#0a0a0a}
+.app{background:radial-gradient(color-mix(in srgb,var(--ink) 14%,transparent) 1.2px,transparent 1.4px) 0 0/18px 18px,var(--bg)}
+.card,.kpi,.list.boxed,.search,.chip,.icon-btn,.stat,.tile,.sheet,.quick .qi,.btn,.input,.avatar,.thumb,.kpi-i,.badge,.status,.set .si,.tile .ti{border:2.5px solid var(--ink)}
+.app-head h1,.hello h1,.kpi strong,.card-h h3,.sku-title h1,.stat b{font-family:var(--display);font-weight:400;letter-spacing:0}
+.app-head h1{font-size:30px;text-transform:uppercase}
+.hello h1{text-shadow:3px 3px 0 var(--pink)}
+.k1{background:var(--yellow)}.k2{background:var(--green)}.k3{background:var(--blue)}.k4{background:var(--pink)}
+.kpi,.kpi small,.kpi .delta{color:var(--on)}
+.kpi-i{background:#fff;color:#0a0a0a}
+.kpi strong{font-size:22px}
+.chip{border-radius:10px;font-weight:700;color:var(--text)}
+.chip.on{background:var(--yellow);color:var(--on)}
+.quick .qi{background:var(--blue);color:var(--on);border-radius:12px}
+.quick button:nth-child(2) .qi{background:var(--green)}.quick button:nth-child(3) .qi{background:var(--pink)}.quick button:nth-child(4) .qi{background:var(--yellow)}
+.quick button{color:var(--text);font-weight:700}
+.card-h{margin:-16px -16px 12px;padding:10px 16px;border-bottom:2.5px solid var(--ink);background:var(--yellow);color:var(--on);border-radius:10px 10px 0 0}
+.card-h .link,.card-h .muted{color:var(--on)}
+.btn,.chip,.quick .qi,.icon-btn,.kpi,.tile{transition:transform .08s,box-shadow .08s}
+:is(.btn,.chip,.quick button,.icon-btn,.kpi,.tile):active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.quick button:active .qi{transform:translate(3px,3px);box-shadow:none}
+.btn{font-weight:700;border-radius:10px}
+.btn.primary{background:var(--pink);color:var(--on)}
+.avatar{background:var(--green);color:var(--on)}
+.thumb{border-radius:8px}
+.badge,.status{border-radius:6px;color:var(--on)!important}
+.badge.in,.status.Delivered{background:var(--green)}.badge.low,.status.Pending{background:var(--yellow)}.badge.out,.status.Returned{background:var(--pink)}.status.Shipped,.badge.info{background:var(--blue)}
+.pbar .track{border:2px solid var(--ink);height:14px;border-radius:4px}
+.pbar .track i{border-radius:0}
+.switch{border:2.5px solid var(--ink);background:var(--surface)}
+.switch::after{border:2px solid var(--ink);top:1px;left:1px;box-shadow:none}
+.switch.on{background:var(--green)}
+.set .si{color:var(--on)}
+.tabbar{background:var(--surface);border-top:2.5px solid var(--ink)}
+.tabbar button{color:var(--text);font-weight:700}
+.tabbar button.on .ic{background:var(--yellow);color:var(--on);border:2px solid var(--ink);border-radius:8px;width:38px;height:30px;padding:3px 8px;box-shadow:2px 2px 0 var(--ink)}
+.tabbar .scan-tab .si{background:var(--pink);color:var(--on);border:2.5px solid var(--ink);box-shadow:var(--hard);border-radius:14px}
+</style>
+</head>
+<body data-name="Neo-Brutalism Mobile" data-desc="Thick black outlines, hard offset shadows and loud flat fills (yellow, pink, blue, green), with chunky type and buttons that stamp down when pressed." data-flutter="flutter/themes/brutal_theme.dart">
+<div class="stage">
+  <aside class="panel" id="panel"></aside>
+  <div class="device"><div class="app" id="app"></div></div>
+</div>
+<script src="assets/mobile.js"></script>
+</body>
+</html>
