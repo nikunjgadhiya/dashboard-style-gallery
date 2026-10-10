@@ -55,6 +55,10 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,
 .pv-harmony{background:linear-gradient(160deg,#eef3ff,#f1f3f5)}
 .pv-harmony .phone{background:#f1f3f5;display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:30px 7px 7px;align-content:start}
 .pv-harmony .phone i{height:52px;border-radius:14px;background:radial-gradient(circle at 100% 0,rgba(10,89,247,.18),transparent 60%),#fff;box-shadow:0 4px 10px rgba(24,36,49,.06)}
+.pv-mglass{background:linear-gradient(135deg,#1a1240,#0b1026 60%,#2a0d2e)}
+.pv-mglass .phone{background:radial-gradient(50% 30% at 10% 12%,rgba(124,58,237,.9),transparent 70%),radial-gradient(45% 30% at 95% 40%,rgba(37,99,235,.85),transparent 70%),radial-gradient(55% 35% at 80% 92%,rgba(219,39,119,.7),transparent 70%),#0b1026}
+.pv-mglass .phone i{position:absolute;left:9px;right:9px;height:44px;border-radius:12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(8px)}
+.pv-mglass .phone i:nth-child(1){top:34px}.pv-mglass .phone i:nth-child(2){top:86px}.pv-mglass .phone i:nth-child(3){bottom:10px;height:24px;border-radius:999px}
 </style>
 </head>
 <body>
@@ -70,6 +74,7 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,
     <a class="card" href="m-chat.html"><div class="pv pv-chat"><div class="phone"><i></i><i class="m"></i><i class="t"></i><i class="m"></i><i class="t"></i></div></div><div class="body"><h2>M17 · Chat-First AI Assistant</h2><p>Home is a conversation: the assistant greets with a daily summary, answers with charts and SKU lists, and suggests follow-up questions. A composer sits above the tab bar.</p><div class="tags"><span>conversational UI</span><span>answer cards</span><span>screen variant</span></div></div></a>
     <a class="card" href="m-oneui.html"><div class="pv pv-oneui"><div class="phone"><b>Stock</b><i></i><i></i></div></div><div class="body"><h2>M3 · One UI (Samsung)</h2><p>Samsung One UI reachability: tall headers push titles down so content sits in the thumb zone, flat white cards on light grey, squircle icon badges and Samsung blue.</p><div class="tags"><span>reachability header</span><span>flat cards</span><span>squircles</span></div></div></a>
     <a class="card" href="m-harmony.html"><div class="pv pv-harmony"><div class="phone"><i></i><i></i><i></i><i></i></div></div><div class="body"><h2>M4 · HarmonyOS / Fluent Mobile</h2><p>Cross-device calm: rounded service cards with a soft gradient corner glow, gradient circle icons, a translucent tab bar, crisp blue and gentle depth.</p><div class="tags"><span>service cards</span><span>corner glow</span><span>translucent tab bar</span></div></div></a>
+    <a class="card" href="m-glass.html"><div class="pv pv-mglass"><div class="phone"><i></i><i></i><i></i></div></div><div class="body"><h2>M5 · Glassmorphism Mobile</h2><p>Classic frosted glass: translucent panels with thin white borders floating over glowing violet, blue and pink blobs, with a glass tab bar. Dark by default.</p><div class="tags"><span>backdrop-filter</span><span>glowing blobs</span><span>glass tab bar</span></div></div></a>
 <!--cards-->
   </div>
 </div>
