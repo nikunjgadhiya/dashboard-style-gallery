@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('mtheme:m-swiss.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Swiss Minimal · TIFFNY Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/mobile.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{color-scheme:light;--bg:#ffffff;--surface:#ffffff;--surface-2:#f2f2f2;--text:#0d0d0d;--muted:#6b6b6b;--line:#0d0d0d24;--accent:#e3000f;--on-accent:#ffffff;--ok:#0d0d0d;--warn:#6b6b6b;--bad:#e3000f;--c1:#0d0d0d;--c2:#e3000f;--c3:#8a8a8a;--c4:#c8c8c8;--c5:#454545;--radius:0px;--font:'Inter Tight','Helvetica Neue',Arial,sans-serif}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0d0d0d;--surface:#0d0d0d;--surface-2:#1a1a1a;--text:#f2f2f2;--muted:#9a9a9a;--line:#f2f2f229;--accent:#ff3b30;--on-accent:#0d0d0d;--ok:#f2f2f2;--warn:#9a9a9a;--bad:#ff3b30;--c1:#f2f2f2;--c2:#ff3b30;--c3:#8a8a8a;--c4:#4d4d4d;--c5:#bdbdbd}
+:root{--shadow:none;--shadow-sm:none;--stage:#ffffff;--stage-text:#0d0d0d;--bar-radius:0;--donut-radius:0;--donut-spacing:0;--donut-bw:2;--donut-cutout:66%;--tip-bg:#0d0d0d;--tip-radius:0}
+:root[data-theme="dark"]{--stage:#0d0d0d;--stage-text:#f2f2f2;--stage-on:#0d0d0d;--stage-chip:#1a1a1a;--tip-bg:#f2f2f2;--tip-fg:#0d0d0d}
+.app *{border-radius:0!important}
+.screen{padding-left:20px;padding-right:20px}
+.app-head{border-bottom:1px solid var(--text);padding-bottom:12px;margin-bottom:18px}
+.app-head h1,.hello h1{font-size:56px;font-weight:900;letter-spacing:-.06em;line-height:.85}
+.app-head h1::after,.hello h1::after{content:".";color:var(--accent)}
+.hello small{text-transform:uppercase;letter-spacing:.14em;font-size:10px;font-weight:700;display:block;margin-bottom:8px}
+.app-head h2{text-align:left;font-size:22px;font-weight:800;letter-spacing:-.03em}
+.icon-btn,.avatar{background:none;border:1px solid var(--text);color:var(--text);width:38px;height:38px}
+.icon-btn b{background:var(--accent);border:0;top:-6px;right:-6px}
+.chips{gap:0}
+.chip{background:none;border:1px solid var(--text);color:var(--text);font-size:12px;font-weight:600;padding:7px 12px}
+.chip+.chip{border-left:0}
+.chip.on{background:var(--text);color:var(--bg)}
+.kpi-grid{gap:0;border-top:6px solid var(--text)}
+.kpi{background:none;padding:12px 0 16px;border-bottom:1px solid var(--line)}
+.kpi:nth-child(odd){padding-right:12px;border-right:1px solid var(--line)}
+.kpi:nth-child(even){padding-left:12px}
+.kpi-i{display:none}
+.kpi small{text-transform:uppercase;letter-spacing:.14em;font-size:9.5px;font-weight:800;color:var(--text)}
+.kpi strong{font-size:34px;font-weight:800;letter-spacing:-.05em;line-height:1}
+.k1 strong{color:var(--accent)}
+.delta.up{color:var(--text)}
+.card,.list.boxed,.stat,.tile,.sheet{background:none;border-top:2px solid var(--text);padding-left:0;padding-right:0}
+.card-h h3{font-size:18px;font-weight:800;letter-spacing:-.02em}
+.link{color:var(--text);text-transform:uppercase;letter-spacing:.12em;font-size:10px;font-weight:800;border-bottom:2px solid var(--accent)}
+.quick{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;gap:0}
+.quick .qi{background:none;width:auto;height:auto;color:var(--text)}
+.quick button{color:var(--text);font-weight:700}
+.thumb{width:10px;height:40px}
+.thumb .ic{display:none}
+.row-main b{font-weight:800}
+.badge,.status{background:none!important;padding:0;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.badge.out,.status.Returned{color:var(--accent)}
+.search{background:none;border-bottom:1px solid var(--text);padding:0;height:42px}
+.btn{background:none;border:1px solid var(--text);font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:13px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.pbar .track{height:4px}
+.legend i{width:10px;height:10px}
+.set .si,.tile .ti{background:none;color:var(--text);border:1px solid var(--line)}
+.switch{background:none;border:1px solid var(--text)}
+.switch::after{background:var(--text);box-shadow:none;top:2px;left:2px}
+.switch.on{background:var(--accent);border-color:var(--accent)}
+.switch.on::after{background:#fff}
+.tabbar{background:var(--bg);border-top:1px solid var(--text);padding:12px 10px 28px;align-items:center}
+.tabbar button .ic{display:none}
+.tabbar button{font-size:12px;font-weight:700;color:var(--muted)}
+.tabbar button.on{color:var(--text);font-weight:900}
+.tabbar button.on span::before{content:"■ ";color:var(--accent);font-size:9px;vertical-align:1px}
+.tabbar .scan-tab .si{width:auto;height:auto;margin:0;background:var(--accent);color:#fff;padding:8px 12px;box-shadow:none}
+.tabbar .scan-tab .si .ic{display:block;width:20px;height:20px}
+</style>
+</head>
+<body data-name="Swiss Minimal Mobile" data-desc="International Typographic Style on a phone: huge tight headings with a red full stop, hairline rules instead of cards, giant numerals and a text-only tab bar." data-flutter="flutter/themes/swiss_theme.dart">
+<div class="stage">
+  <aside class="panel" id="panel"></aside>
+  <div class="device"><div class="app" id="app"></div></div>
+</div>
+<script src="assets/mobile.js"></script>
+</body>
+</html>
