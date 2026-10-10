@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('mtheme:m-oneui.html');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>One UI · TIFFNY Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/mobile.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{color-scheme:light;--bg:#f4f4f6;--surface:#ffffff;--surface-2:#ececf0;--text:#111114;--muted:#6b6b73;--line:#1111140f;--accent:#3e7bfa;--on-accent:#ffffff;--ok:#1fa35c;--warn:#e88a00;--bad:#f2364a;--c1:#3e7bfa;--c2:#2cc5a4;--c3:#8b6cf6;--c4:#ffa31a;--c5:#ff5c7a;--radius:26px;--font:'Inter Tight','Roboto',system-ui,sans-serif}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#000000;--surface:#17171a;--surface-2:#232327;--text:#fafafa;--muted:#9b9ba3;--line:#ffffff14;--accent:#5b93ff;--on-accent:#ffffff;--ok:#3ddc84;--warn:#ffb340;--bad:#ff5a6a;--c1:#5b93ff;--c2:#3fd9b8;--c3:#a48bff;--c4:#ffb340;--c5:#ff7a92}
+:root{--shadow:none;--shadow-sm:none;--stage:#e6e6ea;--stage-text:#111114;--bar-radius:10;--donut-spacing:3}
+:root[data-theme="dark"]{--stage:#0c0c0e;--stage-text:#fafafa;--stage-on:#111114;--stage-chip:rgba(255,255,255,.08)}
+.island{width:12px;height:12px;border-radius:50%;margin-left:-6px;top:17px}
+/* reachability: big top area, title sits low */
+.app-head{padding:76px 4px 26px;align-items:flex-end}
+.app-head h1{font-size:38px;font-weight:700;letter-spacing:-.02em}
+.hello small{font-size:15px}
+.hello h1{font-size:38px;font-weight:700}
+.app-head h2{text-align:left;font-size:30px;font-weight:700;padding-left:4px}
+.app-head:has(h2){flex-wrap:wrap;padding-top:20px}
+.app-head:has(h2) h2{order:3;flex-basis:100%;margin-top:50px}
+.app-head:has(h2) .icon-btn:first-child{order:1}
+.app-head:has(h2)>:last-child{order:2;margin-left:auto}
+.icon-btn{background:none;width:44px;height:44px}
+.icon-btn b{border-color:var(--bg)}
+.avatar{border-radius:16px}
+.card,.list.boxed,.kpi,.stat,.tile,.sheet{border-radius:26px}
+.kpi-i,.set .si,.tile .ti{border-radius:14px}
+.kpi strong{font-size:24px;font-weight:700}
+.chip{background:var(--surface);color:var(--text);font-weight:600;padding:9px 16px}
+.chip.on{background:var(--text);color:var(--bg)}
+.quick .qi{border-radius:20px;background:var(--surface);color:var(--accent)}
+.search{border-radius:999px;background:var(--surface-2);height:50px}
+.btn{border-radius:999px;background:var(--surface-2)}
+.btn.primary{background:var(--accent)}
+.thumb{border-radius:16px}
+.switch.on{background:var(--accent)}
+.tabbar{background:var(--bg);border-top:0;padding:6px 10px 28px}
+.tabbar button{font-size:11.5px;font-weight:600}
+.tabbar button.on{color:var(--text);font-weight:800}
+.tabbar button.on .ic{color:var(--accent)}
+.tabbar .scan-tab .si{width:52px;height:52px;margin-top:-14px;border-radius:18px;box-shadow:none}
+</style>
+</head>
+<body data-name="One UI (Samsung)" data-desc="Samsung One UI reachability: tall headers push titles down so content sits in the thumb zone, flat white cards on light grey, squircle icon badges and Samsung blue." data-flutter="flutter/themes/oneui_theme.dart">
+<div class="stage">
+  <aside class="panel" id="panel"></aside>
+  <div class="device"><div class="app" id="app"></div></div>
+</div>
+<script src="assets/mobile.js"></script>
+</body>
+</html>
